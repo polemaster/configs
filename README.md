@@ -1,1 +1,1 @@
-# Dotfiles for VS Code
+# Config for mpv and settings in VS Code
