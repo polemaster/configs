@@ -1,1 +1,1 @@
-# dotfiles
+# Dotfiles for VS Code
