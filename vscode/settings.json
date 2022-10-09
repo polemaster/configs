@@ -1,12 +1,19 @@
 {
     "window.zoomLevel": 1,
     "window.titleBarStyle": "custom",
-    "keyboard.dispatch": "keyCode",
+    "keyboard.dispatch": "keyCode",     // for linux
     "breadcrumbs.enabled": false,
     "editor.minimap.enabled": false,
     "vim.handleKeys": {
         "<C-n>": false,
         "<C-w>": false,
         "<C-h>": false,
-    }
+    },
+    // For windows:
+    // "vim.insertModeKeyBindings": [
+    //     {
+    //         "before": ["<capslock>"],
+    //         "after": ["<esc>"]
+    //     }
+    // ],
 }
