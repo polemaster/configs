@@ -9,11 +9,4 @@
         "<C-w>": false,
         "<C-h>": false,
     },
-    // For windows:
-    // "vim.insertModeKeyBindings": [
-    //     {
-    //         "before": ["<capslock>"],
-    //         "after": ["<esc>"]
-    //     }
-    // ],
 }
