@@ -1,1 +1,1 @@
-# Config for mpv and settings in VS Code
+# Config files for different programs and OS's
