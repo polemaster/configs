@@ -1,7 +1,0 @@
-alias la="ls -lAh"
-alias -s py=code
-alias rm="rm -i"
-alias -s html=firefox
-alias vim="vi"
-alias open="xdg-open"
-alias py="python"
