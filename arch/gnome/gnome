@@ -1,0 +1,20 @@
+installed packages:
+gdm
+gnome-control-center
+gnome-keyring
+gnome-shell
+gnome-shell-extensions
+tracker3-miners (if not nautilus)
+xdg-user-dirs-gtk
+tracker3-miners
+eog (for images)
+gnome-themes-extra
+
+
+possible packages:
+evince (for documents (pdf))
+gnome-calendar
+gnome-color-manager
+gnome-font-viewer
+gnome-software
+totem (for videos)
