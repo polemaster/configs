@@ -4,3 +4,26 @@ pacman -S pipewire wireplumber pipewire-alsa pipewire-pulse
 
 Unmute sound:
 alsamixer -> select sound card and unmute
+
+Add CUPS (for printers):
+https://wiki.archlinux.org/title/CUPS
+
+Uncomment these lines in /etc/pacman.conf:
+Color
+ParallelDownloads = 5
+
+Faster mirrors:
+install reflector
+copy this to /etc/xdg/reflector/reflector.conf:
+# Set the output path where the mirrorlist will be saved (--save).
+--save /etc/pacman.d/mirrorlist
+# Select the transfer protocol (--protocol).
+--protocol http,https
+# Select the country (--country)
+# Consult the list of available countries with "reflector --list-countries" and
+# select the countries nearest to you or the ones that you trust. For example:
+--country Germany
+# Use only the most recentyly synchronized mirrors (--latest).
+--latest 20
+# Sort the mirrors by synchronization time (--sort).
+--sort rate
