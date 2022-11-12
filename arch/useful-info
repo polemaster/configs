@@ -27,3 +27,7 @@ copy this to /etc/xdg/reflector/reflector.conf:
 --latest 20
 # Sort the mirrors by synchronization time (--sort).
 --sort rate
+
+Disable wayland by editing:
+/etc/gdm/custom.conf
+This solves cursor problems (it doesn't change in firefox on wayland)
