@@ -31,3 +31,6 @@ copy this to /etc/xdg/reflector/reflector.conf:
 Disable wayland by editing:
 /etc/gdm/custom.conf
 This solves cursor problems (it doesn't change in firefox on wayland)
+
+Change keyboard layout:
+Gnome setting -> Keyboard -> Click + -> Click ... -> Resize windows (it's bugged) to type 'polish'
