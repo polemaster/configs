@@ -11,6 +11,8 @@ https://wiki.archlinux.org/title/CUPS
 Uncomment these lines in /etc/pacman.conf:
 Color
 ParallelDownloads = 5
+And add this line:
+ILoveCandy
 
 Faster mirrors:
 install reflector
