@@ -1,6 +1,10 @@
 nemo
+zsh
 xdg-utils
 firefox
 mpv
 nvim
 xclip
+man-db
+man-pages
+htop
