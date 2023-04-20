@@ -9,4 +9,7 @@
         "<C-w>": false,
         "<C-h>": false,
     },
+    "vim.useSystemClipboard": true,
+    "redhat.telemetry.enabled": false,
+    "telemetry.telemetryLevel": "off",
 }
