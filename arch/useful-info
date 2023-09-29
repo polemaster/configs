@@ -2,8 +2,10 @@ Install pipewire and remove pulseaudio:
 https://wiki.archlinux.org/title/PipeWire
 pacman -S pipewire wireplumber pipewire-alsa pipewire-pulse
 
-Unmute sound:
+Sound on PC:
 alsamixer -> select sound card and unmute
+Sound on Laptop with Intel:
+sudo pacman -S sof-firmware
 
 Add CUPS (for printers):
 https://wiki.archlinux.org/title/CUPS
