@@ -36,3 +36,8 @@ This solves cursor problems (it doesn't change in firefox on wayland)
 
 Change keyboard layout:
 Gnome setting -> Keyboard -> Click + -> Click ... -> Resize windows (it's bugged) to type 'polish'
+
+For dual boot with Windows if you have both systems on one drive:
+sudo pacman -S os-prober
+sudo os-prober (Windows should show, if not: sudo mkdir /mnt/win11 && sudo mount /dev/nvme0n1p1 /mnt/win11)
+sudo grub-mkconfig -o /boot/grub/grub.cfg (if Windows not added edit /etc/defualt/grub: uncomment last line (GRUB_DISABLE_OS_PROBER=false) and rerun the command)
