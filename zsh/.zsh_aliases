@@ -1,8 +1,12 @@
+alias ls="ls --color=auto"
 alias la="ls -lAh"
 alias -s py=code
 alias -s html=firefox
+alias v="nvim"
 alias vi="nvim"
 alias vim="nvim"
 alias open="xdg-open"
 alias py="python"
 alias c="clear"
+alias f="nemo . &> /dev/null &"
+alias s="shutdown now"
