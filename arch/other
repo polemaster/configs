@@ -3,7 +3,7 @@ zsh
 xdg-utils
 firefox
 mpv
-nvim
+neovim
 xclip
 man-db
 man-pages
