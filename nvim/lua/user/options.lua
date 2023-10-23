@@ -1,4 +1,7 @@
 --vim.wo.number = true
+-- vim.g.loaded_netrw = 1
+-- vim.g.loaded_netrwPlugin = 1
+
 vim.o.number = true
 vim.o.breakindent = true                          -- Lines longer than one are indented indetitically
 vim.o.clipboard = 'unnamedplus'
@@ -14,13 +17,16 @@ vim.o.signcolumn = 'yes'                          -- Keep signcolumn on by defau
 
 vim.o.updatetime = 300                            -- faster something?, Decrease update time
 vim.o.timeoutlen = 300                            -- the time that Vim waits for after each keystroke of the mapping before aborting it
-                                                  -- see also: timout & https://vi.stackexchange.com/questions/24925/usage-of-timeoutlen-and-ttimeoutlen
+                                                  -- see also: timeout & https://vi.stackexchange.com/questions/24925/usage-of-timeoutlen-and-ttimeoutlen
 vim.o.completeopt = 'menuone,noselect'            -- Set completeopt to have a better completion experience
 vim.o.termguicolors = true                        -- NOTE: You should make sure your terminal supports this
 
 vim.o.pumheight = 10                              -- limits the height of pop-up menu to 10
-vim.o.showtabline = 2                             -- show tabs at the top even if there is only one
-vim.o.expandtab = true                            -- doesn't work
-vim.o.tabstop = 2                                 -- this neither
+-- vim.o.showtabline = 2                             -- show tabs at the top even if there is only one
+
+-- Tab options (they don't work due to vim-sleuth)
+vim.o.expandtab = true
+vim.o.tabstop = 2
+vim.o.shiftwidth = 2
 
 vim.opt.iskeyword:append('-')                     -- treats sth-sth as one word (useful for w motion)

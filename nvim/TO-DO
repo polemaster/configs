@@ -1,3 +1,11 @@
 1. set tokyonight options
 2. set lazy options
 3. completion: formatting
+4. lsp
+5. add shortcuts for up & down arrows in command mode (after :)
+6. telescope: check fzf extension
+7. grep_live in telescope doesn't work
+8. check autopairs.lua file
+9. choose comments plugin
+10. treesitter works???
+11. change gitsigns
