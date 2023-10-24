@@ -44,15 +44,8 @@ return {
   'lewis6991/gitsigns.nvim',
 
   -- Colorscheme
-  {
-    "folke/tokyonight.nvim",
-    lazy = false,
-    priority = 1000,
-    config = function()
-      vim.cmd([[colorscheme tokyonight]])
-    end
-  },
-
+  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
+  'navarasu/onedark.nvim',
 
   {
     -- Set lualine as statusline
@@ -61,7 +54,7 @@ return {
     opts = {
       options = {
         icons_enabled = false,
-        theme = 'tokyonight',
+        theme = 'catppuccin',
         component_separators = '|',
         section_separators = '',
       },
@@ -133,10 +126,13 @@ return {
   -- Terminal
   {'akinsho/toggleterm.nvim', version = "*"},
 
-  -- Tabs (buffers) - choose one
-  {'akinsho/bufferline.nvim', version = "*"}, -- use bp|bd # or bp|sp|bn|bd to delete a buffer
-  -- 'romgrk/barbar.nvim',
-  -- 'willothy/nvim-cokeline',
+  -- Tabs (buffers)
+  -- There is also romgrk/barbar.nvim plugin and willothy/nvim-cokeline
+  {'akinsho/bufferline.nvim', version = "*"},
+  'romgrk/barbar.nvim',
+
+  -- Cool notifications
+  'rcarriga/nvim-notify'
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.

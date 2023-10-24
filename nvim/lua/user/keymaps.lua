@@ -13,22 +13,11 @@ keymap('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 -- Disable annoying keybindings
 keymap("", "<S-j>", "<Nop>", opts)
 
--- Resize with arrows
-keymap("n", "<C-Up>", ":resize -2<CR>", opts)
-keymap("n", "<C-Down>", ":resize +2<CR>", opts)
-keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
-keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
-
--- Navigate buffers (without plugin)
--- keymap("n", "<S-l>", ":bnext<CR>", opts)
--- keymap("n", "<S-h>", ":bprevious<CR>", opts)
-
 -- Move text up and down
 keymap("n", "<A-j>", ":m .+1<CR>==", opts)
 keymap("n", "<A-k>", ":m .-2<CR>==", opts)
 
--- Visual --
--- Stay in indent mode
+-- Stay in indent mode after < or >
 keymap("v", "<", "<gv^", opts)
 keymap("v", ">", ">gv^", opts)
 
@@ -55,26 +44,55 @@ keymap("n", "<C-j>", "<C-w>j", opts)
 keymap("n", "<C-k>", "<C-w>k", opts)
 keymap("n", "<C-l>", "<C-w>l", opts)
 
+-- Resize buffers with arrows
+keymap("n", "<C-Up>", ":resize -2<CR>", opts)
+keymap("n", "<C-Down>", ":resize +2<CR>", opts)
+keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
+keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
+
 -- Buffer navigation
-keymap('n', '<A-1>', '<Cmd>BufferLineGoToBuffer 1<CR>', opts)
-keymap('n', '<A-2>', '<Cmd>BufferLineGoToBuffer 2<CR>', opts)
-keymap('n', '<A-3>', '<Cmd>BufferLineGoToBuffer 3<CR>', opts)
-keymap('n', '<A-4>', '<Cmd>BufferLineGoToBuffer 4<CR>', opts)
-keymap('n', '<A-5>', '<Cmd>BufferLineGoToBuffer 5<CR>', opts)
-keymap('n', '<A-6>', '<Cmd>BufferLineGoToBuffer 6<CR>', opts)
-keymap('n', '<A-7>', '<Cmd>BufferLineGoToBuffer 7<CR>', opts)
-keymap('n', '<A-8>', '<Cmd>BufferLineGoToBuffer 8<CR>', opts)
-keymap('n', '<A-9>', '<Cmd>BufferLineGoToBuffer 9<CR>', opts)
-keymap('n', '<A-0>', '<Cmd>BufferLineGoToBuffer -1<CR>', opts)
+-- Bufferline
+-- keymap('n', '<A-1>', '<Cmd>BufferLineGoToBuffer 1<CR>', opts)
+-- keymap('n', '<A-2>', '<Cmd>BufferLineGoToBuffer 2<CR>', opts)
+-- keymap('n', '<A-3>', '<Cmd>BufferLineGoToBuffer 3<CR>', opts)
+-- keymap('n', '<A-4>', '<Cmd>BufferLineGoToBuffer 4<CR>', opts)
+-- keymap('n', '<A-5>', '<Cmd>BufferLineGoToBuffer 5<CR>', opts)
+-- keymap('n', '<A-6>', '<Cmd>BufferLineGoToBuffer 6<CR>', opts)
+-- keymap('n', '<A-7>', '<Cmd>BufferLineGoToBuffer 7<CR>', opts)
+-- keymap('n', '<A-8>', '<Cmd>BufferLineGoToBuffer 8<CR>', opts)
+-- keymap('n', '<A-9>', '<Cmd>BufferLineGoToBuffer 9<CR>', opts)
+-- keymap('n', '<A-0>', '<Cmd>BufferLineGoToBuffer -1<CR>', opts)
+--
+-- keymap('n', '<S-l>', ':BufferLineMoveNext<CR>', opts)
+-- keymap('n', '<S-h>', ':BufferLineMovePrev<CR>', opts)
+--
+-- keymap('n', '<A-l>', ':BufferLineCycleNext<CR>', opts)
+-- keymap('n' ,'<A-h>', ':BufferLineCyclePrev<CR>', opts)
 
-keymap('n', '<A-l>', ':BufferLineMoveNext<CR>', opts)
-keymap('n', '<A-h>', ':BufferLineMovePrev<CR>', opts)
+-- use bp|bd # or bp|sp|bn|bd to delete a buffer
+-- keymap('n', '<A-c>', ':bd<cr>', opts)
 
-keymap('n', '<S-l>', ':BufferLineCycleNext<CR>', opts)
-keymap('n' ,'<S-h>', ':BufferLineCyclePrev<CR>', opts)
+-- Barbar
+keymap('n', '<A-1>', '<Cmd>BufferGoto 1<CR>', opts)
+keymap('n', '<A-2>', '<Cmd>BufferGoto 2<CR>', opts)
+keymap('n', '<A-3>', '<Cmd>BufferGoto 3<CR>', opts)
+keymap('n', '<A-4>', '<Cmd>BufferGoto 4<CR>', opts)
+keymap('n', '<A-5>', '<Cmd>BufferGoto 5<CR>', opts)
+keymap('n', '<A-6>', '<Cmd>BufferGoto 6<CR>', opts)
+keymap('n', '<A-7>', '<Cmd>BufferGoto 7<CR>', opts)
+keymap('n', '<A-8>', '<Cmd>BufferGoto 8<CR>', opts)
+keymap('n', '<A-9>', '<Cmd>BufferGoto 9<CR>', opts)
+keymap('n', '<A-0>', '<Cmd>BufferLast<CR>', opts)
 
-keymap('n', '<A-c>', ':bp|bd #<cr>', opts)
+keymap('n', '<S-l>', ':BufferMoveNext<CR>', opts)
+keymap('n', '<S-h>', ':BufferMovePrev<CR>', opts)
 
+keymap('n', '<A-l>', ':BufferNext<CR>', opts)
+keymap('n' ,'<A-h>', ':BufferPrev<CR>', opts)
+
+-- use bp|bd # or bp|sp|bn|bd to delete a buffer
+keymap('n', '<A-c>', ':BufferClose<CR>', opts)
+keymap('n', '<A-S-c>', ':BufferRestore<CR>', opts)
 
 -- Telescope
 -- See `:help telescope.builtin`

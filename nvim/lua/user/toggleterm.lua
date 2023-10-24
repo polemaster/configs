@@ -1,6 +1,6 @@
 require('toggleterm').setup({
   open_mapping = [[<c-\>]],
-  direction = 'vertical',
+  direction = 'float',
   size = 40,
   -- hide_numbers = true, -- hide the number column in toggleterm buffers
 })

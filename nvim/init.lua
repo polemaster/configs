@@ -69,6 +69,7 @@ require 'user.comments'
 require 'user.nvimtree'
 require 'user.toggleterm'
 require 'user.bufferline'
+require 'user.colorscheme'
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
