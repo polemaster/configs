@@ -46,6 +46,7 @@ return {
   -- Colorscheme
   { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
   'navarasu/onedark.nvim',
+  'rmehri01/onenord.nvim',
 
   {
     -- Set lualine as statusline
@@ -108,6 +109,14 @@ return {
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
       'JoosepAlviste/nvim-ts-context-commentstring',
+      'nvim-treesitter/nvim-treesitter-context',
+      {
+        "andymass/vim-matchup",
+        setup = function()
+          vim.g.matchup_matchparen_offscreen = { method = "popup" }
+        end,
+      },
+      'windwp/nvim-ts-autotag',
     },
     build = ':TSUpdate',
   },
@@ -132,7 +141,8 @@ return {
   'romgrk/barbar.nvim',
 
   -- Cool notifications
-  'rcarriga/nvim-notify'
+  'rcarriga/nvim-notify',
+
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.

@@ -1,3 +1,4 @@
+-- Options passed to vim.keymap.set()
 local opts = { noremap = true, silent = true }
 local term_opts = { silent = true }
 
@@ -6,16 +7,22 @@ local keymap = vim.keymap.set
 
 keymap({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
+-- My custom keymaps
+keymap('n', '<c-a>', 'ggVG', opts)
+keymap('n', '<leader>z', 'za', opts)
+keymap('', '<S-j>', '<Nop>', opts)
+
 -- Remap for dealing with word wrap
-keymap('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+keymap('n', 'k', "v:count == 1 ? 'gk' : 'k'", { expr = true, silent = true })
 keymap('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- Disable annoying keybindings
-keymap("", "<S-j>", "<Nop>", opts)
 
 -- Move text up and down
 keymap("n", "<A-j>", ":m .+1<CR>==", opts)
 keymap("n", "<A-k>", ":m .-2<CR>==", opts)
+keymap("v", "<A-j>", ":m '>+1<CR>gv=gv", opts)
+keymap("v", "<A-k>", ":m '<-2<CR>gv=gv", opts)
 
 -- Stay in indent mode after < or >
 keymap("v", "<", "<gv^", opts)
@@ -23,10 +30,6 @@ keymap("v", ">", ">gv^", opts)
 
 -- After selecting text and pasting sth there, the selected text will not be yanked anymore.
 keymap("v", "p", '"_dP', opts)
-
--- Move text up and down
-keymap("v", "<A-j>", ":m '>+1<CR>gv=gv", opts)
-keymap("v", "<A-k>", ":m '<-2<CR>gv=gv", opts)
 
 -- Nvimtree
 keymap('n', '<leader>e', ':NvimTreeToggle<cr>', opts)
@@ -90,9 +93,23 @@ keymap('n', '<S-h>', ':BufferMovePrev<CR>', opts)
 keymap('n', '<A-l>', ':BufferNext<CR>', opts)
 keymap('n' ,'<A-h>', ':BufferPrev<CR>', opts)
 
--- use bp|bd # or bp|sp|bn|bd to delete a buffer
+-- use bp|bd # or bp|sp|bn|bd to delete a buffer (without bbye)
 keymap('n', '<A-c>', ':BufferClose<CR>', opts)
 keymap('n', '<A-S-c>', ':BufferRestore<CR>', opts)
+
+-- Treesitter
+-- more treesitter-textobjects keymaps are in treesitter.lua
+local ts_repeat_move = require('nvim-treesitter.textobjects.repeatable_move')
+
+keymap({'n', 'x', 'o'}, ';', ts_repeat_move.repeat_last_move)
+keymap({'n', 'x', 'o'}, ',', ts_repeat_move.repeat_last_move_opposite)
+
+keymap({'n', 'x', 'o'}, 'f', ts_repeat_move.builtin_f)
+keymap({'n', 'x', 'o'}, 'F', ts_repeat_move.builtin_f)
+keymap({'n', 'x', 'o'}, 't', ts_repeat_move.builtin_t)
+keymap({'n', 'x', 'o'}, 'T', ts_repeat_move.builtin_T)
+
+
 
 -- Telescope
 -- See `:help telescope.builtin`
