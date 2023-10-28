@@ -1,9 +1,7 @@
-1. set tokyonight options
 2. set lazy options
 3. completion: formatting
 4. lsp
 6. telescope: check fzf extension
-7. grep_live in telescope doesn't work
 8. check autopairs.lua file
 9. choose comments plugin
 10. treesitter works???
@@ -11,3 +9,6 @@
 12. learn vim-matchup keybindings & features
 13. learn treesitter-textobjects keybindings
 14. Debugging (nvim-dap)
+15. Check out zoxide and ropa/z
+16. Set up sessions (auto-session?)
+17. delete venv directory from search results in telescope

@@ -16,8 +16,6 @@ keymap('', '<S-j>', '<Nop>', opts)
 keymap('n', 'k', "v:count == 1 ? 'gk' : 'k'", { expr = true, silent = true })
 keymap('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
--- Disable annoying keybindings
-
 -- Move text up and down
 keymap("n", "<A-j>", ":m .+1<CR>==", opts)
 keymap("n", "<A-k>", ":m .-2<CR>==", opts)
@@ -113,20 +111,26 @@ keymap({'n', 'x', 'o'}, 'T', ts_repeat_move.builtin_T)
 
 -- Telescope
 -- See `:help telescope.builtin`
-vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
-vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
-vim.keymap.set('n', '<leader>/', function()
-  -- You can pass additional configuration to telescope to change theme, layout, etc.
-  require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-    winblend = 10,
+local builtin = require('telescope.builtin')
+
+keymap('n', '<leader>/', function()
+  builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+    winblend = 10, -- ???
     previewer = false,
   })
 end, { desc = '[/] Fuzzily search in current buffer' })
 
-vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
-vim.keymap.set('n', '<leader>f', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
-vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
-vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
-vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
+keymap('n', '<leader>f', builtin.find_files, { desc = '[S]earch [F]iles' })
+keymap('n', '<leader>s', builtin.live_grep, { desc = '[S]earch by [G]rep' })
+keymap('n', 'gd', builtin.lsp_definitions, { desc = '[G]o to [D]efinition' })
+keymap('n', '<leader>k', builtin.keymaps, { desc = 'Search [K]eymaps' })
+
+keymap('n', '<leader>gf', builtin.git_files, { desc = 'Search [G]it [F]iles' })
+keymap('n', '<leader>gc', builtin.git_commits, { desc = 'Search [G]it [C]ommits' })
+keymap('n', '<leader>d', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
+
+keymap('n', '<space>t', ':Telescope file_browser path=%:p:h select_buffer=true<CR>', opts)
+
+-- Useful telescope mappings:
+-- <C-x> or <C-s> 	        Go to file selection as a split
+-- <C-v>                 	Go to file selection as a vsplit
