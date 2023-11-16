@@ -12,3 +12,6 @@
 15. Check out zoxide and ropa/z
 16. Set up sessions (auto-session?)
 17. delete venv directory from search results in telescope
+18. ../../file doesn't work in telescope
+19. cursor goes to the end after vif command (treesitter)
+20. tab after a character in insert mode works strangely
