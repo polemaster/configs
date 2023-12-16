@@ -47,3 +47,8 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg (if Windows not added edit /etc/defual
 Configure YubiKey - install:
 * (optionally?) yubikey-manager or yubikey-manager-qt
 * one or both of these: yubico-pam, pam-u2f
+
+Wireshark configuration:
+sudo pacman -S wireshark-qt
+https://wiki.wireshark.org/CaptureSetup/CapturePrivileges
+Follow *Limiting capture permission to only one group* from the site above
