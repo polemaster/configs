@@ -1,5 +1,5 @@
 ## Install pipewire and remove pulseaudio:
-https://wiki.archlinux.org/title/PipeWire 
+https://wiki.archlinux.org/title/PipeWire  
 pacman -S pipewire wireplumber pipewire-alsa pipewire-pulse
 
 ## Sound
