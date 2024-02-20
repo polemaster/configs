@@ -1,6 +1,5 @@
 2. set lazy options
 3. completion: formatting
-4. lsp
 6. telescope: check fzf extension
 8. check autopairs.lua file
 9. choose comments plugin
@@ -15,3 +14,7 @@
 18. ../../file doesn't work in telescope
 19. cursor goes to the end after vif command (treesitter)
 20. tab after a character in insert mode works strangely
+21. add formatter.nvim & nvim-lint (they replace null-ls) or ale
+22. check out coq_nvim
+23. k doesn't work in very long line that spans multiple lines
+24. context_commentstring is currently commented in treesitter.lua (it displays warning otherwise)

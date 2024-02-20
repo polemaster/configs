@@ -3,6 +3,8 @@ return {
   'tpope/vim-sleuth',
 
   -- LSP
+  -- If one has little RAM, they can install lsp-timeout.nvim
+  -- Needed package npm for pyright
   {
     'neovim/nvim-lspconfig',
     dependencies = {
@@ -10,14 +12,10 @@ return {
       { 'williamboman/mason.nvim', config = true },
       'williamboman/mason-lspconfig.nvim',
 
-      -- Useful status updates for LSP
-      -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
-
-      -- Additional lua configuration, makes nvim stuff amazing!
+      -- Useful plugin for configuring neovim
       'folke/neodev.nvim',
 
-      -- Needed for nvim-cmp icons
+      -- Needed for lsp completion icons
       'onsails/lspkind.nvim',
     },
   },
@@ -147,9 +145,16 @@ return {
   -- {'akinsho/bufferline.nvim', version = "*"},
   'romgrk/barbar.nvim',
 
-  -- Cool notifications
+  -- Notifications
   'rcarriga/nvim-notify',
+  -- { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
+  'j-hui/fidget.nvim',
 
+  -- Improves UI
+  { 'stevearc/dressing.nvim', event = 'VeryLazy' },
+
+  -- Hex editing
+  { 'RaafatTurki/hex.nvim', opts = {} },
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.

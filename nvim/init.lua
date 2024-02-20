@@ -58,24 +58,20 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup('user.plugins')
 
-require 'user.options'
-require 'user.keymaps'
-require 'user.cmp'
-require 'user.telescope'
-require 'user.treesitter'
-require 'user.lsp'
-require 'user.autopairs'
-require 'user.comments'
-require 'user.nvimtree'
-require 'user.toggleterm'
-require 'user.bufferline'
-require 'user.colorscheme'
+require('user.options')
+require('user.keymaps')
+require('user.cmp')
+require('user.telescope')
+require('user.treesitter')
+require('user.lsp')
+require('user.autopairs')
+require('user.comments')
+require('user.nvimtree')
+require('user.toggleterm')
+require('user.bufferline')
+require('user.colorscheme')
+require('user.notifications')
 
--- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
--- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
 -- document existing key chains
 require('which-key').register({
@@ -87,3 +83,5 @@ require('which-key').register({
   ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
   ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
 })
+
+

@@ -2,7 +2,6 @@
 -- vim.g.loaded_netrw = 1
 -- vim.g.loaded_netrwPlugin = 1
 
-
 vim.o.number = true
 vim.o.breakindent = true                          -- Lines longer than one are indented indetitically
 vim.o.clipboard = 'unnamedplus'
@@ -37,7 +36,3 @@ vim.o.foldmethod = "expr"
 vim.o.foldexpr = "nvim_treesitter#foldexpr()"
 -- vim.o.foldenable = false
 vim.o.foldlevel = 99
-
--- Notifications
-vim.notify = require("notify")
-
