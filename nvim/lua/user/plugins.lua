@@ -1,6 +1,10 @@
+-- lazy options:
+-- https://github.com/folke/lazy.nvim?tab=readme-ov-file#-plugin-spec
+
 return {
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
+
 
   -- LSP
   -- If one has little RAM, they can install lsp-timeout.nvim
@@ -51,14 +55,11 @@ return {
   'lewis6991/gitsigns.nvim',
 
   -- Colorscheme
-  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
-  'navarasu/onedark.nvim',
-  'rmehri01/onenord.nvim',
+  { "catppuccin/nvim", lazy = false, name = 'catppuccin', priority = 1000 },
 
   {
-    -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
-    -- See `:help lualine.txt`
+    lazy = false,
     opts = {
       options = {
         icons_enabled = false,
@@ -72,7 +73,6 @@ return {
   {
     -- Add indentation guides even on blank lines
     'lukas-reineke/indent-blankline.nvim',
-    -- Enable `lukas-reineke/indent-blankline.nvim`
     -- See `:help indent_blankline.txt`
     main = "ibl",
     opts = {},
@@ -80,13 +80,14 @@ return {
 
 
   -- Telescope
-  -- Requires make
-  -- Also needed package ripgrep (install it via package manager) for live grep and package fd (for what?)
+  -- Needed package ripgrep (install it via package manager) for live grep and package fd (for what?)
   {
     'nvim-telescope/telescope.nvim',
     branch = '0.1.x',
     dependencies = {
       'nvim-lua/plenary.nvim',
+      -- fzf-native is a fuzzy finder and enables searches with: ',^,$,|
+      -- it requires 'make' program
       {
         'nvim-telescope/telescope-fzf-native.nvim',
         build = 'make',
@@ -96,7 +97,6 @@ return {
       },
     },
   },
-  'nvim-telescope/telescope-file-browser.nvim',
 
   -- Commenting
   {
@@ -141,7 +141,7 @@ return {
   {'akinsho/toggleterm.nvim', version = "*"},
 
   -- Tabs (buffers)
-  -- There is also romgrk/barbar.nvim plugin and willothy/nvim-cokeline
+  -- There is also akinsho/bufferline.nvim plugin and willothy/nvim-cokeline
   -- {'akinsho/bufferline.nvim', version = "*"},
   'romgrk/barbar.nvim',
 
@@ -156,17 +156,12 @@ return {
   -- Hex editing
   { 'RaafatTurki/hex.nvim', opts = {} },
 
-  -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
-  --       These are some example plugins that I've included in the kickstart repository.
-  --       Uncomment any of the lines below to enable them.
-  -- require 'kickstart.plugins.autoformat',
-  -- require 'kickstart.plugins.debug',
-
-  -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
-  --    You can use this folder to prevent any conflicts with this init.lua if you're interested in keeping
-  --    up-to-date with whatever is in the kickstart repo.
-  --    Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  --
-  --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
-  -- { import = 'custom.plugins' },
+  -- for debugging startup time
+  {
+    'dstein64/vim-startuptime',
+    cmd = 'StartupTime',
+    init = function()
+      vim.g.startuptime_tries = 10
+    end,
+  },
 }

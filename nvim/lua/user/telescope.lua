@@ -10,8 +10,9 @@ require('telescope').setup {
         ['<C-n>'] = actions.cycle_history_next,
         ['<C-j>'] = actions.move_selection_next,
         ['<C-k>'] = actions.move_selection_previous,
-        ['<C-s>'] = actions.select_horizontal,
-        ["<esc>"] = actions.close,
+        -- vertical split: ctrl+v
+        ['<C-s>'] = actions.select_horizontal, -- normal shortcut for it is ctrl+x
+        ['<esc>'] = actions.close,
       },
     },
     file_ignore_patterns = { "^venv/" },
@@ -29,18 +30,9 @@ require('telescope').setup {
       hidden = true,
     }
   },
-  extensions = {
-    file_browser = {
-      -- layout_strategy = 'center',
-      -- theme = "ivy",
-      hijack_netrw = true,
-      initial_mode = 'normal',
-      previewer = false,
-    },
-  },
 }
 
 -- Enable telescope-fzf-native
 require('telescope').load_extension('fzf')
 
-require("telescope").load_extension('file_browser')
+require('telescope').load_extension('notify')

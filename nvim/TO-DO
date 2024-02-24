@@ -1,7 +1,3 @@
-2. set lazy options
-3. completion: formatting
-6. telescope: check fzf extension
-8. check autopairs.lua file
 9. choose comments plugin
 10. treesitter works???
 11. change gitsigns
@@ -18,3 +14,7 @@
 22. check out coq_nvim
 23. k doesn't work in very long line that spans multiple lines
 24. context_commentstring is currently commented in treesitter.lua (it displays warning otherwise)
+25. Tab in searching files (space+f) works strangely
+26. lualine plugins?
+27. vim-sleuth & indent-blankline plugins don't work
+28. configure nvim-notify (it already works with telescope?)

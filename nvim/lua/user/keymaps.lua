@@ -135,6 +135,8 @@ keymap('n', '<leader>d', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' 
 
 keymap('n', '<space>t', ':Telescope file_browser path=%:p:h select_buffer=true<CR>', opts)
 
+keymap('n', '<space>n', ':Telescope notify<CR>', { desc = 'Search [N]otifications history' })
+
 -- Useful telescope mappings:
 -- <C-x> or <C-s> 	        Go to file selection as a split
 -- <C-v>                 	Go to file selection as a vsplit
