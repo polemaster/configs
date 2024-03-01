@@ -54,6 +54,8 @@ require('user.toggleterm')
 require('user.bufferline')
 require('user.colorscheme')
 require('user.notifications')
+require('user.sessions')
+require('user.debugging')
 
 
 -- document existing key chains

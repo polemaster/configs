@@ -1,8 +1,12 @@
-require('Comment').setup {
-  pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
-}
-
 local keymaps = require('user.keymaps').treesitter
+
+
+-- skip backwards compatibility routines and speed up loading.
+vim.g.skip_ts_context_commentstring_module = true
+
+require('ts_context_commentstring').setup {
+  enable_autocmd = false,
+}
 
 require('nvim-treesitter.configs').setup {
   ensure_installed = { 'c', 'cpp', 'lua', 'python', 'vimdoc', 'vim', 'html', 'css', 'javascript', 'r',
@@ -40,7 +44,13 @@ require('nvim-treesitter.configs').setup {
       goto_next_end = keymaps.motion.next_end,
       goto_previous_start = keymaps.motion.previous_start,
       goto_previous_end = keymaps.motion.previous_end,
-    }
+    },
+    lsp_interop = {
+      enable = true,
+      border = 'none',
+      floating_preview_opts = {},
+      peek_definition_code = keymaps.peek_definition_code
+    },
   },
 
   matchup = { enable = true },

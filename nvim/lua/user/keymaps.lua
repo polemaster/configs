@@ -100,17 +100,6 @@ keymap('n' ,'<A-h>', ':BufferPrev<CR>', opts)
 keymap('n', '<A-c>', ':BufferClose<CR>', opts)
 keymap('n', '<A-S-c>', ':BufferRestore<CR>', opts)
 
--- Treesitter
--- more treesitter-textobjects keymaps are in treesitter.lua
-local ts_repeat_move = require('nvim-treesitter.textobjects.repeatable_move')
-
-keymap({'n', 'x', 'o'}, ';', ts_repeat_move.repeat_last_move)
-keymap({'n', 'x', 'o'}, ',', ts_repeat_move.repeat_last_move_opposite)
-
-keymap({'n', 'x', 'o'}, 'f', ts_repeat_move.builtin_f)
-keymap({'n', 'x', 'o'}, 'F', ts_repeat_move.builtin_f)
-keymap({'n', 'x', 'o'}, 't', ts_repeat_move.builtin_t)
-keymap({'n', 'x', 'o'}, 'T', ts_repeat_move.builtin_T)
 
 
 
@@ -131,7 +120,7 @@ keymap('n', '<leader>k', builtin.keymaps, { desc = 'Search [K]eymaps' })
 
 keymap('n', '<leader>gf', builtin.git_files, { desc = 'Search [G]it [F]iles' })
 keymap('n', '<leader>gc', builtin.git_commits, { desc = 'Search [G]it [C]ommits' })
-keymap('n', '<leader>d', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
+-- keymap('n', '<leader>d', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' }) -- TO-DO
 
 keymap('n', '<space>t', ':Telescope file_browser path=%:p:h select_buffer=true<CR>', opts)
 
@@ -162,12 +151,11 @@ function M.lsp_on_attach(_, bufnr)
   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
   nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
   nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
-  nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+  -- nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
   nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
   -- See `:help K` for why this keymap
   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-  -- nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
   -- Lesser used LSP functionality
   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
@@ -202,7 +190,7 @@ M.comments = {
       ---Operator-pending mapping; `gcc` `gbc` `gc[count]{motion}` `gb[count]{motion}`
       basic = true,
       ---Extra mapping; `gco`, `gcO`, `gcA`
-      extra = false,
+      extra = false, -- doesn't work
   },
 }
 
@@ -212,13 +200,13 @@ function M.gitsigns(bufnr)
 
   -- don't override the built-in and fugitive keymaps
   local gs = package.loaded.gitsigns
-  keymap({'n', 'v'}, ']c', function()
-    if vim.wo.diff then return ']c' end
+  keymap({'n', 'v'}, ']g', function()
+    if vim.wo.diff then return ']g' end
     vim.schedule(function() gs.next_hunk() end)
     return '<Ignore>'
   end, {expr=true, buffer = bufnr, desc = "Jump to next hunk"})
-  keymap({'n', 'v'}, '[c', function()
-    if vim.wo.diff then return '[c' end
+  keymap({'n', 'v'}, '[g', function()
+    if vim.wo.diff then return '[g' end
     vim.schedule(function() gs.prev_hunk() end)
     return '<Ignore>'
   end, {expr=true, buffer = bufnr, desc = "Jump to previous hunk"})
@@ -232,7 +220,21 @@ keymap('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic mess
 keymap('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 -- also telescope keymap: <space>d
 
+
+
 -- Treesitter
+-- more treesitter-textobjects keymaps are in treesitter.lua
+local ts_repeat_move = require('nvim-treesitter.textobjects.repeatable_move')
+
+keymap({'n', 'x', 'o'}, ';', ts_repeat_move.repeat_last_move)
+keymap({'n', 'x', 'o'}, ',', ts_repeat_move.repeat_last_move_opposite)
+
+keymap({'n', 'x', 'o'}, 'f', ts_repeat_move.builtin_f)
+keymap({'n', 'x', 'o'}, 'F', ts_repeat_move.builtin_f)
+keymap({'n', 'x', 'o'}, 't', ts_repeat_move.builtin_t)
+keymap({'n', 'x', 'o'}, 'T', ts_repeat_move.builtin_T)
+
+
 M.treesitter = {
   incremental_selection = {
     init_selection = '<c-space>',
@@ -283,7 +285,55 @@ M.treesitter = {
       ["[L"] = { query = "@loop.outer", desc = "Prev loop end" },
     },
   },
+  peek_definition_code = {
+    -- ["<leader>df"] = "@function.outer",
+    ["J"] = "@function.outer", -- see definition
+    -- ["<leader>dF"] = "@class.outer",
+  },
 }
+
+
+-- debugging
+local dap, ui = require('dap'), require('dapui')
+
+-- Start debugging session
+vim.keymap.set('n', '<leader>ds', function()
+  dap.continue()
+  ui.toggle({})
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-w>=", false, true, true), "n", false) -- Spaces buffers evenly
+end)
+
+
+keymap('n', '<leader>db', dap.toggle_breakpoint, opts)
+keymap('n', '<leader>dc', dap.continue, opts)
+keymap('n', '<leader>dn', dap.step_over, opts)
+keymap('n', '<leader>di', dap.step_into, opts)
+keymap('n', '<leader>do', dap.step_out, opts)
+keymap('n', '<leader>dC', dap.clear_breakpoints, opts)
+
+-- Close debugger and clear breakpoints
+keymap('n', '<leader>de', function()
+  dap.clear_breakpoints()
+  ui.toggle({})
+  dap.terminate()
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-w>=", false, true, true), "n", false)
+end, opts)
+
+-- Other debugging keybindings (e.g. for scopes: e, <CR>, repl)
+-- https://github.com/rcarriga/nvim-dap-ui
+
+keymap("n", "<C-s>", require("auto-session.session-lens").search_session, opts)
+
+
+
+
+-- other useful keymaps:
+-- vim-matchup:
+-- di% / da% / %
+
+-- nvim-surround:
+-- ds{char} / ys{motion}{char} / cs{target}{replacement}
+
 
 -- returning M is neccessary for other plugins to access this file
 return M

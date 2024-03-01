@@ -57,6 +57,18 @@ return {
   -- Colorscheme
   { "catppuccin/nvim", lazy = false, name = 'catppuccin', priority = 1000 },
 
+
+  -- session manager (remembers opened files etc.)
+  {
+    'rmagatti/auto-session',
+    -- config = function()
+    --   require("auto-session").setup {
+    --     log_level = "error",
+    --     auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/"},
+    --   }
+    -- end
+  },
+
   {
     'nvim-lualine/lualine.nvim',
     lazy = false,
@@ -67,6 +79,9 @@ return {
         component_separators = '|',
         section_separators = '',
       },
+      --[[ sections = {
+        lualine_c = {require('auto-session.lib').current_session_name}
+      } ]]
     },
   },
 
@@ -102,10 +117,7 @@ return {
   {
     'numToStr/Comment.nvim',
     lazy = false,
-    opts = {}
   },
-
-  -- 'terrortylor/nvim-comment',
 
   -- Treesitter
   {
@@ -164,4 +176,18 @@ return {
       vim.g.startuptime_tries = 10
     end,
   },
+
+  {
+    "kylechui/nvim-surround",
+    version = "*",
+    event = "VeryLazy",
+    opts = {},
+  },
+
+  -- debugging
+  'mfussenegger/nvim-dap',
+  'rcarriga/nvim-dap-ui',
+  'mfussenegger/nvim-dap-python', -- requires debugpy
+  'jay-babu/mason-nvim-dap.nvim',
+  'theHamsta/nvim-dap-virtual-text', -- to-do: configure
 }

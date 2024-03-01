@@ -12,8 +12,6 @@ require('catppuccin').setup({
 
 vim.cmd('colorscheme catppuccin')
 
--- require('onenord').setup()
-
 -- require('onedark').setup {
 --   style = 'deep'
 -- }

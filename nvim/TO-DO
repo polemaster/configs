@@ -1,20 +1,19 @@
-9. choose comments plugin
-10. treesitter works???
-11. change gitsigns
-12. learn vim-matchup keybindings & features
-13. learn treesitter-textobjects keybindings
-14. Debugging (nvim-dap)
+14. Debugging (nvim-dap)              https://harrisoncramer.me/debugging-in-neovim/
 15. Check out zoxide and ropa/z
-16. Set up sessions (auto-session?)
-17. delete venv directory from search results in telescope
 18. ../../file doesn't work in telescope
 19. cursor goes to the end after vif command (treesitter)
 20. tab after a character in insert mode works strangely
 21. add formatter.nvim & nvim-lint (they replace null-ls) or ale
 22. check out coq_nvim
 23. k doesn't work in very long line that spans multiple lines
-24. context_commentstring is currently commented in treesitter.lua (it displays warning otherwise)
+24. configure nvim-treesitter/nvim-treesitter-context
 25. Tab in searching files (space+f) works strangely
 26. lualine plugins?
-27. vim-sleuth & indent-blankline plugins don't work
+27. vim-sleuth & indent-blankline plugins don't work (don't load)
 28. configure nvim-notify (it already works with telescope?)
+29. error messages (how to display?, remove virtual text)
+30. add dashboard
+31. configure auto-session (including shortcut (now ctrl+s) to search sessions), also I can't switch between sessions (they get deleted)
+32. context_commentstring is commented in treesitter
+33. set up git(hub) support (vim-fugitive, gitsigns)
+34. bashls doesn't work

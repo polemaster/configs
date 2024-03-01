@@ -7,17 +7,19 @@ local servers = {
   pyright = {},
   r_language_server = {},
   clangd = {},
-
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
       telemetry = { enable = false },
     },
   },
+  bashls = {},
 }
 
 -- Setup neovim lua configuration
-require('neodev').setup()
+require('neodev').setup({
+  library = { plugins = { "nvim-dap-ui" }, types = true },
+})
 
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -39,7 +41,7 @@ require('mason').setup({
         package_pending = "➜",
         package_uninstalled = "✗"
     },
-  }
+  },
 })
 
 local mason_lspconfig = require('mason-lspconfig')
@@ -47,6 +49,7 @@ local mason_lspconfig = require('mason-lspconfig')
 -- Ensure the servers above are installed
 mason_lspconfig.setup {
   ensure_installed = vim.tbl_keys(servers),
+  automatic_installation = true,
 }
 
 mason_lspconfig.setup_handlers {
@@ -59,6 +62,7 @@ mason_lspconfig.setup_handlers {
     }
   end
 }
+
 
 -- Set how diagnostics is to be displayed
 -- only for LSP
