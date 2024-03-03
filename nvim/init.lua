@@ -1,5 +1,8 @@
 --[[
 
+example (good) files/directories structure:
+https://github.com/josean-dev/dev-environment-files/tree/main/.config/nvim/lua/josean/plugins
+
 
   If you don't know anything about Lua, I recommend taking some time to read through
   a guide. One possible example:
@@ -38,7 +41,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- Lazy load all plugins by default
-require('lazy').setup('user.plugins', {defaults = {lazy = true}})
+require('lazy').setup('user.plugins', { defaults = { lazy = true } })
 -- require('lazy').setup('user.plugins')
 
 require('user.options')
@@ -56,6 +59,7 @@ require('user.colorscheme')
 require('user.notifications')
 require('user.sessions')
 require('user.debugging')
+require('user.formatting')
 
 
 -- document existing key chains
@@ -68,5 +72,3 @@ require('which-key').register({
   ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
   ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
 })
-
-

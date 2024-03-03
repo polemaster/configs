@@ -15,6 +15,7 @@ return {
       -- Automatically install LSPs to stdpath for neovim
       { 'williamboman/mason.nvim', config = true },
       'williamboman/mason-lspconfig.nvim',
+      'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful plugin for configuring neovim
       'folke/neodev.nvim',
@@ -47,7 +48,7 @@ return {
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {} },
+  { 'folke/which-key.nvim',  opts = {} },
 
   -- Git
   'tpope/vim-fugitive',
@@ -55,7 +56,9 @@ return {
   'lewis6991/gitsigns.nvim',
 
   -- Colorscheme
-  { "catppuccin/nvim", lazy = false, name = 'catppuccin', priority = 1000 },
+  -- { "catppuccin/nvim",      lazy = false, name = 'catppuccin', priority = 1000 },
+  { "folke/tokyonight.nvim", lazy = false, priority = 1000 },
+  { "navarasu/onedark.nvim", lazy = false, priority = 1000 },
 
 
   -- session manager (remembers opened files etc.)
@@ -75,7 +78,9 @@ return {
     opts = {
       options = {
         icons_enabled = false,
-        theme = 'catppuccin',
+        -- theme = 'catppuccin',
+        -- theme = 'tokyonight',
+        theme = 'onedark',
         component_separators = '|',
         section_separators = '',
       },
@@ -150,7 +155,7 @@ return {
   'nvim-tree/nvim-web-devicons',
 
   -- Terminal
-  {'akinsho/toggleterm.nvim', version = "*"},
+  { 'akinsho/toggleterm.nvim', version = "*" },
 
   -- Tabs (buffers)
   -- There is also akinsho/bufferline.nvim plugin and willothy/nvim-cokeline
@@ -163,10 +168,10 @@ return {
   'j-hui/fidget.nvim',
 
   -- Improves UI
-  { 'stevearc/dressing.nvim', event = 'VeryLazy' },
+  { 'stevearc/dressing.nvim',  event = 'VeryLazy' },
 
   -- Hex editing
-  { 'RaafatTurki/hex.nvim', opts = {} },
+  { 'RaafatTurki/hex.nvim',    opts = {} },
 
   -- for debugging startup time
   {
@@ -178,7 +183,7 @@ return {
   },
 
   {
-    "kylechui/nvim-surround",
+    'kylechui/nvim-surround',
     version = "*",
     event = "VeryLazy",
     opts = {},
@@ -187,7 +192,24 @@ return {
   -- debugging
   'mfussenegger/nvim-dap',
   'rcarriga/nvim-dap-ui',
-  'mfussenegger/nvim-dap-python', -- requires debugpy
+  'mfussenegger/nvim-dap-python',    -- requires debugpy
   'jay-babu/mason-nvim-dap.nvim',
   'theHamsta/nvim-dap-virtual-text', -- to-do: configure
+
+  -- formatting and linting (replacing null-ls)
+  {
+    'stevearc/conform.nvim',
+    event = { "BufReadPre", "BufNewFile" }
+  },
+  {
+    'mfussenegger/nvim-lint',
+    event = { "BufReadPre", "BufNewFile" },
+  },
+
+  -- pretty diagnostics and other
+  {
+    'folke/trouble.nvim',
+    opts = {},
+  },
+
 }

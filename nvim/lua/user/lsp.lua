@@ -37,11 +37,25 @@ require('mason').setup({
   ui = {
     border = 'rounded', -- same values as nvim_open_win()
     icons = {
-        package_installed = "✓",
-        package_pending = "➜",
-        package_uninstalled = "✗"
+      package_installed = "✓",
+      package_pending = "➜",
+      package_uninstalled = "✗"
     },
   },
+})
+
+-- is it really needed? can't we use ensure_installed in mason instead?
+require("mason-tool-installer").setup({
+  ensure_installed = {
+    'prettier', -- prettier formatter
+    'stylua',   -- lua formatter
+    'isort',    -- python formatter
+    'black',    -- python formatter
+    'pylint',   -- python linter
+    'mypy',     -- python linter
+    'flake8',   -- python linter
+    'eslint_d', -- js linter
+  }
 })
 
 local mason_lspconfig = require('mason-lspconfig')
@@ -65,20 +79,24 @@ mason_lspconfig.setup_handlers {
 
 
 -- Set how diagnostics is to be displayed
--- only for LSP
--- vim.lsp.handlers['textDocument/publishDiagnostics'] =
---   vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
---     underline = false,
---     -- virtual_text = false,
---     signs = true,
---     -- unpdate_in_insert = true  -- Enables automatic updating of diagnostics while in insert mode. Default: false
---   })
+vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
+  vim.lsp.handlers.hover, {
+    border = 'single'
+  }
+)
+
+vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
+  vim.lsp.handlers.hover, {
+    border = 'single'
+  }
+)
 
 -- more general (not only LSP)
 vim.diagnostic.config({
   virtual_text = true,
   signs = true,
-  underline = false,
+  underline = true,
   update_in_insert = false,
   severity_sort = false,
+  float = { border = 'single' }
 })

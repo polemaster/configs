@@ -18,7 +18,7 @@ keymap('n', '<leader>z', 'za', opts)
 keymap('', '<S-j>', '<Nop>', opts)
 
 -- Remap for dealing with word wrap
-keymap('n', 'k', "v:count == 1 ? 'gk' : 'k'", { expr = true, silent = true })
+keymap('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 keymap('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- Move text up and down
@@ -94,7 +94,7 @@ keymap('n', '<S-l>', ':BufferMoveNext<CR>', opts)
 keymap('n', '<S-h>', ':BufferMovePrev<CR>', opts)
 
 keymap('n', '<A-l>', ':BufferNext<CR>', opts)
-keymap('n' ,'<A-h>', ':BufferPrev<CR>', opts)
+keymap('n', '<A-h>', ':BufferPrev<CR>', opts)
 
 -- use bp|bd # or bp|sp|bn|bd to delete a buffer (without bbye)
 keymap('n', '<A-c>', ':BufferClose<CR>', opts)
@@ -136,11 +136,11 @@ keymap('n', '<space>n', ':Telescope notify<CR>', { desc = 'Search [N]otification
 -- LSP
 function M.lsp_on_attach(_, bufnr)
   local nmap = function(keys, func, desc)
-      if desc then
-        desc = 'LSP: ' .. desc
-      end
+    if desc then
+      desc = 'LSP: ' .. desc
+    end
 
-      vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
+    vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
   end
 
   nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
@@ -171,7 +171,6 @@ function M.lsp_on_attach(_, bufnr)
   end, { desc = 'Format current buffer with LSP' })
 end
 
-
 -- Comments
 M.comments = {
   opleader = {
@@ -187,10 +186,10 @@ M.comments = {
     block = 'gbc',
   },
   mappings = {
-      ---Operator-pending mapping; `gcc` `gbc` `gc[count]{motion}` `gb[count]{motion}`
-      basic = true,
-      ---Extra mapping; `gco`, `gcO`, `gcA`
-      extra = false, -- doesn't work
+    ---Operator-pending mapping; `gcc` `gbc` `gc[count]{motion}` `gb[count]{motion}`
+    basic = true,
+    ---Extra mapping; `gco`, `gcO`, `gcA`
+    extra = false, -- doesn't work
   },
 }
 
@@ -200,39 +199,42 @@ function M.gitsigns(bufnr)
 
   -- don't override the built-in and fugitive keymaps
   local gs = package.loaded.gitsigns
-  keymap({'n', 'v'}, ']g', function()
+  keymap({ 'n', 'v' }, ']g', function()
     if vim.wo.diff then return ']g' end
     vim.schedule(function() gs.next_hunk() end)
     return '<Ignore>'
-  end, {expr=true, buffer = bufnr, desc = "Jump to next hunk"})
-  keymap({'n', 'v'}, '[g', function()
+  end, { expr = true, buffer = bufnr, desc = "Jump to next hunk" })
+  keymap({ 'n', 'v' }, '[g', function()
     if vim.wo.diff then return '[g' end
     vim.schedule(function() gs.prev_hunk() end)
     return '<Ignore>'
-  end, {expr=true, buffer = bufnr, desc = "Jump to previous hunk"})
+  end, { expr = true, buffer = bufnr, desc = "Jump to previous hunk" })
 end
-
 
 -- Diagnostic keymaps
 keymap('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 keymap('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 -- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 keymap('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
--- also telescope keymap: <space>d
-
+vim.keymap.set("n", "<leader>xx", function() require("trouble").toggle() end)
+vim.keymap.set("n", "<leader>xw", function() require("trouble").toggle("workspace_diagnostics") end)
+vim.keymap.set("n", "<leader>xd", function() require("trouble").toggle("document_diagnostics") end)
+vim.keymap.set("n", "<leader>xq", function() require("trouble").toggle("quickfix") end)
+vim.keymap.set("n", "<leader>xl", function() require("trouble").toggle("loclist") end)
+vim.keymap.set("n", "gR", function() require("trouble").toggle("lsp_references") end)
 
 
 -- Treesitter
 -- more treesitter-textobjects keymaps are in treesitter.lua
 local ts_repeat_move = require('nvim-treesitter.textobjects.repeatable_move')
 
-keymap({'n', 'x', 'o'}, ';', ts_repeat_move.repeat_last_move)
-keymap({'n', 'x', 'o'}, ',', ts_repeat_move.repeat_last_move_opposite)
+keymap({ 'n', 'x', 'o' }, ';', ts_repeat_move.repeat_last_move)
+keymap({ 'n', 'x', 'o' }, ',', ts_repeat_move.repeat_last_move_opposite)
 
-keymap({'n', 'x', 'o'}, 'f', ts_repeat_move.builtin_f)
-keymap({'n', 'x', 'o'}, 'F', ts_repeat_move.builtin_f)
-keymap({'n', 'x', 'o'}, 't', ts_repeat_move.builtin_t)
-keymap({'n', 'x', 'o'}, 'T', ts_repeat_move.builtin_T)
+keymap({ 'n', 'x', 'o' }, 'f', ts_repeat_move.builtin_f)
+keymap({ 'n', 'x', 'o' }, 'F', ts_repeat_move.builtin_f)
+keymap({ 'n', 'x', 'o' }, 't', ts_repeat_move.builtin_t)
+keymap({ 'n', 'x', 'o' }, 'T', ts_repeat_move.builtin_T)
 
 
 M.treesitter = {
@@ -325,7 +327,18 @@ end, opts)
 keymap("n", "<C-s>", require("auto-session.session-lens").search_session, opts)
 
 
+-- formatting and linting
+vim.keymap.set({ "n", "v" }, "<leader>mp", function()
+  require('conform').format({
+    lsp_fallback = true,
+    async = false,
+    timeout_ms = 500,
+  })
+end, { desc = "Format file or range (in visual mode)" })
 
+vim.keymap.set("n", "<leader>l", function()
+  require('lint').try_lint()
+end, { desc = "Trigger linting for current file" })
 
 -- other useful keymaps:
 -- vim-matchup:

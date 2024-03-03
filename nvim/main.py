@@ -1,8 +1,10 @@
+import math
+import random
+
+
 def my_fun():
     a = 10
     b = a + 5
-    a = 10
-    a = 10
     a = 10
     a = 10
     a = 10
@@ -53,7 +55,20 @@ def my_fun():
     b = a + 5
     return a * b
 
+
+def calculate_sth(n: int):
+    return n**2
+
+
 def main():
     my_fun()
+
+    number = input("What is your favourite number?")
+    print(
+        "It is", number + 1
+    )  # error: Unsupported operand types for + ("str" and "int")
+
+    calculate_sth("sth")
+
 
 main()
