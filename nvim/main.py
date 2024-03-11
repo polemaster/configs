@@ -62,6 +62,8 @@ def calculate_sth(n: int):
 
 def main():
     my_fun()
+    if 1 == 1:
+        pass
 
     number = input("What is your favourite number?")
     print(

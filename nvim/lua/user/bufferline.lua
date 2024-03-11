@@ -1,12 +1,11 @@
 vim.g.barbar_auto_setup = false
-require('barbar').setup {
-  animation = false,
-  sidebar_filetypes = {
-    NvimTree = {text = 'File Explorer'},
-  },
-  focus_on_close = 'right',
-}
-
+require("barbar").setup({
+    animation = false,
+    sidebar_filetypes = {
+        NvimTree = { text = "File Explorer" },
+    },
+    focus_on_close = "right",
+})
 
 -- Bufferline after closing buffer switches to the last tab so that's
 -- the reason I use barbar

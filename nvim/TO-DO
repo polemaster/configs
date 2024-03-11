@@ -1,17 +1,17 @@
-22. check out coq_nvim
-24. configure nvim-treesitter/nvim-treesitter-context
-25. Tab in searching files (space+f) works strangely
-26. lualine plugins?
-27. vim-sleuth & indent-blankline plugins don't work (don't load)
-28. configure nvim-notify (it already works with telescope?)
-29. error messages (how to display?, remove virtual text)
-30. add dashboard
 31. configure auto-session (including shortcut (now ctrl+s) to search sessions), also I can't switch between sessions (they get deleted)
 32. context_commentstring is commented in treesitter
 33. set up git(hub) support (vim-fugitive, gitsigns)
 34. bashls doesn't work
 35. add neorg
 36. don't add comment symbol after typing enter in insert
-37. configure trouble.nvim
 38. is mason-tool-installer necessary?, remove mason-nvim-dap and use debugpy in mason-tool-installer
 39. add swenv.nvim plugin
+40. correct mason ensure_installed things
+41. zen mode
+42. configure hex
+43. configure indent-blankline
+44. fix c++/c formatting (clang-format)
+45. add c/c++ linting support
+46. cache in RAM all files so that there isn't any lag
+47. check all not loading packages
+48. what's the best way of creating new files in neovim?

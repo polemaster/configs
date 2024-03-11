@@ -1,8 +1,8 @@
-require('toggleterm').setup({
-  open_mapping = [[<c-\>]],
-  direction = 'float',
-  size = 40,
-  -- hide_numbers = true, -- hide the number column in toggleterm buffers
+require("toggleterm").setup({
+    open_mapping = [[<c-\>]],
+    direction = "float",
+    size = 40,
+    -- hide_numbers = true, -- hide the number column in toggleterm buffers
 })
 
 -- local Terminal = require('toggleterm.terminal').Terminal
