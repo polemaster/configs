@@ -35,3 +35,16 @@ vim.o.foldmethod = "expr"
 vim.o.foldexpr = "nvim_treesitter#foldexpr()"
 -- vim.o.foldenable = false
 vim.o.foldlevel = 99
+
+-- For a better experience with the sessions overall:
+vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
+-- skip backwards compatibility routines and speed up loading.
+vim.g.skip_ts_context_commentstring_module = true
+
+-- remove adding comment symbols after entering new line
+vim.cmd([[au FileType * set fo-=c fo-=r fo-=o]])
+
+-- for neorg:
+vim.opt.conceallevel = 2
+-- vim.opt.concealcursor = "nc"

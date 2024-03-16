@@ -1,11 +1,6 @@
 -- require('dap-python').setup('~/.virtualenvs/debugpy/bin/pytho')
 require("dap-python").setup("~/.local/share/nvim/mason/packages/debugpy/venv/bin/python")
 
-require("mason-nvim-dap").setup({
-    ensure_installed = { "debugpy" },
-    automatic_installation = true,
-})
-
 require("dapui").setup()
 
 -- automatically start ui when debugging

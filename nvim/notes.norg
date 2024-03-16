@@ -1,0 +1,32 @@
+* header
+  list:
+  - el1
+  - el2
+  -- subel1
+*** asdf
+
+  other list:
+  ~ el1
+  ~~ subel1
+  ~~~ subsubel1
+  ~~~~ subsubsubel1
+
+  - ( ) jhj
+  - (x) jk
+
+  {* Basic Markup:}
+* Basic Markup:
+  - *bold*
+  - /italic/
+  - _underline_
+  - -strikethrough-
+  - !spoiler!
+  - `inline code`
+  - asd ^superscript^  (when nested into `subscript`, will highlight as an error)
+  - sadf ,subscript,    (when nested into `superscript`, will highlight as an error)
+  - $f(x) = y$     (see also {# Math})
+  - &variable&     (see also {# Variables})
+  - %inline comment%
+  - $5*(2-5)/5$
+
+

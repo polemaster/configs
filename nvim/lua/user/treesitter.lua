@@ -1,8 +1,5 @@
 local keymaps = require("user.keymaps").treesitter
 
--- skip backwards compatibility routines and speed up loading.
-vim.g.skip_ts_context_commentstring_module = true
-
 require("ts_context_commentstring").setup({
     enable_autocmd = false,
 })
@@ -27,11 +24,6 @@ require("nvim-treesitter.configs").setup({
     },
 
     auto_install = false,
-
-    -- context_commentstring = {
-    --   enable = true,
-    --   enable_autocmd = false,
-    -- },
 
     highlight = {
         enable = true,

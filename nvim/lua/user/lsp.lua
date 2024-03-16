@@ -2,19 +2,6 @@
 -- LSP servers configuration: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 -- Language specific plugins: https://github.com/neovim/nvim-lspconfig/wiki/Language-specific-plugins
 
-local servers = {
-    pyright = {},
-    r_language_server = {},
-    clangd = {},
-    lua_ls = {
-        Lua = {
-            workspace = { checkThirdParty = false },
-            telemetry = { enable = false },
-        },
-    },
-    bashls = {},
-}
-
 -- Setup neovim lua configuration
 require("neodev").setup({
     library = { plugins = { "nvim-dap-ui" }, types = true },
@@ -43,39 +30,53 @@ require("mason").setup({
     },
 })
 
--- is it really needed? can't we use ensure_installed in mason instead?
-require("mason-tool-installer").setup({
-    ensure_installed = {
-        "prettier", -- prettier formatter
-        "stylua", -- lua formatter
-        "isort", -- python formatter
-        "black", -- python formatter
-        "pylint", -- python linter
-        "mypy", -- python linter
-        -- "ruff", -- python formatter & linter
-        "flake8", -- python linter
-        "eslint_d", -- js linter
-        "clang-format", -- c++ formatter
-    },
-})
-
 local mason_lspconfig = require("mason-lspconfig")
 
--- Ensure the servers above are installed
-mason_lspconfig.setup({
-    ensure_installed = vim.tbl_keys(servers),
-    automatic_installation = true,
-})
+-- attach LSPs to buffers and set up capabilities (autocompletion)
+mason_lspconfig.setup()
 
 mason_lspconfig.setup_handlers({
     function(server_name)
         require("lspconfig")[server_name].setup({
             capabilities = capabilities,
             on_attach = require("user.keymaps").lsp_on_attach, -- Keymaps are set in keymaps.lua file
-            settings = servers[server_name],
-            filetypes = (servers[server_name] or {}).filetypes,
         })
     end,
+})
+
+-- is it really needed? can't we use ensure_installed in mason instead?
+require("mason-tool-installer").setup({
+    ensure_installed = {
+        -- LSPs:
+        "pyright",
+        "r-languageserver",
+        "clangd",
+        {
+            "lua-language-server",
+            workspace = { checkThirdParty = false },
+            telemetry = { enable = false },
+        },
+        "bash-language-server",
+
+        -- Formatters:
+        "prettier", -- prettier formatter
+        "stylua", -- lua formatter
+        "isort", -- python formatter
+        "black", -- python formatter
+        "ruff", -- python formatter & linter
+        "clang-format", -- C/C++ formatter
+
+        -- Linters:
+        "pylint", -- python linter
+        "mypy", -- python linter
+        "flake8", -- python linter
+        "eslint_d", -- js linter
+        "shellcheck", -- bash linter
+        "cpplint", -- C/C++ linter
+
+        -- Debuggers:
+        "debugpy",
+    },
 })
 
 -- Set how diagnostics is to be displayed
@@ -94,5 +95,5 @@ vim.diagnostic.config({
     underline = true,
     update_in_insert = false,
     severity_sort = false,
-    float = { border = "single" },
+    float = { border = "single", header = "" },
 })

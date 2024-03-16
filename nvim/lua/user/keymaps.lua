@@ -13,8 +13,8 @@ keymap({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 
 -- My custom keymaps
 keymap("n", "<c-a>", "ggVG", opts)
-keymap("n", "<leader>z", "za", opts)
 keymap("", "<S-j>", "<Nop>", opts)
+keymap({ "n", "i" }, "<C-s>", "<cmd>wa<CR>")
 
 -- Remap for dealing with word wrap
 keymap("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
@@ -100,12 +100,16 @@ keymap("n", "<A-c>", ":BufferClose<CR>", opts)
 keymap("n", "<A-S-c>", ":BufferRestore<CR>", opts)
 
 -- Telescope
--- See `:help telescope.builtin`
+
+-- Useful telescope mappings:
+-- <C-x> or <C-s> 	        Go to file selection as a split
+-- <C-v>                 	Go to file selection as a vsplit
+
 local builtin = require("telescope.builtin")
 
 keymap("n", "<leader>/", function()
     builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
-        winblend = 10, -- ???
+        winblend = 10,
         previewer = false,
     }))
 end, { desc = "[/] Fuzzily search in current buffer" })
@@ -114,16 +118,58 @@ keymap("n", "<leader>f", builtin.find_files, { desc = "[S]earch [F]iles" })
 keymap("n", "<leader>s", builtin.live_grep, { desc = "[S]earch by [G]rep" })
 keymap("n", "<leader>k", builtin.keymaps, { desc = "Search [K]eymaps" })
 
-keymap("n", "<leader>gf", builtin.git_files, { desc = "Search [G]it [F]iles" })
-keymap("n", "<leader>gc", builtin.git_commits, { desc = "Search [G]it [C]ommits" })
+-- git
+-- telescope bulitin git
+keymap("n", "<leader>gc", builtin.git_commits, { desc = "Search git commits" })
+keymap("n", "<leader>gs", builtin.git_status, { desc = "Search git status" })
 
-keymap("n", "<leader>t", ":Telescope file_browser path=%:p:h select_buffer=true<CR>", opts)
+function M.gitsigns(bufnr)
+    -- don't override the built-in and fugitive keymaps
+    local gs = package.loaded.gitsigns
+    keymap({ "n", "v" }, "]g", function()
+        if vim.wo.diff then
+            return "]g"
+        end
+        vim.schedule(function()
+            gs.next_hunk()
+        end)
+        return "<Ignore>"
+    end, { expr = true, buffer = bufnr, desc = "Jump to next git hunk" })
+    keymap({ "n", "v" }, "[g", function()
+        if vim.wo.diff then
+            return "[g"
+        end
+        vim.schedule(function()
+            gs.prev_hunk()
+        end)
+        return "<Ignore>"
+    end, { expr = true, buffer = bufnr, desc = "Jump to previous git hunk" })
 
-keymap("n", "<leader>n", ":Telescope notify<CR>", { desc = "Search [N]otifications history" })
+    keymap("n", "<leader>gk", gs.stage_hunk, { desc = "Stage hunk" })
+    keymap("n", "<leader>gr", gs.reset_hunk, { desc = "Reset (remove) hunk" })
+    keymap("v", "<leader>gk", function()
+        gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+    end, { desc = "Stage hunk" })
+    keymap("v", "<leader>gr", function()
+        gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+    end, { desc = "Reset (remove) hunk" })
+    keymap("n", "<leader>gS", gs.stage_buffer, { desc = "Stage buffer" })
+    keymap("n", "<leader>gu", gs.undo_stage_hunk, { desc = "Undo stage hunk" })
+    keymap("n", "<leader>gR", gs.reset_buffer, { desc = "Reset buffer (remove all changes)" })
+    keymap("n", "<leader>gp", gs.preview_hunk, { buffer = bufnr, desc = "Preview git hunk" })
+    keymap("n", "<leader>gl", function()
+        gs.blame_line({ full = true })
+    end, { desc = "Blame line" })
+    keymap("n", "<leader>gt", gs.toggle_current_line_blame, { desc = "Toggle blame line" })
+    keymap("n", "<leader>gd", gs.diffthis, { desc = "Diff this file" })
+    keymap("n", "<leader>gD", function()
+        gs.diffthis("~")
+    end, { desc = "Weird diff" })
+    keymap("n", "<leader>gT", gs.toggle_deleted, { desc = "Toggle deleted" })
 
--- Useful telescope mappings:
--- <C-x> or <C-s> 	        Go to file selection as a split
--- <C-v>                 	Go to file selection as a vsplit
+    -- Text object
+    keymap({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
+end
 
 -- LSP
 function M.lsp_on_attach(_, bufnr)
@@ -144,18 +190,12 @@ function M.lsp_on_attach(_, bufnr)
     nmap("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
     nmap("<leader>D", vim.lsp.buf.type_definition, "Type [D]efinition")
     -- nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-    nmap("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
 
     -- See `:help K` for why this keymap
     nmap("K", vim.lsp.buf.hover, "Hover Documentation")
 
     -- Lesser used LSP functionality
     nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-    nmap("<leader>wa", vim.lsp.buf.add_workspace_folder, "[W]orkspace [A]dd Folder")
-    nmap("<leader>wr", vim.lsp.buf.remove_workspace_folder, "[W]orkspace [R]emove Folder")
-    nmap("<leader>wl", function()
-        print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-    end, "[W]orkspace [L]ist Folders")
 
     -- Create a command `:Format` local to the LSP buffer
     vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
@@ -185,32 +225,6 @@ M.comments = {
     },
 }
 
--- Gitsigns
-function M.gitsigns(bufnr)
-    keymap("n", "<leader>hp", require("gitsigns").preview_hunk, { buffer = bufnr, desc = "Preview git hunk" })
-
-    -- don't override the built-in and fugitive keymaps
-    local gs = package.loaded.gitsigns
-    keymap({ "n", "v" }, "]g", function()
-        if vim.wo.diff then
-            return "]g"
-        end
-        vim.schedule(function()
-            gs.next_hunk()
-        end)
-        return "<Ignore>"
-    end, { expr = true, buffer = bufnr, desc = "Jump to next hunk" })
-    keymap({ "n", "v" }, "[g", function()
-        if vim.wo.diff then
-            return "[g"
-        end
-        vim.schedule(function()
-            gs.prev_hunk()
-        end)
-        return "<Ignore>"
-    end, { expr = true, buffer = bufnr, desc = "Jump to previous hunk" })
-end
-
 -- Diagnostic keymaps
 local function quickfix()
     vim.lsp.buf.code_action({
@@ -227,9 +241,7 @@ keymap("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic 
 keymap("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
 -- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 -- keymap("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
-vim.keymap.set("n", "<leader>x", function()
-    require("trouble").toggle()
-end)
+vim.keymap.set("n", "<leader>x", require("trouble").toggle)
 -- ["<leader>dd"] =
 --{ "<cmd> lua vim.diagnostic.open_float() <CR>", "?   toggles local troubleshoot" }
 keymap("n", "<C-x>", vim.diagnostic.open_float, opts)
@@ -329,14 +341,14 @@ vim.keymap.set("n", "<leader>ds", function()
     dap.continue()
     ui.toggle({})
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-w>=", false, true, true), "n", false) -- Spaces buffers evenly
-end)
+end, { desc = "Start debugging" })
 
-keymap("n", "<leader>db", dap.toggle_breakpoint, opts)
-keymap("n", "<leader>dc", dap.continue, opts)
-keymap("n", "<leader>dn", dap.step_over, opts)
-keymap("n", "<leader>di", dap.step_into, opts)
-keymap("n", "<leader>do", dap.step_out, opts)
-keymap("n", "<leader>dC", dap.clear_breakpoints, opts)
+keymap("n", "<leader>db", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
+keymap("n", "<leader>dc", dap.continue, { desc = "Continue" })
+keymap("n", "<leader>dn", dap.step_over, { desc = "Step over" })
+keymap("n", "<leader>di", dap.step_into, { desc = "Step into" })
+keymap("n", "<leader>do", dap.step_out, { desc = "Step out" })
+keymap("n", "<leader>dC", dap.clear_breakpoints, { desc = "Clear breakpoints" })
 
 -- Close debugger and clear breakpoints
 keymap("n", "<leader>de", function()
@@ -344,12 +356,14 @@ keymap("n", "<leader>de", function()
     ui.toggle({})
     dap.terminate()
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-w>=", false, true, true), "n", false)
-end, opts)
+end, { desc = "End debugging" })
 
 -- Other debugging keybindings (e.g. for scopes: e, <CR>, repl)
 -- https://github.com/rcarriga/nvim-dap-ui
 
-keymap("n", "<C-s>", require("auto-session.session-lens").search_session, opts)
+-- sessions
+keymap("n", "<leader>w", ":Autosession search<CR>", { desc = "Search sessions", noremap = true, silent = true })
+keymap("n", "<leader>W", ":Autosession delete<CR>", { desc = "Remove sessions", noremap = true, silent = true })
 
 -- formatting and linting
 vim.keymap.set({ "n", "v" }, "<leader>mp", function()
@@ -363,6 +377,12 @@ end, { desc = "Format file or range (in visual mode)" })
 vim.keymap.set("n", "<leader>l", function()
     require("lint").try_lint()
 end, { desc = "Trigger linting for current file" })
+
+-- zen mode
+keymap("n", "<leader>z", "<cmd>ZenMode<cr>", opts)
+
+-- hex mode
+keymap("n", "<leader>h", require("hex").toggle, opts)
 
 -- other useful keymaps:
 -- vim-matchup:

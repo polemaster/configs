@@ -1,15 +1,11 @@
+#include <cmath>
 #include <iostream>
 
 using namespace std;
 
-
-
 int main() {
     cout << "Hello world" << endl;
+    cout << sqrt(10);
 
-  if (10 < 20) {
-    cout << true << endl
-  }
-
-  return 0;
+    return 0;
 }

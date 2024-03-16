@@ -106,16 +106,29 @@ cmp.setup({
     },
 })
 
--- Set up cmp-cmdline
-cmp.setup.cmdline({ "/", "?" }, {
-    mapping = cmp.mapping.preset.cmdline(),
-    sources = {
-        { name = "buffer" },
-    },
-})
-
+-- Set up completion from command mode
 cmp.setup.cmdline(":", {
-    mapping = cmp.mapping.preset.cmdline(),
+    mapping = cmp.mapping.preset.cmdline({
+        -- Disable nvim-cmp Ctrl+n and Ctrl+p keybindings
+        ["<C-n>"] = function() end,
+        ["<C-p>"] = function() end,
+
+        -- Set Ctrl+j and Ctrl+k to move through the items of completion list
+        ["<C-j>"] = cmp.mapping({
+            c = function()
+                if cmp.visible() then
+                    cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+                end
+            end,
+        }),
+        ["<C-k>"] = cmp.mapping({
+            c = function()
+                if cmp.visible() then
+                    cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+                end
+            end,
+        }),
+    }),
     sources = cmp.config.sources({
         { name = "path" },
     }, {

@@ -2,16 +2,18 @@
 -- https://github.com/folke/lazy.nvim?tab=readme-ov-file#-plugin-spec
 
 return {
+
+    -- necessary as a dependency for a lot of plugins
+    "nvim-lua/plenary.nvim",
     -- LSP
     -- If one has little RAM, they can install lsp-timeout.nvim
     -- Needed package npm for pyright
     {
         "neovim/nvim-lspconfig",
         dependencies = {
-            -- Automatically install LSPs to stdpath for neovim
             { "williamboman/mason.nvim", config = true },
-            "williamboman/mason-lspconfig.nvim",
-            "WhoIsSethDaniel/mason-tool-installer.nvim",
+            "williamboman/mason-lspconfig.nvim", -- used only to attach LSPs to files
+            "WhoIsSethDaniel/mason-tool-installer.nvim", -- Automatically install LSPs to stdpath for neovim
 
             -- Useful plugin for configuring neovim
             "folke/neodev.nvim",
@@ -44,17 +46,29 @@ return {
     },
 
     -- Useful plugin to show you pending keybinds.
-    { "folke/which-key.nvim", opts = {} },
-
+    {
+        "folke/which-key.nvim",
+        event = "VeryLazy",
+        init = function()
+            vim.o.timeout = true
+            vim.o.timeoutlen = 500
+        end,
+        opts = {
+            -- your configuration comes here
+            -- or leave it empty to use the default settings
+            -- refer to the configuration section below
+        },
+    },
     -- Git
-    "tpope/vim-fugitive",
-    "tpope/vim-rhubarb",
+    { "tpope/vim-fugitive", lazy = false },
+    { "tpope/vim-rhubarb", lazy = false },
     "lewis6991/gitsigns.nvim",
 
     -- Colorscheme
     -- { "catppuccin/nvim",      lazy = false, name = 'catppuccin', priority = 1000 },
     { "folke/tokyonight.nvim", lazy = false, priority = 1000 },
     { "navarasu/onedark.nvim", lazy = false, priority = 1000 },
+    { "ellisonleao/gruvbox.nvim", lazy = false, priority = 1000, config = true, opts = ... },
 
     -- session manager (remembers opened files etc.)
     "rmagatti/auto-session",
@@ -72,8 +86,14 @@ return {
         "lukas-reineke/indent-blankline.nvim",
         -- See `:help indent_blankline.txt`
         main = "ibl",
-        opts = {},
-        -- lazy = false,
+        opts = {
+            exclude = {
+                filetypes = {
+                    "dashboard",
+                },
+            },
+        },
+        lazy = false,
     },
 
     -- Telescope
@@ -82,7 +102,6 @@ return {
         "nvim-telescope/telescope.nvim",
         branch = "0.1.x",
         dependencies = {
-            "nvim-lua/plenary.nvim",
             -- fzf-native is a fuzzy finder and enables searches with: ',^,$,|
             -- it requires 'make' program
             {
@@ -169,7 +188,6 @@ return {
     "mfussenegger/nvim-dap",
     "rcarriga/nvim-dap-ui",
     "mfussenegger/nvim-dap-python", -- requires debugpy
-    "jay-babu/mason-nvim-dap.nvim",
     "theHamsta/nvim-dap-virtual-text", -- to-do: configure
 
     -- formatting and linting (replacing null-ls)
@@ -189,5 +207,29 @@ return {
     {
         "nvimdev/dashboard-nvim",
         event = "VimEnter",
+    },
+
+    -- neorg (for notes, etc.)
+    {
+        "nvim-neorg/neorg",
+        build = ":Neorg sync-parsers",
+        tag = "v7.0.0", -- why doesn't normal version work, wtf?
+        lazy = false,
+        -- lazy = true, -- enable lazy load
+        -- ft = "norg", -- lazy load on file type
+        -- cmd = "Neorg", -- lazy load on command,
+    },
+
+    -- Zen mode
+    {
+        "folke/zen-mode.nvim",
+        opts = {},
+        lazy = false,
+    },
+
+    -- easy management of directories and file structures
+    {
+        "stevearc/oil.nvim",
+        opts = {},
     },
 }

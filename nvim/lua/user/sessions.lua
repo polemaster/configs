@@ -10,4 +10,7 @@ require("auto-session").setup({
             require("lualine").refresh() -- refresh lualine so the new session name is displayed in the status bar
         end,
     },
+
+    -- this saves session correctly when I close files before closing NvimTree by mistake
+    pre_save_cmds = { "NvimTreeClose" },
 })

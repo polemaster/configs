@@ -7,6 +7,14 @@ def my_fun():
     b = a + 5
     a = 10
     a = 10
+    if 1 == 0:
+        print("contradiction")
+
+        def foo():
+            c = a + b
+            c = c + 1
+            c = c * c
+
     a = 10
     a = 10
     a = 10

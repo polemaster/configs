@@ -21,8 +21,8 @@ require("conform").setup({
         html = { "prettier" },
         json = { "prettier" },
         markdown = { "prettier" },
-        cpp = { "clangformat" }, -- to change style: ~/.local/share/nvim/mason/bin/clang-format --style GNU --dump-config > .clang_format
-        c = { "clangformat" },
+        cpp = { "clang_format" }, -- to change style: ~/.local/share/nvim/mason/bin/clang-format --style GNU --dump-config > .clang_format
+        c = { "clang_format" },
     },
     -- format_on_save = {
     --     lsp_fallback = false,
@@ -30,7 +30,7 @@ require("conform").setup({
     --     -- timeout_ms = 500,
     -- },
     format_after_save = {
-        -- lsp_fallback = false,
+        lsp_fallback = false,
     },
     notify_on_error = true,
 })
@@ -41,6 +41,8 @@ require("lint").linters_by_ft = {
     javascript = { "eslint_d" },
     typescript = { "eslint_d" },
     python = { "ruff" },
+    c = { "cpplint" },
+    cpp = { "cpplint" },
     -- python = { 'pylint' },
     -- python = { 'flake8' },
     -- python = { 'mypy' },
