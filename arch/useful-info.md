@@ -54,3 +54,11 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg (if Windows not added edit /etc/defual
 sudo pacman -S wireshark-qt  
 https://wiki.wireshark.org/CaptureSetup/CapturePrivileges  
 Follow *Limiting capture permission to only one group* from the site above
+
+## Enabling Secure Boot:
+https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot#Implementing_Secure_Boot
+https://www.reddit.com/r/archlinux/comments/13d7rec/setting_up_secure_boot_while_dual_booting_windows/
+https://www.reddit.com/r/archlinux/comments/10pq74e/my_easy_method_for_setting_up_secure_boot_with/
+
+## Ecryption of the disks:
+LUKS or VeraCrypt
