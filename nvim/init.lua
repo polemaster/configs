@@ -40,8 +40,8 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- Lazy load all plugins by default
-require("lazy").setup("user.plugins", { defaults = { lazy = true } })
--- require('lazy').setup('user.plugins')
+-- require("lazy").setup("user.plugins", { defaults = { lazy = true } })
+require("lazy").setup("user.plugins")
 
 require("user.options")
 require("user.keymaps")
@@ -65,6 +65,7 @@ require("user.dashboard")
 require("user.neorg")
 require("user.oil")
 require("user.git")
+require("user.zen")
 
 -- document existing key chains, check https://github.com/folke/which-key.nvim
 require("which-key").register({

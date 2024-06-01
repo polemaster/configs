@@ -76,9 +76,6 @@ return {
     {
         "nvim-lualine/lualine.nvim",
         lazy = false,
-        -- sections = {
-        --  lualine_c = { require('auto-session.lib').current_session_name }
-        -- }
     },
 
     {
@@ -222,14 +219,14 @@ return {
 
     -- Zen mode
     {
-        "folke/zen-mode.nvim",
-        opts = {},
-        lazy = false,
+        "Pocco81/true-zen.nvim",
+        -- lazy = false,
+        event = "VeryLazy",
     },
 
     -- easy management of directories and file structures
     {
         "stevearc/oil.nvim",
-        opts = {},
+        -- opts = {},
     },
 }

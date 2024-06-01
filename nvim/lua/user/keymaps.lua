@@ -14,7 +14,9 @@ keymap({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 -- My custom keymaps
 keymap("n", "<c-a>", "ggVG", opts)
 keymap("", "<S-j>", "<Nop>", opts)
-keymap({ "n", "i" }, "<C-s>", "<cmd>wa<CR>")
+keymap({ "n", "i" }, "<C-s>", "<cmd>wa<CR>", opts)
+keymap("n", "<C-x>", "<cmd>wqa<CR>", opts)
+keymap("n", "gx", ":!xdg-open <c-r><c-a> <cr><cr>", opts)
 
 -- Remap for dealing with word wrap
 keymap("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
@@ -244,7 +246,7 @@ keymap("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic mess
 vim.keymap.set("n", "<leader>x", require("trouble").toggle)
 -- ["<leader>dd"] =
 --{ "<cmd> lua vim.diagnostic.open_float() <CR>", "?   toggles local troubleshoot" }
-keymap("n", "<C-x>", vim.diagnostic.open_float, opts)
+keymap("n", "<C-p>", vim.diagnostic.open_float, opts)
 -- vim.keymap.set("n", "<leader>xx", function()
 --     require("trouble").toggle()
 -- end)
@@ -379,7 +381,8 @@ vim.keymap.set("n", "<leader>l", function()
 end, { desc = "Trigger linting for current file" })
 
 -- zen mode
-keymap("n", "<leader>z", "<cmd>ZenMode<cr>", opts)
+-- keymap("n", "<leader>z", "<cmd>ZenMode<cr>", opts)
+keymap("n", "<leader>z", "<cmd>TZAtaraxis<cr>", opts)
 
 -- hex mode
 keymap("n", "<leader>h", require("hex").toggle, opts)

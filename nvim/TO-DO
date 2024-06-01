@@ -1,10 +1,13 @@
-50. fix checkhealth issues, if any
-51. add LSPs and others for JS, etc. https://github.com/williamboman/mason-lspconfig.nvim
-52. configure zen mode -> remove lualine, change defaults, change lazy loading
-54. remove conflicting keymaps which can be found in checkhealth (for which-key)
 55. configure oil.nvim, vim-rhubarb doesn't work because of not working netrw -> fix netrw
 57. fix r_language_server
 58. configure which-key
+59. change lazy loading
+60. when :q close nvim-tree as well
+61. Telescope shouldn't ignore .gitignore
+62. Set up Jupyter Notebooks
+ - https://github.com/benlubas/.dotfiles/blob/main/nvim/lua/plugins/lsp.lua#L138
+ - https://github.com/benlubas/molten-nvim
+ - https://www.reddit.com/r/neovim/comments/17ynpg2/how_to_edit_jupyter_notebooks_in_neovim_with_very/
 
 Awesome Neovim:
 - Lspsaga
@@ -12,4 +15,4 @@ Awesome Neovim:
 final tweaks:
 - clean up init.lua
 - change tree structure (if not - move gitsigns to plugins.lua), set lazy load on events
-- add description to keymaps
+- add description to keymaps (for which-key)
