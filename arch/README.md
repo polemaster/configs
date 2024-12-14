@@ -10,9 +10,14 @@
 1. **additional packages**: _firefox vim_
 1. **optional repositories**: _multilib_
 
+## Without using archinstall (to use disk encryption)
+
+???
+
 ## Settings
 
 - **Power**: _Power Button_ &rarr; _Power off_
+- **Multitasking**: Turn off _Hot Corner_
 - **Search**: _Search location_ &rarr; leave only videos, _Apps_ &rarr; leave _Files, Calculator, Characters, Settings_
 - **Keyboard**
 
@@ -134,6 +139,14 @@ Then, install your packages from _pkglist.txt_.
 Follow _Limiting capture permission to only one group_ from the site below:  
 https://wiki.wireshark.org/CaptureSetup/CapturePrivileges
 
+## Adding yourself to groups _input_ and _video_
+
+This fixes some issues, e.g. _snapshot_ (camera) app not detecting video inputs.
+
+```
+sudo usermod -a -G input,video polemaster
+```
+
 ## Steam
 
 ```
@@ -147,6 +160,48 @@ yay -S steam gamescope gamescope-session-steam-git
 ```
 
 _gamescope_ provides an experimental HDR support. It needs to be [enabled on Steam](https://wiki.archlinux.org/title/HDR_monitor_support#Configure_Steam). AMD is better suited for HDR than NVIDIA.
+
+## Adding printers
+
+```
+sudo pacman -S cups system-config-printer
+```
+
+More info here: https://wiki.archlinux.org/title/CUPS.  
+Then you can use GUI software (_Print Settings_) to add drivers and add printers.
+
+## Setting up VirtualBox
+
+Helpful link: https://wiki.archlinux.org/title/VirtualBox
+
+1. `sudo pacman -S virtualbox virtualbox-guest-iso` - Choose option depending on your [kernel](https://wiki.archlinux.org/title/VirtualBox#Install_the_core_packages).
+1. `sudo usermod -aG vboxusers polemaster` - this enables the use of host USB devices
+1. `yay -S virtualbox-ext-oracle` - for host camera usage (Oracle extension pack)
+1. Reboot computer.
+
+### Adding Windows 11
+
+1. Create new Virtual Machine
+1. Change resolution - explained [here](https://www.ghacks.net/2022/06/11/how-to-change-the-windows-screen-size-in-virtualbox/). Then change scale to appropriate (200% in my case).
+1. Shut down Windows and enable network in VirtualBox settings.
+1. Start Windows.
+
+## Installing CUDA
+
+```
+sudo pacman -S cudnn cuda
+yay -S miniconda3
+echo "[ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh" >> ~/.zshrc
+export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
+cd /opt
+sudo chown -R $USER:$USER miniconda3
+conda update conda
+(conda install cryptography) -- not necessary
+conda create -n <name-of-env> python
+conda activate <name-of-env>
+pip install --upgrade pip
+pip install tensorflow[and-cuda] -- use bash if square brackets don't work in zsh
+```
 
 ## Enabling Secure Boot
 
@@ -190,3 +245,9 @@ Install:
 
 - (optionally?) _yubikey-manager_ or _yubikey-manager-qt_
 - one or both of these: _yubico-pam_, _pam-u2f_
+
+### Videos not playing in Tor Browser
+
+```
+sudo pacman -S ffmpeg4.4
+```
