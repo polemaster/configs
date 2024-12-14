@@ -57,9 +57,11 @@ require("mason-tool-installer").setup({
             telemetry = { enable = false },
         },
         "bash-language-server",
+        "html-lsp",
+        "typescript-language-server",
 
         -- Formatters:
-        "prettier", -- prettier formatter
+        "prettier", -- prettier formatter (html, css, ...)
         "stylua", -- lua formatter
         "isort", -- python formatter
         "black", -- python formatter
@@ -70,9 +72,10 @@ require("mason-tool-installer").setup({
         "pylint", -- python linter
         "mypy", -- python linter
         "flake8", -- python linter
-        "eslint_d", -- js linter
+        { "eslint_d", version = "13.1.2" }, -- js linter
         "shellcheck", -- bash linter
         "cpplint", -- C/C++ linter
+        "htmlhint", -- HTML linter
 
         -- Debuggers:
         "debugpy",

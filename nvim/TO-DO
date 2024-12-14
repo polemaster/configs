@@ -1,4 +1,5 @@
-55. configure oil.nvim, vim-rhubarb doesn't work because of not working netrw -> fix netrw
+55. configure oil.nvim
+56. vim-rhubarb doesn't work because of not working netrw -> fix netrw
 57. fix r_language_server
 58. configure which-key
 59. change lazy loading
@@ -8,6 +9,14 @@
  - https://github.com/benlubas/.dotfiles/blob/main/nvim/lua/plugins/lsp.lua#L138
  - https://github.com/benlubas/molten-nvim
  - https://www.reddit.com/r/neovim/comments/17ynpg2/how_to_edit_jupyter_notebooks_in_neovim_with_very/
+63. configure markdown
+64. check out luarocks
+65. ctrl+x doesn't work after opening terminal (ctrl + \)
+66. zen mode is working only once
+67. check out TODO keymaps
+68. make ctrl+s to prompt for filename when file is not yet created
+69. Typing 'o' open new line at wrong indent for e.g. lua files (2 spaces instead of 4)
+
 
 Awesome Neovim:
 - Lspsaga
@@ -16,3 +25,4 @@ final tweaks:
 - clean up init.lua
 - change tree structure (if not - move gitsigns to plugins.lua), set lazy load on events
 - add description to keymaps (for which-key)
+- add documentation

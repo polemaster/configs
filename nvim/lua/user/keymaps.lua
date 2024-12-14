@@ -11,12 +11,34 @@ local keymap = vim.keymap.set
 
 keymap({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 
--- My custom keymaps
+-- Save keymap
+vim.keymap.set({ "n", "i" }, "<C-s>", function()
+    local save_file = function(path)
+        local ok, err = pcall(vim.cmd.w, path)
+
+        if not ok then
+            -- clear `vim.ui.input` from cmdline to make space for an error
+            vim.cmd.redraw()
+            vim.notify(err, vim.log.levels.ERROR, {
+                title = "Error while saving file",
+            })
+        end
+    end
+
+    if vim.api.nvim_buf_get_name(0) ~= "" then
+        save_file()
+    else
+        vim.ui.input({ prompt = " Filename: " }, save_file)
+    end
+end)
+
+-- My custom keymaps that don't use plugins
 keymap("n", "<c-a>", "ggVG", opts)
 keymap("", "<S-j>", "<Nop>", opts)
-keymap({ "n", "i" }, "<C-s>", "<cmd>wa<CR>", opts)
-keymap("n", "<C-x>", "<cmd>wqa<CR>", opts)
+-- keymap({ "n", "i" }, "<C-s>", "<cmd>wa<CR>", opts)
+keymap("n", "<C-x>", "<cmd>wa<CR><cmd>qa<CR>", opts)
 keymap("n", "gx", ":!xdg-open <c-r><c-a> <cr><cr>", opts)
+keymap("n", "<C-n>", ":enew<CR>", opts) -- creates new empty buffer/tab/file
 
 -- Remap for dealing with word wrap
 keymap("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
@@ -243,7 +265,9 @@ keymap("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic 
 keymap("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
 -- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 -- keymap("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
-vim.keymap.set("n", "<leader>x", require("trouble").toggle)
+-- vim.keymap.set("n", "<leader>x", require("trouble").toggle)
+vim.keymap.set("n", "<leader>x", "<cmd>Trouble diagnostics toggle focus=true<CR>")
+vim.keymap.set("n", "<leader>t", "<cmd>Trouble symbols toggle focus=false<CR>")
 -- ["<leader>dd"] =
 --{ "<cmd> lua vim.diagnostic.open_float() <CR>", "?   toggles local troubleshoot" }
 keymap("n", "<C-p>", vim.diagnostic.open_float, opts)
@@ -393,6 +417,9 @@ keymap("n", "<leader>h", require("hex").toggle, opts)
 
 -- nvim-surround:
 -- ds{char} / ys{motion}{char} / cs{target}{replacement}
+
+-- toggle auto-save
+keymap("n", "<leader>as", ":ASToggle<CR>", { desc = "Toggle Auto-Save" })
 
 -- returning M is neccessary for other plugins to access this file
 return M

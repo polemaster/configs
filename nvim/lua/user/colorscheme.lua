@@ -1,13 +1,13 @@
--- require('catppuccin').setup({
---   integrations = {
---     barbar = true,
---     notify = true,
---     mason = true,
---   },
---   styles = {
---     conditionals = {},
---   }
--- })
+require("catppuccin").setup({
+    integrations = {
+        barbar = true,
+        notify = true,
+        mason = true,
+    },
+    styles = {
+        conditionals = {},
+    },
+})
 
 require("tokyonight").setup({
     style = "storm",
@@ -29,7 +29,7 @@ require("onedark").setup({
 })
 require("onedark").load()
 
--- vim.cmd('colorscheme catppuccin')
--- vim.cmd("colorscheme tokyonight-night")
-vim.cmd("colorscheme onedark")
+-- vim.cmd("colorscheme catppuccin")
+vim.cmd("colorscheme tokyonight-night")
+-- vim.cmd("colorscheme onedark")
 -- vim.cmd("colorscheme gruvbox")

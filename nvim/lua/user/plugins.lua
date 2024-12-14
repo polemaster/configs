@@ -58,6 +58,7 @@ return {
             -- or leave it empty to use the default settings
             -- refer to the configuration section below
         },
+        dependencies = { "echasnovski/mini.icons" },
     },
     -- Git
     { "tpope/vim-fugitive", lazy = false },
@@ -65,12 +66,12 @@ return {
     "lewis6991/gitsigns.nvim",
 
     -- Colorscheme
-    -- { "catppuccin/nvim",      lazy = false, name = 'catppuccin', priority = 1000 },
+    { "catppuccin/nvim", lazy = false, name = "catppuccin", priority = 1000 },
     { "folke/tokyonight.nvim", lazy = false, priority = 1000 },
     { "navarasu/onedark.nvim", lazy = false, priority = 1000 },
     { "ellisonleao/gruvbox.nvim", lazy = false, priority = 1000, config = true, opts = ... },
 
-    -- session manager (remembers opened files etc.)
+    -- session manager (remembers opened files etc.), alternative: obsession.nvim
     "rmagatti/auto-session",
 
     {
@@ -131,7 +132,6 @@ return {
                     vim.g.matchup_matchparen_offscreen = { method = "popup" }
                 end,
             },
-            "windwp/nvim-ts-autotag",
         },
         build = ":TSUpdate",
     },
@@ -140,8 +140,11 @@ return {
     {
         "windwp/nvim-autopairs",
         event = "InsertEnter",
-        opts = {}, -- this is equalent to setup({}) function
+        -- opts = {}, -- this is equalent to setup({}) function
     },
+
+    -- Autoclosure of HTML tags
+    "windwp/nvim-ts-autotag",
 
     -- File tree
     "nvim-tree/nvim-tree.lua",
@@ -160,7 +163,26 @@ return {
     "j-hui/fidget.nvim",
 
     -- Improves UI
-    { "stevearc/dressing.nvim", event = "VeryLazy" },
+    {
+        "stevearc/dressing.nvim",
+        event = "VeryLazy",
+        opts = {
+            input = {
+                mappings = {
+                    n = {
+                        ["<Esc>"] = "Close",
+                        ["<CR>"] = "Confirm",
+                    },
+                    i = {
+                        ["<Esc>"] = "Close",
+                        ["<CR>"] = "Confirm",
+                        ["<C-p>"] = "HistoryPrev",
+                        ["<C-n>"] = "HistoryNext",
+                    },
+                },
+            },
+        },
+    },
 
     -- Hex editing
     { "RaafatTurki/hex.nvim", opts = {} },
@@ -183,7 +205,7 @@ return {
 
     -- debugging
     "mfussenegger/nvim-dap",
-    "rcarriga/nvim-dap-ui",
+    { "rcarriga/nvim-dap-ui", dependencies = "nvim-neotest/nvim-nio" },
     "mfussenegger/nvim-dap-python", -- requires debugpy
     "theHamsta/nvim-dap-virtual-text", -- to-do: configure
 
@@ -227,6 +249,23 @@ return {
     -- easy management of directories and file structures
     {
         "stevearc/oil.nvim",
-        -- opts = {},
+        opts = {},
     },
+    {
+        "iamcco/markdown-preview.nvim",
+        cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+        build = "cd app && npm install",
+        init = function()
+            vim.g.mkdp_filetypes = { "markdown" }
+        end,
+        ft = { "markdown" },
+    },
+
+    {
+        "folke/todo-comments.nvim",
+        opts = {},
+    },
+
+    -- Automatically save files on exiting insert or text change
+    "Pocco81/auto-save.nvim",
 }

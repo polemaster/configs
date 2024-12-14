@@ -1,6 +1,6 @@
 --vim.wo.number = true
--- vim.g.loaded_netrw = 1
--- vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 
 vim.o.number = true
 vim.o.breakindent = true -- Lines longer than one are indented indetitically
