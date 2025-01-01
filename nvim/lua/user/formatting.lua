@@ -30,7 +30,7 @@ require("conform").setup({
     --     -- timeout_ms = 500,
     -- },
     format_after_save = {
-        lsp_fallback = false,
+        lsp_format = "never",
     },
     notify_on_error = true,
 })

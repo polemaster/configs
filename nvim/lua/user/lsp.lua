@@ -49,7 +49,6 @@ require("mason-tool-installer").setup({
     ensure_installed = {
         -- LSPs:
         "pyright",
-        "r-languageserver",
         "clangd",
         {
             "lua-language-server",
@@ -59,6 +58,7 @@ require("mason-tool-installer").setup({
         "bash-language-server",
         "html-lsp",
         "typescript-language-server",
+        "angular-language-server",
 
         -- Formatters:
         "prettier", -- prettier formatter (html, css, ...)

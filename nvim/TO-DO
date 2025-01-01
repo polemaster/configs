@@ -1,6 +1,3 @@
-55. configure oil.nvim
-56. vim-rhubarb doesn't work because of not working netrw -> fix netrw
-57. fix r_language_server
 58. configure which-key
 59. change lazy loading
 60. when :q close nvim-tree as well
@@ -15,7 +12,8 @@
 66. zen mode is working only once
 67. check out TODO keymaps
 68. make ctrl+s to prompt for filename when file is not yet created
-69. Typing 'o' open new line at wrong indent for e.g. lua files (2 spaces instead of 4)
+69. Typing 'o' open new line at wrong indent for e.g. lua files (2 spaces instead of 4), also tabs don't work
+70. On PC, the which-key code in init.lua doesn't work
 
 
 Awesome Neovim:

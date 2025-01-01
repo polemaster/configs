@@ -246,7 +246,7 @@ return {
         event = "VeryLazy",
     },
 
-    -- easy management of directories and file structures
+    -- easy management of directories and file structures, WARNING won't disappear
     {
         "stevearc/oil.nvim",
         opts = {},
