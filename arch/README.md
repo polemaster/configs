@@ -1,6 +1,27 @@
-# Arch Linux Installation & Configuration Guide
+# My Arch Linux Installation & Configuration
 
-## During _archinstall_
+## Pre-installation
+
+### Secure disk erasure
+
+This should be done from live environment (e.g. live Arch, SystemRescue).
+
+Firstly, format the the disk, according to [archwiki](https://wiki.archlinux.org/title/Solid_state_drive/Memory_cell_clearing):
+
+```
+sudo nvme format /dev/nvme0n1 -s 1
+```
+
+Next, overwrite the disk as specified in [archwiki](https://wiki.archlinux.org/title/Dm-crypt/Drive_preparation):
+
+```
+cryptsetup open --type plain --key-file /dev/urandom --sector-size 4096 /dev/nvme0n1 to_be_wiped
+lsblk
+dd if=/dev/zero of=/dev/mapper/to_be_wiped status=progress bs=1M
+cryptsetup close to_be_wiped
+```
+
+## Installation: using _archinstall_
 
 1. connect to the internet using [iwctl](https://wiki.archlinux.org/title/Iwd#Connect_to_a_network)
 1. **locale**: en_US, **keyboard**: pl
@@ -10,9 +31,168 @@
 1. **additional packages**: _firefox vim_
 1. **optional repositories**: _multilib_
 
-## Without using archinstall (to use disk encryption)
+## Installation: without using _archinstall_ (with Secure Boot and full-disk encryption)
 
-???
+The commands come from Archwiki's [Installation Guide](https://wiki.archlinux.org/title/Installation_guide) and [LUKS on a partition with TPM2 and Secure Boot](https://wiki.archlinux.org/title/Dm-crypt/Encrypting_an_entire_system#LUKS_on_a_partition_with_TPM2_and_Secure_Boot).
+
+Optional:???
+
+```
+loadkeys pl
+setfont ter-132b
+```
+
+Normal part:
+
+```
+cat /sys/firmware/efi/fw_platform_size          // should return 64 for UEFI 64-bit
+rfkill             // should return unblocked
+rfkill unblock wlan     // Optional: if the interface is block, unblock it:
+ip link            // network interface should be enabled
+ip link set wlan0 up    // Optional: should already be up
+iwctl // for connecting via Wi-Fi
+device list // should be powered on
+station wlan0 scan
+station wlan0 get-networks
+station wlan0 connect <SSID>
+timedatectl // should return current time
+timedatectl set-timezone Europe/Prague // Optional???
+cfdisk nvme0n1
+```
+
+Create 2 partitions:
+
+1. 1GB - EFI System
+1. Rest of the drive - Linux root (x86-64)
+
+```
+cryptsetup luksFormat /dev/nvme0n1p2
+cryptsetup open /dev/nvme0n1p2 root
+mkfs.ext4 /dev/mapper/root
+mount /dev/mapper/root /mnt
+
+mkfs.fat -F 32 /dev/nvme0n1p1
+mount --mkdir /dev/nvme0n1p1 /mnt/boot
+
+reflector ???
+pacstrap -K /mnt base linux linux-firmware
+
+arch-chroot /mnt
+pacman -S vim amd-ucode networkmanager iwd reflector linux-headers sudo
+
+ln -sf /usr/share/zoneinfo/Europe/Prague /etc/localtime
+hwclock --systohc
+```
+
+Uncomment this line from _/etc/locale.gen_:
+
+```
+en_US.UTF-8 UTF-8
+<!-- en_US ISO-8859-1 -->
+```
+
+Then type:
+
+```
+locale-gen
+echo KEYMAP=pl > /etc/vconsole.conf
+```
+
+And add this to _/etc/locale.conf_:
+
+```
+LANG=en_US.UTF-8
+```
+
+Create the _/etc/hostname_ containing:
+
+```
+archlinux
+```
+
+Enable NetworkManager service:
+
+```
+systemctl enable NetworkManager.service
+```
+
+Change the line in /etc/mkinitcpio.conf:
+
+```
+HOOKS=(base systemd autodetect microcode modconf kms keyboard sd-vconsole block sd-encrypt filesystems fsck)
+```
+
+Change /etc/kernel/cmdline to:
+
+```
+rw quiet bgrt_disable
+```
+
+Change the _linux.preset_ file to be the same as [here](https://wiki.archlinux.org/title/Unified_kernel_image#.preset_file). Change _efi_ to _boot_
+
+Next steps:
+
+```
+bootctl install
+mkinitcpio -P
+rm /boot/initramfs*
+passwd
+exit
+reboot
+```
+
+### Secure Boot
+
+```
+systemctl enable systemd-boot-update.service
+pacman -S sbctl
+sbctl status
+sbctl create-keys
+sbctl enroll-keys -m
+sbctl status
+sbctl sign -s /boot/EFI/Linux_arch-linux.efi
+sbctl sign -s /boot/EFI/Linux_arch-linux-fallback.efi
+sbctl sign -s -o /usr/lib/systemd/boot/efi/systemd-bootx64.efi.signed /usr/lib/systemd/boot/efi/systemd-bootx64.efi
+bootctl install
+sbctl verify
+```
+
+Comment:
+
+These 2 files are copied from /usr/lib/systemd/boot/efi/systemd-bootx64.efi.signed file:
+
+- sbctl sign -s /boot/EFI/BOOT/BOOTX64.EFI
+- sbctl sign -s /boot/EFI/systemd/systemd-bootx64.efi
+
+### Setting up TPM
+
+```
+systemd-cryptenroll /dev/sda2 --recovery-key
+systemd-cryptenroll /dev/sda2 --wipe-slot=empty --tpm2-device=auto --tpm2-with-pin=yes
+```
+
+### Post-installation
+
+Driver installation:
+
+```
+pacman -S nvidia nvidia-utils nvidia-settings
+```
+
+Adding a user:
+
+```
+useradd -m -g users -G wheel polemaster
+```
+
+Other packages:
+
+```
+pacman -S --needed - < pkglist.txt
+pacman -S nvtop less ntfs-3g mesa-utils
+systemctl enable gdm
+reboot
+```
 
 ## Settings
 
@@ -48,10 +228,10 @@
      ParallelDownloads = 5
      ```
 
-     And add this line:  
-      `ILoveCandy`
+     And add this line:
+     `ILoveCandy`
 
-   - Install _reflector_ and [configure it](https://wiki.archlinux.org/title/Reflector):  
+   - Install _reflector_ and [configure it](https://wiki.archlinux.org/title/Reflector):
      `sudo pacman -S reflector`
 
 1. **nerd font**
@@ -65,9 +245,11 @@
 
 ## Neovim
 
-```
+````
+
 sudo pacman -S --needed neovim npm ripgrep fd make xclip r python-neovim
 sudo npm install -g neovim
+
 ```
 
 Then copy config from [my github](https://github.com/polemaster/configs/tree/main) to _~/.config/nvim_.
@@ -75,8 +257,10 @@ Then copy config from [my github](https://github.com/polemaster/configs/tree/mai
 ## Bluetooth
 
 ```
+
 systemctl start bluetooth.service
 systemctl enable bluetooth.service
+
 ```
 
 ## Extensions
@@ -91,16 +275,18 @@ systemctl enable bluetooth.service
 ### For everyone
 
 ```
+
 sudo pacman -S tlp
 systemctl start tlp.service
 systemctl enable tlp.service
+
 ```
 
 ### Only for Lenovo laptop users
 
-Additionally, if you have a Lenovo laptop, you can go to [Arch wiki](https://wiki.archlinux.org/title/Laptop/Lenovo) for more info.  
-In my case, I needed to write in the terminal:  
-`echo 1 > /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode`  
+Additionally, if you have a Lenovo laptop, you can go to [Arch wiki](https://wiki.archlinux.org/title/Laptop/Lenovo) for more info.
+In my case, I needed to write in the terminal:
+`echo 1 > /sys/bus/platform/drivers/ideapad_acpi/VPC2004:00/conservation_mode`
 and/or install _Ideapad_ extension (to enable _Conservation mode_).
 
 ## Installing packages
@@ -120,10 +306,12 @@ Create your own _pkglist.txt_ file containing all packages you would like to hav
 First, install AUR helper: [_yay_](https://github.com/Jguer/yay).
 
 ```
+
 pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -si
 yay -Y --gendb
 yay -Syu --devel
 yay -Y --devel --save
+
 ```
 
 Then, install your packages from _pkglist.txt_.
@@ -136,7 +324,7 @@ Then, install your packages from _pkglist.txt_.
 
 ## Configure Wireshark
 
-Follow _Limiting capture permission to only one group_ from the site below:  
+Follow _Limiting capture permission to only one group_ from the site below:
 https://wiki.wireshark.org/CaptureSetup/CapturePrivileges
 
 ## Adding yourself to groups _input_ and _video_
@@ -144,19 +332,27 @@ https://wiki.wireshark.org/CaptureSetup/CapturePrivileges
 This fixes some issues, e.g. _snapshot_ (camera) app not detecting video inputs.
 
 ```
+
 sudo usermod -a -G input,video polemaster
+
 ```
 
 ## Steam
 
+Enable *multilib* in */etc/pacman.conf* if not enabled already.
+
 ```
+
 sudo pacman -S steam
+
 ```
 
 or
 
 ```
+
 yay -S steam gamescope gamescope-session-steam-git
+
 ```
 
 _gamescope_ provides an experimental HDR support. It needs to be [enabled on Steam](https://wiki.archlinux.org/title/HDR_monitor_support#Configure_Steam). AMD is better suited for HDR than NVIDIA.
@@ -164,10 +360,12 @@ _gamescope_ provides an experimental HDR support. It needs to be [enabled on Ste
 ## Adding printers
 
 ```
+
 sudo pacman -S cups system-config-printer
+
 ```
 
-More info here: https://wiki.archlinux.org/title/CUPS.  
+More info here: https://wiki.archlinux.org/title/CUPS.
 Then you can use GUI software (_Print Settings_) to add drivers and add printers.
 
 ## Setting up VirtualBox
@@ -189,6 +387,7 @@ Helpful link: https://wiki.archlinux.org/title/VirtualBox
 ## Installing CUDA
 
 ```
+
 sudo pacman -S cudnn cuda
 yay -S miniconda3
 echo "[ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh" >> ~/.zshrc
@@ -201,6 +400,7 @@ conda create -n <name-of-env> python
 conda activate <name-of-env>
 pip install --upgrade pip
 pip install tensorflow[and-cuda] -- use bash if square brackets don't work in zsh
+
 ```
 
 ## Enabling Secure Boot
@@ -234,9 +434,11 @@ Add CUPS: https://wiki.archlinux.org/title/CUPS
 ### I can't add Windows to grub
 
 ```
+
 sudo pacman -S os-prober
 sudo os-prober (Windows should show, if not: sudo mkdir /mnt/win11 && sudo mount /dev/nvme0n1p1 /mnt/win11)
 sudo grub-mkconfig -o /boot/grub/grub.cfg (if Windows not added edit /etc/defualt/grub: uncomment last line (GRUB_DISABLE_OS_PROBER=false) and rerun the command)
+
 ```
 
 ### YubiKeys are not working
@@ -249,5 +451,10 @@ Install:
 ### Videos not playing in Tor Browser
 
 ```
+
 sudo pacman -S ffmpeg4.4
+
 ```
+
+```
+````
