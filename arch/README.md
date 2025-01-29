@@ -203,10 +203,15 @@ reboot
 
   1. _Add input source_ &rarr; _Polish, Spanish_
   2. _View and Customize Shortcuts_:
-     - _Launchers_: web browser = ctrl + f
-     - _Navigation_: hide all windows = super + d
-     - _Windows_: close windows = super + w, maximize window = super + m
-     - _Custom Shortcuts_: nautilus = super + e, kgx = super + t
+     - _Launchers_: Web Browser = _Ctrl + F_
+     - _Navigation_:
+       - Hide all windows = _Super + D_
+       - Move window one workspace to the left = _Shift + Super + J_
+       - Move window one workspace to the right = _Shift + Super + K_
+       - Switch to workplace on the left = _Super + J_
+       - Switch to workplace on the right = _Super + K_
+     - _Windows_: Close windows = _Super + W_, Maximize Window = _Super + M_
+     - _Custom Shortcuts_: Nautilus = _Super + E_, kgx = _Super + T_
 
 ## Tweaks
 
@@ -245,7 +250,7 @@ reboot
 
 ## Neovim
 
-````
+```
 
 sudo pacman -S --needed neovim npm ripgrep fd make xclip r python-neovim
 sudo npm install -g neovim
@@ -337,9 +342,19 @@ sudo usermod -a -G input,video polemaster
 
 ```
 
+## Default applications
+
+In gnome settings, some default applications can be changed.
+Moreover, to change default pdf viewer and docx, type:
+
+```
+xdg-mime default org.gnome.Evince.desktop application/pdf
+xdg-mime defualt libreoffice-writer.desktop application/vnd.openxmlformats-officedocument.wordprocessingml.document
+```
+
 ## Steam
 
-Enable *multilib* in */etc/pacman.conf* if not enabled already.
+Enable _multilib_ in _/etc/pacman.conf_ if not enabled already.
 
 ```
 
@@ -456,5 +471,10 @@ sudo pacman -S ffmpeg4.4
 
 ```
 
+### Neovim treesitter giving warning
+
+Solution:
+
 ```
-````
+sudo npm install -g tree-sitter-cli
+```
