@@ -1,0 +1,62 @@
+[font]
+size = 12
+
+# offset.x = 0
+# offset.y = 0
+
+[font.normal]
+family = "RobotoMono Nerd Font"
+style = "Regular"
+
+[font.bold]
+family = "RobotoMono Nerd Font"
+style = "Bold"
+
+[font.italic]
+family = "RobotoMono Nerd Font"
+style = "Italic"
+
+[font.bold_italic]
+family = "RobotoMono Nerd Font"
+style = "Bold Italic"
+
+# [general]
+# import = [
+#     "~/.config/alacritty/themes/themes/tokyo_night.toml"
+# ]
+
+
+[colors]
+# Default colors
+primary.background = "#272727"
+primary.foreground = "#FFFFFF"
+
+# Normal colors (black, red, green, yellow, etc.)
+normal.black   = "#2C2739"
+normal.red     = "#C22430"
+normal.green   = "#36C482"
+normal.yellow  = "#F5C41A"
+normal.blue    = "#267DE4"
+normal.magenta = "#9B48BD"
+normal.cyan    = "#13BBDD"
+normal.white   = "#C2C1BE"
+
+# Bright colors (bright versions of black, red, green, etc.)
+bright.black   = "#64626A"
+bright.red     = "#ED3B42"
+bright.green   = "#5DE48D"
+bright.yellow  = "#F8E562"
+bright.blue    = "#57A4FE"
+bright.magenta = "#C267CC"
+bright.cyan    = "#55D3FD"
+bright.white   = "#F6F5F4"
+
+[keyboard]
+bindings = [
+  { key = "Slash", mods = "Control", chars = "\u001f" },
+]
+
+
+# [window]
+# padding.x = 0
+# padding.y = 0
