@@ -15,12 +15,14 @@ require("conform").setup({
         --         return { "isort", "black" }
         --     end
         -- end,
-        javascript = { "prettier" },
-        typescript = { "prettier" },
-        css = { "prettier" },
-        html = { "prettier" },
-        json = { "prettier" },
-        markdown = { "prettier" },
+        javascript = { "prettierd" },
+        typescript = { "prettierd" },
+        javascriptreact = { "prettierd" },
+        typescriptreact = { "prettierd" },
+        css = { "prettierd" },
+        html = { "prettierd" },
+        json = { "prettierd" },
+        markdown = { "prettierd" },
         cpp = { "clang_format" }, -- to change style: ~/.local/share/nvim/mason/bin/clang-format --style GNU --dump-config > .clang_format
         c = { "clang_format" },
     },

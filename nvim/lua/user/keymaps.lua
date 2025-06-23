@@ -207,6 +207,7 @@ function M.lsp_on_attach(_, bufnr)
 
     nmap("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
     nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
+    nmap("<A-CR>", vim.lsp.buf.code_action, "[C]ode [A]ction")
 
     -- nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
     nmap("gd", require("telescope.builtin").lsp_definitions, "[G]o to [D]efinition")
@@ -394,7 +395,7 @@ keymap("n", "<leader>W", ":Autosession delete<CR>", { desc = "Remove sessions", 
 -- formatting and linting
 vim.keymap.set({ "n", "v" }, "<leader>mp", function()
     require("conform").format({
-        lsp_fallback = true,
+        lsp_fallback = false, -- TO-DO: change to true
         async = false,
         timeout_ms = 500,
     })

@@ -11,13 +11,6 @@ require("neodev").setup({
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
--- Set pretty icons next to number lines
-local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
-for type, icon in pairs(signs) do
-    local hl = "DiagnosticSign" .. type
-    vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-end
-
 -- Mason settings
 require("mason").setup({
     ui = {
@@ -57,11 +50,19 @@ require("mason-tool-installer").setup({
         },
         "bash-language-server",
         "html-lsp",
+        "css-lsp",
+        {
+            "css-lsp",
+            settings = { css = { lint = { unknownAtRules = "ignore" } } },
+        },
+        "css-variables-language-server",
         "typescript-language-server",
         "angular-language-server",
+        "tailwindcss",
+        "eslint-lsp",
 
         -- Formatters:
-        "prettier", -- prettier formatter (html, css, ...)
+        "prettierd", -- prettier formatter (html, css, ...)
         "stylua", -- lua formatter
         "isort", -- python formatter
         "black", -- python formatter
@@ -82,19 +83,37 @@ require("mason-tool-installer").setup({
     },
 })
 
+-- CSSLS doesn't recognize @apply rule from tailwind so we need to ignore it
+require("lspconfig").cssls.setup({
+    settings = {
+        css = {
+            lint = {
+                unknownAtRules = "ignore",
+            },
+        },
+    },
+})
+
 -- Set how diagnostics is to be displayed
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
     border = "single",
 })
 
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.hover, {
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
     border = "single",
 })
 
 -- more general (not only LSP)
 vim.diagnostic.config({
     virtual_text = false,
-    signs = true,
+    signs = {
+        text = {
+            [vim.diagnostic.severity.ERROR] = " ",
+            [vim.diagnostic.severity.WARN] = " ",
+            [vim.diagnostic.severity.HINT] = "󰠠 ",
+            [vim.diagnostic.severity.INFO] = " ",
+        },
+    },
     underline = true,
     update_in_insert = false,
     severity_sort = false,

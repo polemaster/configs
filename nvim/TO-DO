@@ -1,12 +1,6 @@
 58. configure which-key
 59. change lazy loading
-60. when :q close nvim-tree as well
-61. Telescope shouldn't ignore .gitignore
-62. Set up Jupyter Notebooks
- - https://github.com/benlubas/.dotfiles/blob/main/nvim/lua/plugins/lsp.lua#L138
- - https://github.com/benlubas/molten-nvim
- - https://www.reddit.com/r/neovim/comments/17ynpg2/how_to_edit_jupyter_notebooks_in_neovim_with_very/
-63. configure markdown
+63. configure markdown - don't close on tab change
 64. check out luarocks
 65. ctrl+x doesn't work after opening terminal (ctrl + \)
 66. zen mode is working only once
@@ -14,6 +8,16 @@
 68. make ctrl+s to prompt for filename when file is not yet created
 69. Typing 'o' open new line at wrong indent for e.g. lua files (2 spaces instead of 4), also tabs don't work
 70. On PC, the which-key code in init.lua doesn't work
+71. when using j and k, there shouldn't be any lag (faster moving up and down)
+72. typing "f" in command mode for the first time gives a warning (about nvim-treesitter object?)
+62. Set up Jupyter Notebooks
+ - https://github.com/benlubas/.dotfiles/blob/main/nvim/lua/plugins/lsp.lua#L138
+ - https://github.com/benlubas/molten-nvim
+ - https://www.reddit.com/r/neovim/comments/17ynpg2/how_to_edit_jupyter_notebooks_in_neovim_with_very/
+63. Remove deprecated error (:checkhealth vim.deprecated)
+64. Shift + K or J should display border or different bg color
+65. Error after "gd": position_encoding param is required in vim.lsp.util.make_position_params. Defaulting to position encoding of the first client.
+
 
 
 Awesome Neovim:

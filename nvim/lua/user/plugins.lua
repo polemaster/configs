@@ -268,4 +268,9 @@ return {
 
     -- Automatically save files on exiting insert or text change
     "Pocco81/auto-save.nvim",
+
+    {
+        "brenoprata10/nvim-highlight-colors",
+        opts = {},
+    },
 }
