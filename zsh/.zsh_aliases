@@ -9,3 +9,5 @@ alias c="clear"
 alias mem="du -hd 1 | sort -hr"
 alias code="codium"
 alias tree='tree -a -I .git'
+alias yt='ytmdl --dont-transcode --format "opus" --url'
+alias ytstart='cd ~/Music && source venv/bin/activate'

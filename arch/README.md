@@ -217,7 +217,9 @@ reboot
      - _Windows_: Close windows = _Super + W_, Maximize Window = _Super + M_
      - _Custom Shortcuts_: Nautilus = _Super + E_, kgx = _Super + T_
 
-### Tweaks
+- **Accessibility**: _Typing_ &rarr; _Repeat Keys_ &rarr; Change _Speed_ and _Delay_
+
+### Gnome Tweaks
 
 - **Keyboard**: _Additional Layout Options_ &rarr; _Caps Lock behavior_ &rarr; _Make Caps Lock an additional Esc_
 
@@ -426,6 +428,10 @@ Helpful link: https://wiki.archlinux.org/title/VirtualBox
 #### Adding Windows 11
 
 1. Create new Virtual Machine
+   - Skip unatennded installation.
+   - Give the VM sth like 16GB of RAM, 4 CPUs and 100GB of storage.
+   - In settings, tick all the boxes in "Storage" section (like Solid-state Drive or Hot-pluggable). Also, disable network adapter.
+1. During installation of Windows 11, you will have to log in to a Microsoft account. To avoid it, follow [these steps](https://www.ghacks.net/2023/01/26/how-to-bypass-the-microsoft-account-requirement-during-windows-setup/).
 1. Change resolution - explained [here](https://www.ghacks.net/2022/06/11/how-to-change-the-windows-screen-size-in-virtualbox/). Then change scale to appropriate (200% in my case).
 1. Shut down Windows and enable network in VirtualBox settings.
 1. Start Windows.
@@ -435,6 +441,11 @@ Helpful link: https://wiki.archlinux.org/title/VirtualBox
 ```
 sudo pacman -S cuda cuda-tools
 ```
+
+### Setting up ssh-agent
+
+This allows to enter password for ssh key only once after each computer start-up.  
+Follow [this guide](https://wiki.archlinux.org/title/SSH_keys#GNOME_Keyring) to set it up.
 
 ## Troubleshooting
 
@@ -456,9 +467,11 @@ After start-up, in the login screen select _Gnome_ (_with Xorg_, if possible) in
 ### I can't add Windows to grub
 
 ```
+
 sudo pacman -S os-prober
 sudo os-prober (Windows should show, if not: sudo mkdir /mnt/win11 && sudo mount /dev/nvme0n1p1 /mnt/win11)
 sudo grub-mkconfig -o /boot/grub/grub.cfg (if Windows not added edit /etc/defualt/grub: uncomment last line (GRUB_DISABLE_OS_PROBER=false) and rerun the command)
+
 ```
 
 ### YubiKeys are not working
@@ -481,7 +494,9 @@ sudo pacman -S ffmpeg4.4
 Solution:
 
 ```
+
 sudo npm install -g tree-sitter-cli
+
 ```
 
 ### TPM2 troubleshooting
@@ -489,24 +504,30 @@ sudo npm install -g tree-sitter-cli
 To check the current state of TPM:
 
 ```
+
 sudo cryptsetup luksDump /dev/nvme0n1p2
+
 ```
 
 To re-enroll TPM2 device:
 
 ```
+
 sudo systemd-cryptenroll /dev/nvme0n1p2 --wipe-slot=tpm2
 sudo systemd-cryptenroll /dev/nvme0n1p2 --tpm2-device=auto --tpm2-pcrs=7
+
 ```
 
 To remove old recovery key and create a new one
 
 ```
+
 sudo systemd-cryptenroll /dev/nvme0n1p2 --wipe-slot=recovery
 sudo systemd-cryptenroll /dev/nvme0n1p2 --recovery-key
+
 ```
 
 ### Neovim not taking full terminal size (padding)
 
-There is no perfect solution for this. Here are some [workarounds](https://www.reddit.com/r/neovim/comments/1d1443w/deleted_by_user/):  
+There is no perfect solution for this. Here are some [workarounds](https://www.reddit.com/r/neovim/comments/1d1443w/deleted_by_user/):
 "Change the size of the terminal (or the font). There is no space for one more column or row, so it shows that way. It's a common "issue" with terminal apps. You can also change the color of your terminal to look like neovim and so it won't be so noticeable."
