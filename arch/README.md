@@ -436,6 +436,22 @@ Helpful link: https://wiki.archlinux.org/title/VirtualBox
 1. Shut down Windows and enable network in VirtualBox settings.
 1. Start Windows.
 
+### Setting up VMware Workstation
+
+Helpful link: https://wiki.archlinux.org/title/VMware
+
+```
+sudo pacman -S linux-headers
+yay -S vmware-workstation
+sudo systemctl start vmware-networks-configuration.service           // This will generate /etc/vmware/networking file
+sudo systemctl enable --now vmware-networks.service vmware-usbarbitrator.service
+sudo systemctl status vmware-networks.service vmware-usbarbitrator.service
+sudo modprobe -a vmw_vmci vmmon
+```
+
+I had to install `yay -S vmware-keymaps` while installing vmware.  
+Note: VMware Player is not supported anymore and VMware Workstation Pro is free for non-commercial use.
+
 ### Installing CUDA
 
 ```
