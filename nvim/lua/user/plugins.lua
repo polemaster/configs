@@ -283,4 +283,15 @@ return {
             processor = "magick_cli",
         },
     },
+
+    -- And also pasting the images into Neovim
+    {
+        "HakonHarnes/img-clip.nvim",
+        event = "VeryLazy",
+        opts = {
+            default = {
+                dir_path = ".",
+            },
+        },
+    },
 }

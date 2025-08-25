@@ -18,6 +18,20 @@
 64. Shift + K or J should display border or different bg color
 65. Error after "gd": position_encoding param is required in vim.lsp.util.make_position_params. Defaulting to position encoding of the first client.
 
+From MacOS:
+- Image support: img-clip.nvim for pasting images and image.nvim for displaying them
+- Make ctrl+l/b/u (ctrl u is taken) add characters to make font bold/italic/underlined (in Neorg?)
+- Add SCSS support
+- Change _ to / in comment shortcut
+- Add emmet language server
+- Add code formatting for .scss and .css
+- Jsdocs
+- Markdown should not quit
+- Move notifications to right bottom corner
+- Add debuggin support for JS / TS?
+- I have to-do in plugins.lua
+- add javascriptreact and typescriptreact to formatting.lua
+
 
 
 Awesome Neovim:

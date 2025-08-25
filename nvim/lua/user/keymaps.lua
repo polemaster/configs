@@ -422,5 +422,8 @@ keymap("n", "<leader>h", require("hex").toggle, opts)
 -- toggle auto-save
 keymap("n", "<leader>as", ":ASToggle<CR>", { desc = "Toggle Auto-Save" })
 
+-- Pasting images into Neovim
+keymap("n", "<leader>p", "<cmd>PasteImage<cr>", { desc = "Paste image from system clipboard" })
+
 -- returning M is neccessary for other plugins to access this file
 return M
