@@ -257,6 +257,7 @@ return {
         build = "cd app && npm install",
         init = function()
             vim.g.mkdp_filetypes = { "markdown" }
+            vim.g.mkdp_auto_close = 0
         end,
         ft = { "markdown" },
     },
@@ -272,5 +273,14 @@ return {
     {
         "brenoprata10/nvim-highlight-colors",
         opts = {},
+    },
+
+    -- Support image viewing in nvim (only with kitty terminal)
+    {
+        "3rd/image.nvim",
+        build = false,
+        opts = {
+            processor = "magick_cli",
+        },
     },
 }
