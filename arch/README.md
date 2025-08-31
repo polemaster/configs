@@ -547,3 +547,13 @@ sudo systemd-cryptenroll /dev/nvme0n1p2 --recovery-key
 
 There is no perfect solution for this. Here are some [workarounds](https://www.reddit.com/r/neovim/comments/1d1443w/deleted_by_user/):
 "Change the size of the terminal (or the font). There is no space for one more column or row, so it shows that way. It's a common "issue" with terminal apps. You can also change the color of your terminal to look like neovim and so it won't be so noticeable."
+
+### Adding swap space
+
+If swap partition was not created during OS installation, one can create a swapfile manually as describe [here](https://wiki.archlinux.org/title/Swap#Swap_file):
+
+```
+sudo mkswap -U clear --size 4G --file /swapfile
+sudo swapon /swapfile
+echo '/swapfile none swap defaults 0 0' | sudo tee -a /etc/fstab
+```
