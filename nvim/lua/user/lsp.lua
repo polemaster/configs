@@ -51,10 +51,6 @@ require("mason-tool-installer").setup({
         "bash-language-server",
         "html-lsp",
         "css-lsp",
-        {
-            "css-lsp",
-            settings = { css = { lint = { unknownAtRules = "ignore" } } },
-        },
         "css-variables-language-server",
         "typescript-language-server",
         "angular-language-server",
@@ -77,6 +73,7 @@ require("mason-tool-installer").setup({
         "shellcheck", -- bash linter
         "cpplint", -- C/C++ linter
         "htmlhint", -- HTML linter
+        "stylelint", -- CSS & SCSS linter
 
         -- Debuggers:
         "debugpy",

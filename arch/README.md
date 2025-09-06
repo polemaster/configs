@@ -8,13 +8,13 @@ This should be done from live environment (e.g. live Arch, SystemRescue).
 
 Firstly, format the the disk, according to [archwiki](https://wiki.archlinux.org/title/Solid_state_drive/Memory_cell_clearing):
 
-```
+```bash
 sudo nvme format /dev/nvme0n1 -s 1
 ```
 
 Next, overwrite the disk as specified in [archwiki](https://wiki.archlinux.org/title/Dm-crypt/Drive_preparation):
 
-```
+```bash
 cryptsetup open --type plain --key-file /dev/urandom --sector-size 4096 /dev/nvme0n1 to_be_wiped
 lsblk
 dd if=/dev/zero of=/dev/mapper/to_be_wiped status=progress bs=1M
@@ -37,26 +37,26 @@ The commands come from Archwiki's [Installation Guide](https://wiki.archlinux.or
 
 Set the console keyboard layout (optional - has no effect after installation):
 
-```
+```bash
 loadkeys pl
 setfont ter-132b
 ```
 
 Normal part:
 
-```
-cat /sys/firmware/efi/fw_platform_size          // should return 64 for UEFI 64-bit
-rfkill             // should return unblocker
-rfkill unblock wlan     // optional: if the interface is blocked, unblock it:
-ip link            // network interface should be enabled
-ip link set wlan0 up    // optional: should already be up
-iwctl // for connecting via Wi-Fi
-device list // should be powered on
+```bash
+cat /sys/firmware/efi/fw_platform_size          # should return 64 for UEFI 64-bit
+rfkill             # should return unblocker
+rfkill unblock wlan     # optional: if the interface is blocked, unblock it:
+ip link            # network interface should be enabled
+ip link set wlan0 up    # optional: should already be up
+iwctl # for connecting via Wi-Fi
+device list # should be powered on
 station wlan0 scan
 station wlan0 get-networks
 station wlan0 connect <SSID>
-timedatectl // should return current time
-timedatectl set-timezone Europe/Prague // will persist after rebooting
+timedatectl # should return current time
+timedatectl set-timezone Europe/Prague # will persist after rebooting
 cfdisk nvme0n1
 ```
 
@@ -65,8 +65,8 @@ Create 2 partitions:
 1. 1GB - EFI System
 1. Rest of the drive - Linux root (x86-64)
 
-```
-cryptsetup luksFormat /dev/nvme0n1p2 // Important - type blank password
+```bash
+cryptsetup luksFormat /dev/nvme0n1p2 # Important - type blank password
 cryptsetup open /dev/nvme0n1p2 root
 mkfs.ext4 /dev/mapper/root
 mount /dev/mapper/root /mnt
@@ -74,7 +74,7 @@ mount /dev/mapper/root /mnt
 mkfs.fat -F 32 /dev/nvme0n1p1
 mount --mkdir /dev/nvme0n1p1 /mnt/boot
 
-vim /etc/pacman.d/mirrorlist // optional: better download speed (it gets copied after reboot)
+vim /etc/pacman.d/mirrorlist # optional: better download speed (it gets copied after reboot)
 pacstrap -K /mnt base linux linux-firmware
 
 arch-chroot /mnt
@@ -92,7 +92,7 @@ en_US.UTF-8 UTF-8
 
 Then type:
 
-```
+```bash
 locale-gen
 echo KEYMAP=pl > /etc/vconsole.conf
 ```
@@ -111,7 +111,7 @@ archlinux
 
 Enable NetworkManager service:
 
-```
+```bash
 systemctl enable NetworkManager.service
 ```
 
@@ -131,7 +131,7 @@ Change the _linux.preset_ file to be the same as [here](https://wiki.archlinux.o
 
 Next steps:
 
-```
+```bash
 bootctl install
 mkinitcpio -P
 rm /boot/initramfs*
@@ -142,7 +142,7 @@ reboot
 
 ### Secure Boot
 
-```
+```bash
 systemctl enable systemd-boot-update.service
 pacman -S sbctl
 sbctl status
@@ -165,7 +165,7 @@ These 2 files are copied from /usr/lib/systemd/boot/efi/systemd-bootx64.efi.sign
 
 ### Setting up TPM
 
-```
+```bash
 systemd-cryptenroll /dev/nvme0n1p2 --recovery-key
 systemd-cryptenroll /dev/nvme0n1p2 --wipe-slot=empty --tpm2-device=auto --tpm2-pcrs=7
 ```
@@ -178,23 +178,23 @@ _"Note that incorrect PIN entry when unlocking increments the TPM dictionary att
 
 Driver installation:
 
-```
+```bash
 pacman -S nvidia nvidia-utils nvidia-settings
 ```
 
 Adding a user:
 
-```
+```bash
 useradd -m -g users -G wheel polemaster
 ```
 
 Other packages:
 
-```
+```bash
 pacman -S --needed - < pkglist.txt
 pacman -S nvtop less ntfs-3g mesa-utils
 systemctl enable gdm
-systemctl enable systemd-timesyncd // enable internet time sync if disabled
+systemctl enable systemd-timesyncd # enable internet time sync if disabled
 reboot
 ```
 
@@ -258,22 +258,29 @@ If using alacritty, copy the folder from my github to ~/.config/alacritty/
 
 ### Neovim
 
-```
-
+```bash
 sudo pacman -S --needed neovim npm ripgrep fd make xclip r python-neovim
-sudo npm install -g neovim
-
+sudo npm install -g neovim stylelint stylelint-config-standard
 ```
 
 Then copy config from [my github](https://github.com/polemaster/configs/tree/main) to _~/.config/nvim_.
 
-### Bluetooth
+Also, create a file ~/.config/stylelint/.stylelintrc.json with the content:
 
+```json
+{
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "at-rule-no-unknown": null
+  }
+}
 ```
 
+### Bluetooth
+
+```bash
 systemctl start bluetooth.service
 systemctl enable bluetooth.service
-
 ```
 
 ### NVIDIA pacman hook (for NVIDIA GPU)
@@ -309,12 +316,10 @@ Exec=/bin/sh -c 'while read -r trg; do case $trg in linux*) exit 0; esac; done; 
 
 #### For everyone
 
-```
-
+```bash
 sudo pacman -S tlp
 systemctl start tlp.service
 systemctl enable tlp.service
-
 ```
 
 #### Only for Lenovo laptop users
@@ -340,13 +345,11 @@ Create your own _pkglist.txt_ file containing all packages you would like to hav
 
 First, install AUR helper: [_yay_](https://github.com/Jguer/yay).
 
-```
-
+```bash
 pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay-bin.git && cd yay-bin && makepkg -si
 yay -Y --gendb
 yay -Syu --devel
 yay -Y --devel --save
-
 ```
 
 Then, install your packages from _pkglist.txt_.
@@ -361,7 +364,7 @@ Then, install your packages from _pkglist.txt_.
 
 Add yourself do the _wireshark_ group:
 
-```
+```bash
 sudo usermod -aG wireshark polemaster
 ```
 
@@ -369,10 +372,8 @@ sudo usermod -aG wireshark polemaster
 
 This fixes some issues, e.g. _snapshot_ (camera) app not detecting video inputs.
 
-```
-
+```bash
 sudo usermod -a -G input,video polemaster
-
 ```
 
 ### Default applications
@@ -380,7 +381,7 @@ sudo usermod -a -G input,video polemaster
 In gnome settings, some default applications can be changed.
 Moreover, to change default pdf viewer and docx, type:
 
-```
+```bash
 xdg-mime default org.gnome.Evince.desktop application/pdf
 xdg-mime defualt libreoffice-writer.desktop application/vnd.openxmlformats-officedocument.wordprocessingml.document
 ```
@@ -389,28 +390,22 @@ xdg-mime defualt libreoffice-writer.desktop application/vnd.openxmlformats-offic
 
 Enable _multilib_ in _/etc/pacman.conf_ if not enabled already.
 
-```
-
+```bash
 sudo pacman -S steam
-
 ```
 
 or
 
-```
-
+```bash
 yay -S steam gamescope gamescope-session-steam-git
-
 ```
 
 _gamescope_ provides an experimental HDR support. It needs to be [enabled on Steam](https://wiki.archlinux.org/title/HDR_monitor_support#Configure_Steam). AMD is better suited for HDR than NVIDIA.
 
 ### Adding printers
 
-```
-
+```bash
 sudo pacman -S cups system-config-printer
-
 ```
 
 More info here: https://wiki.archlinux.org/title/CUPS.
@@ -440,10 +435,11 @@ Helpful link: https://wiki.archlinux.org/title/VirtualBox
 
 Helpful link: https://wiki.archlinux.org/title/VMware
 
-```
+```bash
 sudo pacman -S linux-headers
+yay -S vmware-keymaps
 yay -S vmware-workstation
-sudo systemctl start vmware-networks-configuration.service           // This will generate /etc/vmware/networking file
+sudo systemctl start vmware-networks-configuration.service           # This will generate /etc/vmware/networking file
 sudo systemctl enable --now vmware-networks.service vmware-usbarbitrator.service
 sudo systemctl status vmware-networks.service vmware-usbarbitrator.service
 sudo modprobe -a vmw_vmci vmmon
@@ -454,7 +450,7 @@ Note: VMware Player is not supported anymore and VMware Workstation Pro is free 
 
 ### Installing CUDA
 
-```
+```bash
 sudo pacman -S cuda cuda-tools
 ```
 
@@ -482,12 +478,10 @@ After start-up, in the login screen select _Gnome_ (_with Xorg_, if possible) in
 
 ### I can't add Windows to grub
 
-```
-
+```bash
 sudo pacman -S os-prober
-sudo os-prober (Windows should show, if not: sudo mkdir /mnt/win11 && sudo mount /dev/nvme0n1p1 /mnt/win11)
-sudo grub-mkconfig -o /boot/grub/grub.cfg (if Windows not added edit /etc/defualt/grub: uncomment last line (GRUB_DISABLE_OS_PROBER=false) and rerun the command)
-
+sudo os-prober # (Windows should show, if not: sudo mkdir /mnt/win11 && sudo mount /dev/nvme0n1p1 /mnt/win11)
+sudo grub-mkconfig -o /boot/grub/grub.cfg # (if Windows not added edit /etc/defualt/grub: uncomment last line (GRUB_DISABLE_OS_PROBER=false) and rerun the command)
 ```
 
 ### YubiKeys are not working
@@ -499,48 +493,38 @@ Install:
 
 ### Videos not playing in Tor Browser
 
-```
-
+```bash
 sudo pacman -S ffmpeg4.4
-
 ```
 
 ### Neovim treesitter giving warning
 
 Solution:
 
-```
-
+```bash
 sudo npm install -g tree-sitter-cli
-
 ```
 
 ### TPM2 troubleshooting
 
 To check the current state of TPM:
 
-```
-
+```bash
 sudo cryptsetup luksDump /dev/nvme0n1p2
-
 ```
 
 To re-enroll TPM2 device:
 
-```
-
+```bash
 sudo systemd-cryptenroll /dev/nvme0n1p2 --wipe-slot=tpm2
 sudo systemd-cryptenroll /dev/nvme0n1p2 --tpm2-device=auto --tpm2-pcrs=7
-
 ```
 
 To remove old recovery key and create a new one
 
-```
-
+```bash
 sudo systemd-cryptenroll /dev/nvme0n1p2 --wipe-slot=recovery
 sudo systemd-cryptenroll /dev/nvme0n1p2 --recovery-key
-
 ```
 
 ### Neovim not taking full terminal size (padding)
@@ -552,7 +536,7 @@ There is no perfect solution for this. Here are some [workarounds](https://www.r
 
 If swap partition was not created during OS installation, one can create a swapfile manually as describe [here](https://wiki.archlinux.org/title/Swap#Swap_file):
 
-```
+```bash
 sudo mkswap -U clear --size 4G --file /swapfile
 sudo swapon /swapfile
 echo '/swapfile none swap defaults 0 0' | sudo tee -a /etc/fstab

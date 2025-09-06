@@ -45,9 +45,23 @@ require("lint").linters_by_ft = {
     python = { "ruff" },
     c = { "cpplint" },
     cpp = { "cpplint" },
+    css = { "stylelint" },
+    scss = { "stylelint" },
     -- python = { 'pylint' },
     -- python = { 'flake8' },
     -- python = { 'mypy' },
+}
+
+local stylelint = require("lint").linters.stylelint
+stylelint.args = {
+    "--formatter",
+    "json",
+    "--config",
+    vim.fn.expand("~/.config/stylelint/.stylelintrc.json"),
+    "--stdin-filename",
+    function()
+        return vim.api.nvim_buf_get_name(0)
+    end,
 }
 
 -- Eslint returns error/warning if this code is not included (and it needs to be older version)

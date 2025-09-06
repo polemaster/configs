@@ -9,7 +9,6 @@
 69. Typing 'o' open new line at wrong indent for e.g. lua files (2 spaces instead of 4), also tabs don't work
 70. On PC, the which-key code in init.lua doesn't work
 71. when using j and k, there shouldn't be any lag (faster moving up and down)
-72. typing "f" in command mode for the first time gives a warning (about nvim-treesitter object?)
 62. Set up Jupyter Notebooks
  - https://github.com/benlubas/.dotfiles/blob/main/nvim/lua/plugins/lsp.lua#L138
  - https://github.com/benlubas/molten-nvim
@@ -17,20 +16,19 @@
 63. Remove deprecated error (:checkhealth vim.deprecated)
 64. Shift + K or J should display border or different bg color
 65. Error after "gd": position_encoding param is required in vim.lsp.util.make_position_params. Defaulting to position encoding of the first client.
+66. Make space+l/b/u add characters to make font bold/italic/underlined (for Neorg)
 
 From MacOS:
-- Image support: img-clip.nvim for pasting images and image.nvim for displaying them
-- Make ctrl+l/b/u (ctrl u is taken) add characters to make font bold/italic/underlined (in Neorg?)
-- Add SCSS support
-- Change _ to / in comment shortcut
 - Add emmet language server
-- Add code formatting for .scss and .css
+- Add code formatting for .scss and .css  on save
 - Jsdocs
 - Markdown should not quit
 - Move notifications to right bottom corner
 - Add debuggin support for JS / TS?
 - I have to-do in plugins.lua
 - add javascriptreact and typescriptreact to formatting.lua
+- Linting only after save - shouldn't it be immediately like LSP?
+
 
 
 
