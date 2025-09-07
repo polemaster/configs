@@ -211,7 +211,7 @@ return {
     "mfussenegger/nvim-dap",
     { "rcarriga/nvim-dap-ui", dependencies = "nvim-neotest/nvim-nio" },
     "mfussenegger/nvim-dap-python", -- requires debugpy
-    "theHamsta/nvim-dap-virtual-text", -- to-do: configure
+    "theHamsta/nvim-dap-virtual-text",
 
     -- formatting and linting (replacing null-ls)
     {
