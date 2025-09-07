@@ -77,6 +77,9 @@ require("mason-tool-installer").setup({
 
         -- Debuggers:
         "debugpy",
+
+        -- Other:
+        "emmet-language-server",
     },
 })
 

@@ -206,7 +206,6 @@ function M.lsp_on_attach(_, bufnr)
     end
 
     nmap("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
-    nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
     nmap("<A-CR>", vim.lsp.buf.code_action, "[C]ode [A]ction")
 
     -- nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
@@ -424,6 +423,28 @@ keymap("n", "<leader>as", ":ASToggle<CR>", { desc = "Toggle Auto-Save" })
 
 -- Pasting images into Neovim
 keymap("n", "<leader>p", "<cmd>PasteImage<cr>", { desc = "Paste image from system clipboard" })
+
+-- Annotations
+keymap("n", "<Leader>c", ":Neogen<CR>", { desc = "Generate docs" })
+
+-- Snippets (LuaSnip)
+local ls = require("luasnip")
+
+keymap({ "i", "s" }, "<Tab>", function()
+    if ls.jumpable(1) then
+        ls.jump(1)
+    else
+        return "<Tab>"
+    end
+end, { expr = true, silent = true })
+
+keymap({ "i", "s" }, "<S-Tab>", function()
+    if ls.jumpable(-1) then
+        ls.jump(-1)
+    else
+        return "<S-Tab>"
+    end
+end, { expr = true, silent = true })
 
 -- returning M is neccessary for other plugins to access this file
 return M

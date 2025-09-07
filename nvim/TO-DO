@@ -19,15 +19,13 @@
 66. Make space+l/b/u add characters to make font bold/italic/underlined (for Neorg)
 
 From MacOS:
-- Add emmet language server
-- Add code formatting for .scss and .css  on save
-- Jsdocs
 - Markdown should not quit
 - Move notifications to right bottom corner
 - Add debuggin support for JS / TS?
 - I have to-do in plugins.lua
 - add javascriptreact and typescriptreact to formatting.lua
 - Linting only after save - shouldn't it be immediately like LSP?
+- add html lsp and linting (htmlhint doesn't work I think?)
 
 
 
