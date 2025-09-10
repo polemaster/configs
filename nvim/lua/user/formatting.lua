@@ -20,6 +20,7 @@ require("conform").setup({
         javascriptreact = { "prettierd" },
         typescriptreact = { "prettierd" },
         css = { "prettierd" },
+        scss = { "prettierd" },
         html = { "prettierd" },
         json = { "prettierd" },
         markdown = { "prettierd" },
@@ -40,15 +41,12 @@ require("conform").setup({
 -- linting
 -- need to install linters via Mason or package manager
 require("lint").linters_by_ft = {
-    javascript = { "eslint_d" },
-    typescript = { "eslint_d" },
-    javascriptreact = { "eslint_d" },
-    typescriptreact = { "eslint_d" },
+    html = { "htmlhint" },
+    css = { "stylelint" },
+    scss = { "stylelint" },
     python = { "ruff" },
     c = { "cpplint" },
     cpp = { "cpplint" },
-    css = { "stylelint" },
-    scss = { "stylelint" },
     -- python = { 'pylint' },
     -- python = { 'flake8' },
     -- python = { 'mypy' },
@@ -60,20 +58,6 @@ stylelint.args = {
     "json",
     "--config",
     vim.fn.expand("~/.config/stylelint/.stylelintrc.json"),
-    "--stdin-filename",
-    function()
-        return vim.api.nvim_buf_get_name(0)
-    end,
-}
-
--- Eslint returns error/warning if this code is not included (and it needs to be older version)
-local eslint = require("lint").linters.eslint_d
-
-eslint.args = {
-    "--no-warn-ignored", -- <-- this is the key argument
-    "--format",
-    "json",
-    "--stdin",
     "--stdin-filename",
     function()
         return vim.api.nvim_buf_get_name(0)

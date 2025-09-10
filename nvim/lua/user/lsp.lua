@@ -69,6 +69,7 @@ require("mason-tool-installer").setup({
         "pylint", -- python linter
         "mypy", -- python linter
         "flake8", -- python linter
+        -- { "eslint_d", version = "13.1.2" }, -- js linter
         "eslint_d",
         "shellcheck", -- bash linter
         "cpplint", -- C/C++ linter
