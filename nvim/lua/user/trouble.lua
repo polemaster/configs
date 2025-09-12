@@ -1,3 +1,3 @@
 require("trouble").setup({
-    multiline = false,
+  multiline = false,
 })

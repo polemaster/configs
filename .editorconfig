@@ -6,16 +6,26 @@ indent_style = space
 trim_trailing_whitespace = true
 insert_final_newline = true
 charset = utf-8
-# end_of_line = lf      # for Unix
+end_of_line = lf
 
-[*.{py,cpp,c}]
+[*.{py}]
 indent_size = 4
 
-[*.{html,css}]
+[*.{cpp,c,h,hpp,java}]
+indent_size = 4
+
+[*.{html,css,scss}]
+indent_size = 2
+
+[*.{js,ts,jsx,tsx,json,yml,yaml}]
+indent_size = 2
+
+[*.lua]
 indent_size = 2
 
 # In markdown, you can write a line break by adding 2 spaces at the end of the line.
 [*.md]
+indent_size = 2
 trim_trailing_whitespace = false
 
 [*.tsv]

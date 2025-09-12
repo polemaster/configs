@@ -26,7 +26,7 @@ vim.o.pumheight = 10 -- limits the height of pop-up menu to 10
 -- Tab options (they don't work in certain files due to `.editorconfig` file)
 vim.o.expandtab = true
 vim.o.tabstop = 2
-vim.o.shiftwidth = 2
+vim.o.shiftwidth = 0
 
 vim.opt.iskeyword:append("-") -- treats sth-sth as one word (useful for w motion)
 
