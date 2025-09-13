@@ -18,14 +18,7 @@
 66. Make space+l/b/u add characters to make font bold/italic/underlined (for Neorg)
 67. Add debugging support for JS / TS - needed for Node.js
 68. Configure nvim-dap-virtual-text
-
-From MacOS:
-- check how does neovim know space (tab) for indents (it is weird in lua)
-- snippet "cl" doesn't exists in typescript but does in js
-- resolve git conflicts better (diffview.nvim)
-- is it possible to see CSS code of tailwindcss syntax
-- remove ctrl+z that suspends Neovim
-- check if htmlbeautifier is better than prettier
+69. resolve git conflicts better (diffview.nvim)
 
 
 

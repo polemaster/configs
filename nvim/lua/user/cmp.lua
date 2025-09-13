@@ -2,7 +2,13 @@
 local cmp = require("cmp")
 local luasnip = require("luasnip")
 require("luasnip.loaders.from_vscode").lazy_load()
+require("luasnip.loaders.from_snipmate").lazy_load()
+require("luasnip.loaders.from_lua").lazy_load()
 luasnip.config.setup({})
+
+-- Snippets in JS were not working in TS, so we need to add them manually
+luasnip.filetype_extend("typescript", { "javascript" })
+luasnip.filetype_extend("typescriptreact", { "javascript" })
 
 -- No idea why this function is needed in tab key but here is its description:
 -- Determine whether there are words (non-space characters) before the cursor position in the current buffer of Neovim

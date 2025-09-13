@@ -14,7 +14,7 @@ keymap({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 -- Save keymap
 vim.keymap.set({ "n", "i" }, "<C-s>", function()
   local save_file = function(path)
-    local ok, err = pcall(vim.cmd.w, path)
+    local ok, err = pcall(vim.cmd.wa, path)
 
     if not ok then
       -- clear `vim.ui.input` from cmdline to make space for an error
@@ -39,6 +39,7 @@ keymap("", "<S-j>", "<Nop>", opts)
 keymap("n", "<C-x>", "<cmd>wa<CR><cmd>qa<CR>", opts)
 keymap("n", "gx", ":!xdg-open <c-r><c-a> <cr><cr>", opts)
 keymap("n", "<C-n>", ":enew<CR>", opts) -- creates new empty buffer/tab/file
+keymap({ "n", "v" }, "<C-z>", "<Nop>") -- disable accidental suspend
 
 -- Remap for dealing with word wrap
 keymap("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
@@ -430,21 +431,17 @@ keymap("n", "<Leader>c", ":Neogen<CR>", { desc = "Generate docs" })
 -- Snippets (LuaSnip)
 local ls = require("luasnip")
 
-keymap({ "i", "s" }, "<Tab>", function()
+keymap({ "i", "s" }, "<C-l>", function()
   if ls.jumpable(1) then
     ls.jump(1)
-  else
-    return "<Tab>"
   end
-end, { expr = true, silent = true })
+end, { silent = true, desc = "LuaSnip Jump Forward" })
 
-keymap({ "i", "s" }, "<S-Tab>", function()
+keymap({ "i", "s" }, "<C-h>", function()
   if ls.jumpable(-1) then
     ls.jump(-1)
-  else
-    return "<S-Tab>"
   end
-end, { expr = true, silent = true })
+end, { silent = true, desc = "LuaSnip Jump Backward" })
 
 -- returning M is neccessary for other plugins to access this file
 return M

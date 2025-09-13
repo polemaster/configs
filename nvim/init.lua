@@ -67,7 +67,7 @@ require("user.oil")
 require("user.git")
 require("user.zen")
 require("user.autotag")
-require("user.autosave")
+-- require("user.autosave")
 
 -- document existing key chains, check https://github.com/folke/which-key.nvim
 
