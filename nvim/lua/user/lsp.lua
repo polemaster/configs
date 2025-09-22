@@ -9,7 +9,45 @@ require("neodev").setup({
 
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
+capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+
+local servers = {
+  -- LSPs:
+  "pyright",
+  "clangd",
+  "lua-language-server",
+  "bash-language-server",
+  "html-lsp",
+  "css-lsp",
+  "css-variables-language-server",
+  "typescript-language-server",
+  "angular-language-server",
+  "tailwindcss",
+
+  -- Formatters:
+  "prettierd", -- prettier formatter (html, css, ...)
+  "stylua", -- lua formatter
+  "isort", -- python formatter
+  "black", -- python formatter
+  "ruff", -- python formatter & linter
+  "clang-format", -- C/C++ formatter
+
+  -- Linters:
+  "pylint", -- python linter
+  "mypy", -- python linter
+  "flake8", -- python linter
+  "shellcheck", -- bash linter
+  "cpplint", -- C/C++ linter
+  "htmlhint", -- HTML linter
+  "stylelint", -- CSS & SCSS linter
+  "eslint", -- JS & TS linter
+
+  -- Debuggers:
+  "debugpy",
+
+  -- Other:
+  "emmet-language-server",
+}
 
 -- Mason settings
 require("mason").setup({
@@ -23,66 +61,38 @@ require("mason").setup({
   },
 })
 
-local mason_lspconfig = require("mason-lspconfig")
+require("lspconfig")
 
--- attach LSPs to buffers and set up capabilities (autocompletion)
-mason_lspconfig.setup()
+-- This automatically enables LSP servers
+-- Without it, we would need to separate a list of LSPs from linters, formatters, etc.
+-- and pass it to vim.lsp.enable()
+require("mason-lspconfig").setup()
 
-mason_lspconfig.setup_handlers({
-  function(server_name)
-    require("lspconfig")[server_name].setup({
-      capabilities = capabilities,
-      on_attach = require("user.keymaps").lsp_on_attach, -- Keymaps are set in keymaps.lua file
-    })
-  end,
+-- This is necessary because ensure_installed in mason-lspconfig doesn't work
+-- with anything apart from LSPs
+require("mason-tool-installer").setup({
+  ensure_installed = servers,
 })
 
--- is it really needed? can't we use ensure_installed in mason instead?
-require("mason-tool-installer").setup({
-  ensure_installed = {
-    -- LSPs:
-    "pyright",
-    "clangd",
-    {
-      "lua-language-server",
-      workspace = { checkThirdParty = false },
-      telemetry = { enable = false },
+-- attach LSPs to buffers and set up capabilities (autocompletion)
+vim.lsp.config("*", {
+  on_attach = require("user.keymaps").lsp_on_attach,
+  capabilities = capabilities,
+})
+
+vim.lsp.config("lua_ls", {
+  settings = {
+    Lua = {
+      diagnostics = {
+        globals = { "vim" },
+      },
     },
-    "bash-language-server",
-    "html-lsp",
-    "css-lsp",
-    "css-variables-language-server",
-    "typescript-language-server",
-    "angular-language-server",
-    "tailwindcss",
-
-    -- Formatters:
-    "prettierd", -- prettier formatter (html, css, ...)
-    "stylua", -- lua formatter
-    "isort", -- python formatter
-    "black", -- python formatter
-    "ruff", -- python formatter & linter
-    "clang-format", -- C/C++ formatter
-
-    -- Linters:
-    "pylint", -- python linter
-    "mypy", -- python linter
-    "flake8", -- python linter
-    "shellcheck", -- bash linter
-    "cpplint", -- C/C++ linter
-    "htmlhint", -- HTML linter
-    "stylelint", -- CSS & SCSS linter
-
-    -- Debuggers:
-    "debugpy",
-
-    -- Other:
-    "emmet-language-server",
+    workspace = { checkThirdParty = false },
   },
 })
 
 -- CSSLS doesn't recognize @apply rule from tailwind so we need to ignore it
-require("lspconfig").cssls.setup({
+vim.lsp.config("cssls", {
   settings = {
     css = {
       lint = {
@@ -103,7 +113,9 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.s
 
 -- more general (not only LSP)
 vim.diagnostic.config({
-  virtual_text = false,
+  virtual_text = {
+    prefix = "●",
+  },
   signs = {
     text = {
       [vim.diagnostic.severity.ERROR] = " ",
@@ -115,5 +127,8 @@ vim.diagnostic.config({
   underline = true,
   update_in_insert = false,
   severity_sort = false,
-  float = { border = "single", header = "" },
+  float = {
+    border = "single",
+    header = "",
+  },
 })

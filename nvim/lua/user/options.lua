@@ -48,3 +48,16 @@ vim.cmd([[au FileType * set fo-=c fo-=r fo-=o]])
 -- for neorg:
 vim.opt.conceallevel = 2
 -- vim.opt.concealcursor = "nc"
+
+-- when showing definition with shift + k, the border is rounded
+vim.o.winborder = "rounded"
+
+-- Highlight on yank
+local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
+vim.api.nvim_create_autocmd("TextYankPost", {
+  callback = function()
+    vim.hl.on_yank()
+  end,
+  group = highlight_group,
+  pattern = "*",
+})

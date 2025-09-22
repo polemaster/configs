@@ -1,7 +1,5 @@
 require("auto-session").setup({
-  log_level = "error",
-
-  auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
+  suppresses_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
 
   cwd_change_handling = {
     restore_upcoming_session = true, -- already the default, no need to specify like this, only here as an example
@@ -10,6 +8,8 @@ require("auto-session").setup({
       require("lualine").refresh() -- refresh lualine so the new session name is displayed in the status bar
     end,
   },
+
+  bypass_save_filetypes = { "dashboard" }, -- or whatever dashboard you use
 
   -- this saves session correctly when I close files before closing NvimTree by mistake
   pre_save_cmds = { "NvimTreeClose" },

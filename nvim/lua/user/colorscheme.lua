@@ -1,6 +1,6 @@
 require("catppuccin").setup({
   integrations = {
-    barbar = true,
+    -- barbar = true,
     notify = true,
     mason = true,
   },

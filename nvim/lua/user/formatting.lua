@@ -40,6 +40,7 @@ require("conform").setup({
 
 -- linting
 -- need to install linters via Mason or package manager
+-- eslint is not included because it's setup by vite usually
 require("lint").linters_by_ft = {
   html = { "htmlhint" },
   css = { "stylelint" },

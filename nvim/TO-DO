@@ -2,7 +2,6 @@
 59. change lazy loading
 63. configure markdown - don't close on tab change
 64. check out luarocks
-65. ctrl+x doesn't work after opening terminal (ctrl + \)
 66. zen mode is working only once
 67. check out TODO keymaps
 69. Typing 'o' open new line at wrong indent for e.g. lua files (2 spaces instead of 4), also tabs don't work
@@ -14,12 +13,50 @@
  - https://www.reddit.com/r/neovim/comments/17ynpg2/how_to_edit_jupyter_notebooks_in_neovim_with_very/
 63. Remove deprecated error (:checkhealth vim.deprecated)
 64. Shift + K or J should display border or different bg color
-65. Error after "gd": position_encoding param is required in vim.lsp.util.make_position_params. Defaulting to position encoding of the first client.
 66. Make space+l/b/u add characters to make font bold/italic/underlined (for Neorg)
 67. Add debugging support for JS / TS - needed for Node.js
 68. Configure nvim-dap-virtual-text
 69. resolve git conflicts better (diffview.nvim)
 
+Important:
+65. Error after "gd": position_encoding param is required in vim.lsp.util.make_position_params. Defaulting to position encoding of the first client.
+
+
+        f9c1bac refactor!: add :AutoSession, deprecate :Session* :Autosession (4 weeks ago)
+    ● mini.icons 0.9ms  which-key.nvim
+        f9a177c docs!: transfer to GitHub organization (3 weeks ago)
+        94848da feat(ALL)!: stop support of Neovim 0.8 (3 months ago)
+        86a633f feat(ALL)!: unify naming of buffers created by modules (6 months ago)
+    ● nvim-lspconfig 7.15ms  start
+        1f7fbc3 refactor!: deprecate old framework/configs, Nvim 0.10 #4077 (4 days ago)
+    ● nvim-treesitter 11.46ms  start
+        42fc28b docs(readme)!: announce archiving of master branch (4 months ago)
+    ● plenary.nvim 0.23ms 󰢱 plenary.strings  telescope.nvim
+        857c5ac break!: drop v0.7.2 support as e9b1d87 introduced a breaking change (7 months ago)
+
+
+Overlapping mappings:
+
+checking for overlapping keymaps ~
+- ⚠️ WARNING In mode `n`, <gb> overlaps with <gbc>:
+  - <gb>: Comment toggle blockwise
+  - <gbc>: Comment toggle current block
+- ⚠️ WARNING In mode `n`, <gc> overlaps with <gcc>:
+  - <gc>: Toggle comment
+  - <gcc>: Toggle comment line
+- ⚠️ WARNING In mode `n`, <yS> overlaps with <ySS>:
+  - <yS>: Add a surrounding pair around a motion, on new lines (normal mode)
+  - <ySS>: Add a surrounding pair around the current line, on new lines (normal mode)
+- ⚠️ WARNING In mode `n`, <ys> overlaps with <yss>:
+  - <ys>: Add a surrounding pair around a motion (normal mode)
+  - <yss>: Add a surrounding pair around the current line (normal mode)
+- ⚠️ WARNING In mode `n`, <gr> overlaps with <gra>, <gri>, <grn>, <grr>, <grt>:
+  - <gr>: LSP: [G]oto [R]eferences
+  - <gra>: vim.lsp.buf.code_action()
+  - <gri>: vim.lsp.buf.implementation()
+  - <grn>: vim.lsp.buf.rename()
+  - <grr>: vim.lsp.buf.references()
+  - <grt>: vim.lsp.buf.type_definition()
 
 
 Awesome Neovim:

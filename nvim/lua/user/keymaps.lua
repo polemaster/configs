@@ -209,7 +209,7 @@ function M.lsp_on_attach(_, bufnr)
   nmap("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
   nmap("<A-CR>", vim.lsp.buf.code_action, "[C]ode [A]ction")
 
-  -- nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+  -- nmap("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
   nmap("gd", require("telescope.builtin").lsp_definitions, "[G]o to [D]efinition")
   nmap("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
   nmap("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
@@ -389,8 +389,8 @@ end, { desc = "End debugging" })
 -- https://github.com/rcarriga/nvim-dap-ui
 
 -- sessions
-keymap("n", "<leader>w", ":Autosession search<CR>", { desc = "Search sessions", noremap = true, silent = true })
-keymap("n", "<leader>W", ":Autosession delete<CR>", { desc = "Remove sessions", noremap = true, silent = true })
+keymap("n", "<leader>w", ":AutoSession search<CR>", { desc = "Search sessions", noremap = true, silent = true })
+keymap("n", "<leader>W", ":AutoSession delete<CR>", { desc = "Remove sessions", noremap = true, silent = true })
 
 -- formatting and linting
 vim.keymap.set({ "n", "v" }, "<leader>mp", function()
