@@ -28,30 +28,6 @@ Important:
         857c5ac break!: drop v0.7.2 support as e9b1d87 introduced a breaking change (7 months ago)
 
 
-Overlapping mappings:
-
-checking for overlapping keymaps ~
-- ⚠️ WARNING In mode `n`, <gb> overlaps with <gbc>:
-  - <gb>: Comment toggle blockwise
-  - <gbc>: Comment toggle current block
-- ⚠️ WARNING In mode `n`, <gc> overlaps with <gcc>:
-  - <gc>: Toggle comment
-  - <gcc>: Toggle comment line
-- ⚠️ WARNING In mode `n`, <yS> overlaps with <ySS>:
-  - <yS>: Add a surrounding pair around a motion, on new lines (normal mode)
-  - <ySS>: Add a surrounding pair around the current line, on new lines (normal mode)
-- ⚠️ WARNING In mode `n`, <ys> overlaps with <yss>:
-  - <ys>: Add a surrounding pair around a motion (normal mode)
-  - <yss>: Add a surrounding pair around the current line (normal mode)
-- ⚠️ WARNING In mode `n`, <gr> overlaps with <gra>, <gri>, <grn>, <grr>, <grt>:
-  - <gr>: LSP: [G]oto [R]eferences
-  - <gra>: vim.lsp.buf.code_action()
-  - <gri>: vim.lsp.buf.implementation()
-  - <grn>: vim.lsp.buf.rename()
-  - <grr>: vim.lsp.buf.references()
-  - <grt>: vim.lsp.buf.type_definition()
-
-
 Awesome Neovim:
 - Lspsaga
 

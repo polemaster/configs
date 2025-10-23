@@ -211,7 +211,7 @@ function M.lsp_on_attach(_, bufnr)
 
   -- nmap("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
   nmap("gd", require("telescope.builtin").lsp_definitions, "[G]o to [D]efinition")
-  nmap("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
+  nmap("<leader>rr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
   nmap("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
   nmap("<leader>D", vim.lsp.buf.type_definition, "Type [D]efinition")
   -- nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
@@ -230,17 +230,15 @@ end
 
 -- Comments
 M.comments = {
+  -- visual mode
   opleader = {
-    ---Line-comment keymap
-    line = "<C-/>",
-    ---Block-comment keymap
-    block = "gb",
+    line = "<C-/>", ---Line-comment keymap
+    block = "<leader>c", ---Block-comment keymap
   },
+  -- normal mode
   toggler = {
-    ---Line-comment toggle keymap
-    line = "<C-/>",
-    ---Block-comment toggle keymap
-    block = "gbc",
+    line = "<C-/>", ---Line-comment toggle keymap
+    block = "gbc", ---Block-comment toggle keymap, pretty useless
   },
   mappings = {
     ---Operator-pending mapping; `gcc` `gbc` `gc[count]{motion}` `gb[count]{motion}`
