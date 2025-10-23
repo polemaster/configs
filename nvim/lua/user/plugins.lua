@@ -102,7 +102,8 @@ return {
   -- Needed package ripgrep (install it via package manager) for live grep and package fd (for what?)
   {
     "nvim-telescope/telescope.nvim",
-    branch = "0.1.x",
+    branch = "master",
+    -- tag = "0.1.8",
     dependencies = {
       -- fzf-native is a fuzzy finder and enables searches with: ',^,$,|
       -- it requires 'make' program
@@ -210,7 +211,7 @@ return {
   -- debugging
   "mfussenegger/nvim-dap",
   { "rcarriga/nvim-dap-ui", dependencies = "nvim-neotest/nvim-nio" },
-  "mfussenegger/nvim-dap-python", -- requires debugpy
+  -- "mfussenegger/nvim-dap-python", -- requires debugpy
   "theHamsta/nvim-dap-virtual-text",
 
   -- formatting and linting (replacing null-ls)

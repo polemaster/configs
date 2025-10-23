@@ -204,7 +204,6 @@ reboot
 - **Multitasking**: Turn off _Hot Corner_
 - **Search**: _Search location_ &rarr; leave only videos, _Apps_ &rarr; leave _Files, Calculator, Characters, Settings_
 - **Keyboard**
-
   1. _Add input source_ &rarr; _Polish, Spanish_
   2. _View and Customize Shortcuts_:
      - _Launchers_: Web Browser = _Ctrl + F_
@@ -233,7 +232,6 @@ reboot
 If using alacritty, copy the folder from my github to ~/.config/alacritty/
 
 1. **pacman config**
-
    - Uncomment these lines in /etc/pacman.conf:
 
      ```
@@ -260,7 +258,7 @@ If using alacritty, copy the folder from my github to ~/.config/alacritty/
 
 ```bash
 sudo pacman -S --needed neovim npm ripgrep fd make xclip r python-neovim
-sudo npm install -g neovim stylelint stylelint-config-standard
+sudo npm install -g neovim stylelint stylelint-config-standard tree-sitter-cli
 ```
 
 Then copy config from [my github](https://github.com/polemaster/configs/tree/main) to _~/.config/nvim_.
@@ -495,14 +493,6 @@ Install:
 
 ```bash
 sudo pacman -S ffmpeg4.4
-```
-
-### Neovim treesitter giving warning
-
-Solution:
-
-```bash
-sudo npm install -g tree-sitter-cli
 ```
 
 ### TPM2 troubleshooting

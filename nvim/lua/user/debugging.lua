@@ -1,5 +1,6 @@
 -- require('dap-python').setup('~/.virtualenvs/debugpy/bin/pytho')
-require("dap-python").setup("~/.local/share/nvim/mason/packages/debugpy/venv/bin/python")
+-- require("dap-python").setup("~/.local/share/nvim/mason/packages/debugpy/venv/bin/python")
+-- require("dap-python").setup("python3")
 
 require("dapui").setup()
 
