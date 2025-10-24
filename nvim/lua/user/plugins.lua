@@ -124,6 +124,11 @@ return {
   },
 
   -- Treesitter
+  -- NOTE: The master branch is not longer supported, but main branch is more difficult to set up
+  -- and it does not provide incremental selection feature yet.
+  -- You also need to change nvim-treesitter-textobjects to main branch which is not usable yet
+  -- Lazyvim migration: https://github.com/LazyVim/LazyVim/commit/5eac460c092103e5516bec345236853b9f35ec7c
+  -- taken from here: https://github.com/nvim-treesitter/nvim-treesitter/discussions/7927
   {
     -- Highlight, edit, and navigate code
     "nvim-treesitter/nvim-treesitter",
@@ -138,6 +143,8 @@ return {
         end,
       },
     },
+    branch = "master",
+    lazy = false,
     build = ":TSUpdate",
   },
 
