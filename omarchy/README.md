@@ -25,6 +25,12 @@ yay -S rate-mirrors-bin
 sudo rate-mirrors arch --save /etc/pacman.d/mirrorlist
 ```
 
+### Install Brave
+
+```bash
+yay -S brave-bin
+```
+
 ### Configure neovim
 
 ```bash
@@ -130,38 +136,6 @@ And adding/changing:
     email = <email>
 ```
 
-### Change Waybar
-
-#### Show battery percentage
-
-uh...
-
-#### Show current keyboard
-
-If different from default, show it
-
-### Keybindings to change:
-
-- Moving through the windows with Super + h/j/k/l
-- Setting full width of the windows: Super + Alt + f -> ...
-- Moving through grouped windows: Super + Alt + Tab -> Alt + `
-- Browser: Super + Shift + B -> Super + B
-- Omarchy menu: Super + Alt + Space -> Super + Space
-- App launcher: Super + Space -> Super
-
-### Assign apps to workspaces
-
-Is it possible even?
-
-- Browser -> w1
-- Terminal -> w2
-
-### Setting up Brave
-
-```bash
-yay -S brave-bin
-```
-
 ### FIDO2 (Yubico keys)
 
 _Omarchy menu -> Setup -> Security -> FIDO2_
@@ -199,7 +173,127 @@ Add this to the file `~/.config/hypr/hyprland.conf`:
 exec-once = udiskie
 ```
 
-Reload Hyprland or reboot.
+Reload Hyprland or reboot. \
+**Note**: at this point, you can copy files from backup / previous computer
+
+### Change keybindings
+
+Add this to the end of `~/.config/hypr/bindings.conf`:
+
+```bash
+# Omarchy menu on Super + Space
+unbind = SUPER, SPACE
+bindd = SUPER, SPACE, Omarchy menu, exec, omarchy-menu
+
+# App launcher on Super key, like in Windows and Linux
+bindr = SUPER, SUPER_L , exec, omarchy-launch-walker
+
+# Change full tiling screen binding
+unbind = SUPER ALT, F
+unbind = SUPER SHIFT, F
+bindd = SUPER SHIFT, F, Full width, fullscreen, 1
+
+# Bind Super E to open files instead
+bindd = SUPER, E, File manager, exec, uwsm-app -- nautilus --new-window
+
+# Lock screen on Super + U
+bindd = SUPER, U, Lock screen, exec, loginctl lock-session
+
+# Moving through the windows with Super + h/j/k/l
+unbind = SUPER, K
+unbind = SUPER, J
+bindd = SUPER, H, Move window focus left, movefocus, l
+bindd = SUPER, L, Move window focus right, movefocus, r
+bindd = SUPER, K, Move window focus up, movefocus, u
+bindd = SUPER, J, Move window focus down, movefocus, d
+
+# Bind help (previously Super + K) to Super + I
+bindd = SUPER, I, Show key bindings, exec, omarchy-menu-keybindings
+
+# Bind toggle (previously Super + J) to Super + O
+bindd = SUPER, O, Toggle window split, togglesplit, # dwindle
+
+# Keybindings for fast moving through grouped windows
+bindd = SUPER, grave, Next window in group, changegroupactive, f
+bindd = SUPER SHIFT, grave, Previous window in group, changegroupactive, b
+bindd = ALT, grave, Next window in group, changegroupactive, f
+bindd = ALT SHIFT, grave, Previous window in group, changegroupactive, b
+
+# Shutdown button turns off the computer
+bindld = , XF86PowerOff, Shutdown, exec, sh -c "omarchy-state clear re*-required && systemctl poweroff --no-wall"
+```
+
+### Set start-up apps
+
+To `~/.config/hypr/autostart.conf` add:
+
+```bash
+exec-once = $browser
+```
+
+### Change Waybar
+
+The directory to edit waybar is `~/.config/waybar/`.
+
+#### Show battery percentage
+
+Edit _battery_ in `config.jsonc`:
+
+```json
+"format": "{icon} {capacity}%",
+"format-discharging": "{icon} {capacity}%",
+"format-charging": "{icon} {capacity}%",
+```
+
+#### Show current keyboard
+
+Edit **config.jsonc** file. \
+Add `"hyprland/language",` to _modules-right_. \
+Add:
+
+```json
+"hyprland/language": {
+  "format": "{short}",
+  "tooltip": false,
+  "on-click": "hyprctl switchxkblayout 'ite-tech.-inc.-ite-device(8910)-keyboard' next"
+},
+```
+
+before `"custom/omarchy"`.
+
+Now edit **style.css** file. \
+Add `#language,` for _min-width_ and _margin_ where others are defined (_#cpu_, _#battery_, etc.).
+Add this:
+
+```json
+#language {
+  margin-right: 15px;
+}
+```
+
+### Give a warning at 20% battery
+
+It definitely gives one at 10%...
+
+### Set up OpenVPN
+
+```bash
+sudo pacman -S openvpn
+sudo ufw allow 1194/udp
+```
+
+### Move using ctrl + hjkl in menus
+
+Add these lines to `~/.config/walker/config.toml`:
+
+```bash
+next = ["Down", "ctrl j"]
+previous = ["Up", "ctrl k"]
+```
+
+### Make walker faster
+
+https://github.com/abenz1267/walker
 
 ### WTF
 
