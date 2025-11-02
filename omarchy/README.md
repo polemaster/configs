@@ -1,8 +1,7 @@
 ## Omarchy post-installation configuration
 
-### Table of contents
-
-...
+This README file describes my configuration of Omarchy. \
+Omarchy was installed from the official ISO image.
 
 ### Connect to wifi (if the TUI is not working)
 
@@ -41,6 +40,19 @@ cd ~/repos
 git clone https://github.com/polemaster/configs
 cd ~/.config
 cp -r ~/repos/configs/nvim .
+sudo pacman -S --needed neovim npm ripgrep fd make xclip r python-neovim
+sudo npm install -g neovim stylelint stylelint-config-standard tree-sitter-cli
+```
+
+Also, create a file ~/.config/stylelint/.stylelintrc.json with the content:
+
+```json
+{
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "at-rule-no-unknown": null
+  }
+}
 ```
 
 ### Change caps lock to escape
@@ -265,21 +277,22 @@ Now edit **style.css** file. \
 Add `#language,` for _min-width_ and _margin_ where others are defined (_#cpu_, _#battery_, etc.).
 Add this:
 
-```json
+```css
 #language {
   margin-right: 15px;
 }
 ```
 
-### Give a warning at 20% battery
+#### Remove cpu
 
-It definitely gives one at 10%...
+Remove all cpu-related code as it is unnecessary.
 
-### Set up OpenVPN
+#### Change margin for wifi:
 
-```bash
-sudo pacman -S openvpn
-sudo ufw allow 1194/udp
+```css
+#network {
+  margin-right: 8px;
+}
 ```
 
 ### Move using ctrl + hjkl in menus
@@ -290,13 +303,3 @@ Add these lines to `~/.config/walker/config.toml`:
 next = ["Down", "ctrl j"]
 previous = ["Up", "ctrl k"]
 ```
-
-### Make walker faster
-
-https://github.com/abenz1267/walker
-
-### WTF
-
-What is kb_options = compose:caps doing in input.conf?
-
-### Useful commands on Omarchy
