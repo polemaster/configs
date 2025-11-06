@@ -435,8 +435,7 @@ Helpful link: https://wiki.archlinux.org/title/VMware
 
 ```bash
 sudo pacman -S linux-headers
-yay -S vmware-keymaps
-yay -S vmware-workstation
+yay -S vmware-keymaps vmware-workstation
 sudo systemctl start vmware-networks-configuration.service           # This will generate /etc/vmware/networking file
 sudo systemctl enable --now vmware-networks.service vmware-usbarbitrator.service
 sudo systemctl status vmware-networks.service vmware-usbarbitrator.service
