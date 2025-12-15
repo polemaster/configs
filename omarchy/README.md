@@ -562,15 +562,30 @@ omarchy-reset-hyprland
 
 #### App laucher (Walker) is slow
 
-If, after clicking keybinding to open app laucher where you can type apps names to run them it takes >1 second to open the window, I found the following solution:
+**The issue:** after typing keybinding to open app laucher (where you can type apps names to open them), it takes >1 second to open the window. \
+**Solution:** use `netcat` instead of `walker` to start the app launcher.
 
-1. Edit the following file: `~/.config/hypr/bindings.conf`
-2. Change/Add shortcut for launching Walker. In my case it's just a Super key:
+**Explanation of the solution**
+
+The default app launcher on Omarchy (in 2025) is the Walker. You can launch it in two ways - via `walker` or via a socket call as described [here](https://github.com/abenz1267/walker?tab=readme-ov-file#basic-usage). The default way of launching `walker` on Omarchy is via `omarchy-launch-walker` script (you can find the script location with `which omarchy-launch-walker`) which is pretty slow (at least for me).
+
+To make it much faster (more than 10x faster), you can use socket calls instead. Here is how to do this.
+
+**Solution**
+
+First, you need to install `netcat`. On Arch Linux, you can do it with:
+
+```sh
+sudo pacman -S openbsd-netcat
+```
+
+Then edit the file `~/.config/hypr/bindings.conf` and add the following line:
 
 ```sh
 bindr = SUPER, SUPER_L , exec, nc -U $XDG_RUNTIME_DIR/walker/walker.sock || omarchy-launch-walker
 ```
 
-This solution uses `netcat` which is at least 10x faster than `walker` command.
+NOTE_1: if you already had a keybiding set up, make sure to unbind it first, for example: `unbind = SUPER, SPACE` \
+NOTE_2: You can change the keybiding here to whatever you want. I set it to Windows (Super) key. For example, to change it to Super + Space use `SUPER, SPACE` instead of `SUPER, SUPER_L`.
 
-The problem is that `walker` program takes much more time to launch than when starting it via netcat. And the default keybinding uses `omarchy-launch-walker` script which uses `walker`.
+That's all! Enjoy the super fast app laucher 😎.
