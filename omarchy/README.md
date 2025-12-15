@@ -314,6 +314,17 @@ previous = ["Up", "ctrl k"]
 yay -S anki-bin calibre visual-studio-code-bin
 ```
 
+### Change default image viewer to eog (Eye of Gnome)
+
+```bash
+xdg-mime default org.gnome.eog.desktop image/png
+xdg-mime default org.gnome.eog.desktop image/jpeg
+xdg-mime default org.gnome.eog.desktop image/gif
+xdg-mime default org.gnome.eog.desktop image/webp
+xdg-mime default org.gnome.eog.desktop image/bmp
+xdg-mime default org.gnome.eog.desktop image/tiff
+```
+
 ### Network (systemd-networkd vs NetworkManager)
 
 #### systemd-networkd + iwd vs NetworkManager
@@ -548,3 +559,18 @@ It is possible that a system update (in particular Omarchy update) breaks someth
 ```bash
 omarchy-reset-hyprland
 ```
+
+#### App laucher (Walker) is slow
+
+If, after clicking keybinding to open app laucher where you can type apps names to run them it takes >1 second to open the window, I found the following solution:
+
+1. Edit the following file: `~/.config/hypr/bindings.conf`
+2. Change/Add shortcut for launching Walker. In my case it's just a Super key:
+
+```sh
+bindr = SUPER, SUPER_L , exec, nc -U $XDG_RUNTIME_DIR/walker/walker.sock || omarchy-launch-walker
+```
+
+This solution uses `netcat` which is at least 10x faster than `walker` command.
+
+The problem is that `walker` program takes much more time to launch than when starting it via netcat. And the default keybinding uses `omarchy-launch-walker` script which uses `walker`.
