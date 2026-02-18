@@ -307,12 +307,25 @@ previous = ["Up", "ctrl k"]
 
 ### Install other apps
 
-- Set up VMware workstation (from my arch linux README).
 - Install [Mullvad VPN](https://wiki.archlinux.org/title/Mullvad).
 
 ```bash
 yay -S anki-bin calibre visual-studio-code-bin
 ```
+
+### Set up Virtual Machines software
+
+We will use [libvirt](https://wiki.archlinux.org/title/Libvirt), [QEMU](https://wiki.archlinux.org/title/QEMU) and [virt-manager](https://wiki.archlinux.org/title/Virt-manager). The guide for installation was taken from [here](https://tanis.codes/posts/virt-manager-qemu-arch-linux/).
+
+```bash
+sudo pacman -S qemu-desktop libvirt dnsmasq openbsd-netcat dmidecode virt-manager
+sudo systemctl enable --now libvirtd.socket
+sudo usermod -aG libvirt $USER
+sudo virsh net-autostart default
+sudo virsh net-start default
+```
+
+Edit /etc/libvirt/network.conf file and change backend to iptables, if not using firewalld.
 
 ### Change default image viewer to eog (Eye of Gnome)
 
