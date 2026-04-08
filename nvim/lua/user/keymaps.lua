@@ -197,7 +197,9 @@ function M.gitsigns(bufnr)
 end
 
 -- LSP
-function M.lsp_on_attach(_, bufnr)
+-- function M.lsp_on_attach(_, bufnr)
+function M.lsp_on_attach(args)
+  local bufnr = args.buf
   local nmap = function(keys, func, desc)
     if desc then
       desc = "LSP: " .. desc

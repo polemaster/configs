@@ -8,20 +8,16 @@ return {
   -- LSP
   -- If one has little RAM, they can install lsp-timeout.nvim
   -- Needed package npm for pyright
-  {
-    "neovim/nvim-lspconfig",
-    dependencies = {
-      { "williamboman/mason.nvim", config = true },
-      "williamboman/mason-lspconfig.nvim", -- used only to attach LSPs to files
-      "WhoIsSethDaniel/mason-tool-installer.nvim", -- Automatically install LSPs to stdpath for neovim
+  "williamboman/mason.nvim",
+  "neovim/nvim-lspconfig",
+  "williamboman/mason-lspconfig.nvim", -- used only to attach LSPs to files
+  "WhoIsSethDaniel/mason-tool-installer.nvim", -- Automatically install LSPs to stdpath for neovim
 
-      -- Useful plugin for configuring neovim
-      "folke/neodev.nvim",
+  -- Useful plugin for configuring neovim
+  "folke/neodev.nvim",
 
-      -- Needed for lsp completion icons
-      "onsails/lspkind.nvim",
-    },
-  },
+  -- Needed for lsp completion icons
+  "onsails/lspkind.nvim",
 
   -- Autocompletion
   {

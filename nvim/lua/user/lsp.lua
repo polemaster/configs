@@ -1,6 +1,7 @@
--- Modify this table to configure LSP servers (useful setting: filetypes = {})
 -- LSP servers configuration: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 -- Language specific plugins: https://github.com/neovim/nvim-lspconfig/wiki/Language-specific-plugins
+
+-- Very useful tutorial for new Neovim (>=0.11) LSP setup: https://dotfiles.substack.com/p/native-lsp-in-neovim-012
 
 -- Setup neovim lua configuration
 require("neodev").setup({
@@ -8,8 +9,9 @@ require("neodev").setup({
 })
 
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+-- Is it even possible to use this with new LSP API?
+-- local capabilities = vim.lsp.protocol.make_client_capabilities()
+-- capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
 local servers = {
   -- LSPs:
@@ -61,24 +63,28 @@ require("mason").setup({
   },
 })
 
-require("lspconfig")
-
--- This automatically enables LSP servers
--- Without it, we would need to separate a list of LSPs from linters, formatters, etc.
--- and pass it to vim.lsp.enable()
-require("mason-lspconfig").setup()
-
 -- This is necessary because ensure_installed in mason-lspconfig doesn't work
 -- with anything apart from LSPs
 require("mason-tool-installer").setup({
   ensure_installed = servers,
 })
 
--- attach LSPs to buffers and set up capabilities (autocompletion)
-vim.lsp.config("*", {
-  on_attach = require("user.keymaps").lsp_on_attach,
-  capabilities = capabilities,
+-- This automatically enables LSP servers
+-- Without it, we would need to separate a list of LSPs from linters, formatters, etc.
+-- and pass it to vim.lsp.enable()
+require("mason-lspconfig").setup()
+
+-- Attach useful keymaps
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = require("user.keymaps").lsp_on_attach,
 })
+
+-- attach LSPs to buffers and set up capabilities (autocompletion)
+-- (this doesn't work, idk why)
+-- vim.lsp.config("*", {
+--   on_attach = require("user.keymaps").lsp_on_attach,
+--   capabilities = capabilities,
+-- })
 
 vim.lsp.config("lua_ls", {
   settings = {
@@ -100,15 +106,6 @@ vim.lsp.config("cssls", {
       },
     },
   },
-})
-
--- Set how diagnostics is to be displayed
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-  border = "single",
-})
-
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-  border = "single",
 })
 
 -- more general (not only LSP)
