@@ -209,7 +209,14 @@ function M.lsp_on_attach(args)
   end
 
   nmap("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
-  nmap("<A-CR>", vim.lsp.buf.code_action, "[C]ode [A]ction")
+  -- nmap("<A-CR>", vim.lsp.buf.code_action, "[C]ode [A]ction")
+  nmap("<A-CR>", function()
+    vim.lsp.buf.code_action({
+      filter = function(action)
+        return not action.disabled
+      end,
+    })
+  end, "Code Action")
 
   -- nmap("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
   nmap("gd", require("telescope.builtin").lsp_definitions, "[G]o to [D]efinition")
