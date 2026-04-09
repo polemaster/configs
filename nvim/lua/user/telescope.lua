@@ -15,7 +15,7 @@ require("telescope").setup({
         ["<esc>"] = actions.close,
       },
     },
-    file_ignore_patterns = { "^venv/", ".git/", "images/" },
+    file_ignore_patterns = { "^venv/", ".git/", "images/", "node_modules/" },
     -- prompt_prefix = '',
     -- selection_caret = '↪ ',   -- can change if I find a suitable character
     -- entry_prefix = '',
