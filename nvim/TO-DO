@@ -31,3 +31,9 @@ final tweaks:
 - change tree structure (if not - move gitsigns to plugins.lua), set lazy load on events
 - add description to keymaps (for which-key)
 - add documentation
+
+Things I needed to do to get nvim-treesitter working:
+1. Uninstall neorg and nvim-treesitter/nvim-treesitter-textobjects packages
+2. Comment tresitter keybindings in keymaps.lua
+3. Remove tresitter code
+4.

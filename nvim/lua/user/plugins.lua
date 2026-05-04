@@ -129,7 +129,7 @@ return {
     -- Highlight, edit, and navigate code
     "nvim-treesitter/nvim-treesitter",
     dependencies = {
-      "nvim-treesitter/nvim-treesitter-textobjects",
+      -- "nvim-treesitter/nvim-treesitter-textobjects",
       "JoosepAlviste/nvim-ts-context-commentstring",
       "nvim-treesitter/nvim-treesitter-context", -- used to stick function to the top if it is above the screen view
       {
@@ -137,9 +137,11 @@ return {
         setup = function()
           vim.g.matchup_matchparen_offscreen = { method = "popup" }
         end,
+        init = function()
+          vim.g.matchup_treesitter_stopline = 500
+        end,
       },
     },
-    branch = "master",
     lazy = false,
     build = ":TSUpdate",
   },
@@ -237,10 +239,10 @@ return {
 
   -- neorg (for notes, etc.)
   {
-    "nvim-neorg/neorg",
-    build = ":Neorg sync-parsers",
-    tag = "v7.0.0", -- why doesn't normal version work, wtf?
-    lazy = false,
+    -- "nvim-neorg/neorg",
+    -- build = ":Neorg sync-parsers",
+    -- tag = "v7.0.0", -- why doesn't normal version work, wtf?
+    -- lazy = false,
     -- lazy = true, -- enable lazy load
     -- ft = "norg", -- lazy load on file type
     -- cmd = "Neorg", -- lazy load on command,
