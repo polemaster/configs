@@ -38,11 +38,23 @@ require("conform").setup({
   notify_on_error = true,
 })
 
+local is_angular_project = function()
+  local current_file_dir = vim.fn.expand("%:p:h")
+
+  local found_files = vim.fs.find("angular.json", {
+    upward = true,
+    path = current_file_dir,
+    stop = vim.loop.os_homedir(),
+  })
+
+  return #found_files > 0
+end
+
 -- linting
 -- need to install linters via Mason or package manager
 -- eslint is not included because it's setup by vite usually
 require("lint").linters_by_ft = {
-  html = { "htmlhint" },
+  html = is_angular_project() and {} or { "htmlhint" },
   css = { "stylelint" },
   scss = { "stylelint" },
   python = { "ruff" },
