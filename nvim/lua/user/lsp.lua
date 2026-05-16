@@ -108,6 +108,19 @@ vim.lsp.config("cssls", {
   },
 })
 
+vim.lsp.config("eslint", {
+  filetypes = {
+    "javascript",
+    "javascriptreact",
+    "javascript.jsx",
+    "typescript",
+    "typescriptreact",
+    "typescript.tsx",
+    "vue",
+    "html",
+  },
+})
+
 -- more general (not only LSP)
 vim.diagnostic.config({
   virtual_text = {
