@@ -15,7 +15,7 @@ require("telescope").setup({
         ["<esc>"] = actions.close,
       },
     },
-    file_ignore_patterns = { "^venv/", ".git/", "images/", "node_modules/" },
+    file_ignore_patterns = { "^venv/", ".git/", "images/", "node_modules/", ".angular/cache/" }, -- this is done after finding all files
     -- prompt_prefix = '',
     -- selection_caret = '↪ ',   -- can change if I find a suitable character
     -- entry_prefix = '',
@@ -23,6 +23,18 @@ require("telescope").setup({
   },
   pickers = {
     find_files = {
+      -- Tell ripgrep to ignore these directories natively at the system level
+      find_command = {
+        "rg",
+        "--files",
+        "--hidden",
+        "--glob",
+        "!**/.git/*",
+        "--glob",
+        "!**/node_modules/*",
+        "--glob",
+        "!**/venv/*",
+      },
       previewer = false,
       -- layout_strategy = 'center', -- doesn't do anything if theme is enabled
       theme = "dropdown",
@@ -44,6 +56,18 @@ require("telescope").setup({
           end,
         },
       },
+    },
+    live_grep = {
+      additional_args = function()
+        return {
+          "--glob",
+          "!**/.git/*",
+          "--glob",
+          "!**/node_modules/*",
+          "--glob",
+          "!**/images/*",
+        }
+      end,
     },
   },
 })

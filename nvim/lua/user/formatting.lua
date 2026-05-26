@@ -65,18 +65,45 @@ require("lint").linters_by_ft = {
   -- python = { 'mypy' },
 }
 
-local stylelint = require("lint").linters.stylelint
-stylelint.args = {
-  "--formatter",
-  "json",
-  "--config",
-  vim.fn.expand("~/.config/stylelint/.stylelintrc.json"),
-  "--stdin-filename",
-  function()
-    return vim.api.nvim_buf_get_name(0)
-  end,
-}
+-- local stylelint = require("lint").linters.stylelint
+-- stylelint.args = {
+--   "--formatter",
+--   "json",
+--   "--config",
+--   vim.fn.expand("~/.config/stylelint/.stylelintrc.json"),
+--   "--stdin-filename",
+--   function()
+--     return vim.api.nvim_buf_get_name(0)
+--   end,
+-- }
+-- Set up Stylelint (global fallback)
+local lint = require("lint")
+local stylelint = lint.linters.stylelint
 
+-- stylelint.args = {
+--   "--formatter",
+--   "json",
+--   "--stdin-filename",
+--   function()
+--     return vim.api.nvim_buf_get_name(0)
+--   end,
+-- }
+
+-- -- Only append the global config flag if NO local configuration file is found
+-- local has_local_config = vim.fs.find({
+--   "stylelint.config.mjs",
+--   "stylelint.config.cjs",
+--   ".stylelintrc.json",
+--   ".stylelintrc",
+--   "stylelint.config.ts",
+--   "stylelint.config.js",
+-- }, { path = vim.fn.expand("%:p:h"), upward = true })[1]
+
+-- if not has_local_config then
+--   vim.list_extend(stylelint.args, { "--config", vim.fn.expand("~/.config/stylelint/stylelint.config.mjs") })
+-- end
+
+-- Lint after saving a file
 local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
 
 -- vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
