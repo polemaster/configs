@@ -34,6 +34,7 @@ require("nvim-treesitter").install({
   "sql",
   "xml",
 })
+
 -- 2. Setup nvim-treesitter (Main branch style)
 -- require("nvim-treesitter.configs").setup({
 --   -- These fields are still valid on the main branch for managing parsers

@@ -5,63 +5,68 @@
 
 -- Setup neovim lua configuration
 require("neodev").setup({
-    library = { plugins = { "nvim-dap-ui" }, types = true },
+  library = { plugins = { "nvim-dap-ui" }, types = true },
 })
 
+-- nvim-cmp supports additional completion capabilities, so broadcast that to servers
+-- Is it even possible to use this with new LSP API?
+-- local capabilities = vim.lsp.protocol.make_client_capabilities()
+-- capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+
 local servers = {
-    -- LSPs:
-    "pyright",
-    "clangd",
-    "lua-language-server",
-    "bash-language-server",
-    "html-lsp",
-    "css-lsp",
-    "css-variables-language-server",
-    "typescript-language-server",
-    "angular-language-server",
-    "tailwindcss",
+  -- LSPs:
+  "pyright",
+  "clangd",
+  "lua-language-server",
+  "bash-language-server",
+  "html-lsp",
+  "css-lsp",
+  "css-variables-language-server",
+  "typescript-language-server",
+  "angular-language-server",
+  "tailwindcss",
 
-    -- Formatters:
-    "prettierd", -- prettier formatter (html, css, ...)
-    "stylua", -- lua formatter
-    "isort", -- python formatter
-    "black", -- python formatter
-    "ruff", -- python formatter & linter
-    "clang-format", -- C/C++ formatter
+  -- Formatters:
+  "prettierd", -- prettier formatter (html, css, ...)
+  "stylua", -- lua formatter
+  "isort", -- python formatter
+  "black", -- python formatter
+  "ruff", -- python formatter & linter
+  "clang-format", -- C/C++ formatter
 
-    -- Linters:
-    "pylint", -- python linter
-    "mypy", -- python linter
-    "flake8", -- python linter
-    "shellcheck", -- bash linter
-    "cpplint", -- C/C++ linter
-    "htmlhint", -- HTML linter
-    "stylelint", -- CSS & SCSS linter
-    "eslint", -- JS & TS linter
+  -- Linters:
+  "pylint", -- python linter
+  "mypy", -- python linter
+  "flake8", -- python linter
+  "shellcheck", -- bash linter
+  "cpplint", -- C/C++ linter
+  "htmlhint", -- HTML linter
+  "stylelint", -- CSS & SCSS linter
+  "eslint", -- JS & TS linter
 
-    -- Debuggers:
-    "debugpy",
+  -- Debuggers:
+  "debugpy",
 
-    -- Other:
-    "emmet-language-server",
+  -- Other:
+  "emmet-language-server",
 }
 
 -- Mason settings
 require("mason").setup({
-    ui = {
-        border = "rounded", -- same values as nvim_open_win()
-        icons = {
-            package_installed = "✓",
-            package_pending = "➜",
-            package_uninstalled = "✗",
-        },
+  ui = {
+    border = "rounded", -- same values as nvim_open_win()
+    icons = {
+      package_installed = "✓",
+      package_pending = "➜",
+      package_uninstalled = "✗",
     },
+  },
 })
 
 -- This is necessary because ensure_installed in mason-lspconfig doesn't work
 -- with anything apart from LSPs
 require("mason-tool-installer").setup({
-    ensure_installed = servers,
+  ensure_installed = servers,
 })
 
 -- This automatically enables LSP servers
@@ -71,71 +76,75 @@ require("mason-lspconfig").setup()
 
 -- Attach useful keymaps
 vim.api.nvim_create_autocmd("LspAttach", {
-    callback = require("user.keymaps").lsp_on_attach,
+  callback = require("user.keymaps").lsp_on_attach,
 })
 
--- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
-
--- Set up capabilities (autocompletion)
-vim.lsp.config("*", {
-    capabilities = capabilities,
-})
+-- attach LSPs to buffers and set up capabilities (autocompletion)
+-- (this doesn't work, idk why)
+-- vim.lsp.config("*", {
+--   on_attach = require("user.keymaps").lsp_on_attach,
+--   capabilities = capabilities,
+-- })
 
 vim.lsp.config("lua_ls", {
-    settings = {
-        Lua = {
-            diagnostics = {
-                globals = { "vim" },
-            },
-        },
-        workspace = { checkThirdParty = false },
+  settings = {
+    Lua = {
+      diagnostics = {
+        globals = { "vim" },
+      },
     },
+    workspace = { checkThirdParty = false },
+  },
 })
 
 -- CSSLS doesn't recognize @apply rule from tailwind so we need to ignore it
 vim.lsp.config("cssls", {
-    settings = {
-        css = {
-            lint = {
-                unknownAtRules = "ignore",
-            },
-        },
+  settings = {
+    css = {
+      lint = {
+        unknownAtRules = "ignore",
+      },
     },
+  },
 })
 
 vim.lsp.config("eslint", {
-    filetypes = {
-        "javascript",
-        "javascriptreact",
-        "javascript.jsx",
-        "typescript",
-        "typescriptreact",
-        "typescript.tsx",
-        "vue",
-        "html",
-    },
+  filetypes = {
+    "javascript",
+    "javascriptreact",
+    "javascript.jsx",
+    "typescript",
+    "typescriptreact",
+    "typescript.tsx",
+    "vue",
+    "html",
+  },
+})
+
+vim.lsp.config("clangd", {
+  init_options = {
+    fallbackFlags = { "-std=c++20" },
+  },
 })
 
 -- more general (not only LSP)
 vim.diagnostic.config({
-    virtual_text = {
-        prefix = "●",
+  virtual_text = {
+    prefix = "●",
+  },
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = " ",
+      [vim.diagnostic.severity.WARN] = " ",
+      [vim.diagnostic.severity.HINT] = "󰠠 ",
+      [vim.diagnostic.severity.INFO] = " ",
     },
-    signs = {
-        text = {
-            [vim.diagnostic.severity.ERROR] = " ",
-            [vim.diagnostic.severity.WARN] = " ",
-            [vim.diagnostic.severity.HINT] = "󰠠 ",
-            [vim.diagnostic.severity.INFO] = " ",
-        },
-    },
-    underline = true,
-    update_in_insert = false,
-    severity_sort = false,
-    float = {
-        border = "single",
-        header = "",
-    },
+  },
+  underline = true,
+  update_in_insert = false,
+  severity_sort = false,
+  float = {
+    border = "single",
+    header = "",
+  },
 })
