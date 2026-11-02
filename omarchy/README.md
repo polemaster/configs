@@ -3,32 +3,17 @@
 This README file describes my configuration of Omarchy. \
 Omarchy was installed from the official ISO image.
 
-### Connect to wifi (if the TUI is not working)
+### First steps
 
-```bash
-sudo rfkill unblock wlan
-```
-
-Then connect to the wi-fi via TUI (Impala).
-
-### Increase pacman speed
-
-```bash
-sudo reflector --verbose --country 'Poland' --country 'Germany' --protocol https --age 12 --sort rate --fastest 10 --save /etc/pacman.d/mirrorlist
-```
-
-Or:
-
-```bash
-yay -S rate-mirrors-bin
-sudo rate-mirrors arch --save /etc/pacman.d/mirrorlist
-```
-
-### Install Brave
-
-```bash
-yay -S brave-bin
-```
+1. Connect to WiFi via TUI.
+1. Update Omarchy and reboot.
+1. Clone _configs_ repository from GitHub.
+1. Set up neovim (see below).
+1. Set up zsh (from _configs_).
+1. Set up firefox (see below).
+   - (Optional) Change mirrorlist from Omarchy to reflector-generated one (see below) & Update the system.
+1. Copy hyprland config from backup, update shell to zsh & reboot.
+1. Continue with the instructions below.
 
 ### Configure neovim
 
@@ -55,27 +40,27 @@ Also, create a file ~/.config/stylelint/.stylelintrc.json with the content:
 }
 ```
 
-### Change caps lock to escape
+### Install Firefox
+
+After installing, open and close it. Copy .mozilla folder from backup and open Firefox.
+
+If you see a message: `Using an older version of Firefox can corrupt bookmarks...`, then you must update Firefox to newest version bypassing Omarchy update.
+
+### Increase pacman speed
 
 ```bash
-cd ~/.config/hypr
-nvim input.conf
+sudo reflector --verbose --country 'Poland' --country 'Germany' --protocol https --age 12 --sort rate --fastest 10 --save /etc/pacman.d/mirrorlist
 ```
 
-- Change _compose:caps_ to _caps:escape_ and save and exit.
-- Uncomment _natural_scroll = true_ line.
+Or:
+
+```bash
+yay -S rate-mirrors-bin
+sudo rate-mirrors arch --save /etc/pacman.d/mirrorlist
+```
 
 ```bash
 hyprctl reload
-```
-
-### Change key repeat and delay rates
-
-Go to `~/.config/hypr/input.conf` and change the values to:
-
-```
-repeat_rate = 30
-repeat_delay = 300
 ```
 
 ### Set the default terminal
@@ -103,27 +88,8 @@ Reboot.
 ### Configure zsh
 
 ```bash
-cp ~/repos/configs/zsh/.zsh_aliases ~
-```
-
-- Go to https://github.com/romkatv/zsh4humans and follow the instructions.
-- Modify .zshrc by adding this at the end and removing pre-existing aliases:
-
-```
-source ~/.zsh_aliases
-
-HISTFILE=~/.histfile
-HISTSIZE=2000
-SAVEHIST=2000
-```
-
-### Configure Polish keyboard
-
-Go to `~/.config/hypr/input.conf` and change options inside _input_ to:
-
-```bash
-kb_layout = pl,es
-kb_options = caps:escape,grp:alt_shift_toggle
+sudo pacman -S zsh grml-zsh-config zsh-completions zsh-autosuggestions zsh-syntax-highlighting starship ttf-jetbrains-mono-nerd
+cp ~/repos/configs/zsh/* ~
 ```
 
 ### Configure git
@@ -172,68 +138,6 @@ fprintd-enroll
 
 ```bash
 sudo pacman -S exfatprogs partitionmanager dosfstools ntfs-3g
-```
-
-### Mount devices automatically
-
-```bash
-sudo pacman -S udiskie
-```
-
-Add this to the file `~/.config/hypr/hyprland.conf`:
-
-```bash
-exec-once = udiskie
-```
-
-Reload Hyprland or reboot. \
-**Note**: at this point, you can copy files from backup / previous computer
-
-### Change keybindings
-
-Add this to the end of `~/.config/hypr/bindings.conf`:
-
-```bash
-# Omarchy menu on Super + Space
-unbind = SUPER, SPACE
-bindd = SUPER, SPACE, Omarchy menu, exec, omarchy-menu
-
-# App launcher on Super key, like in Windows and Linux
-bindr = SUPER, SUPER_L , exec, omarchy-launch-walker
-
-# Change full tiling screen binding
-unbind = SUPER ALT, F
-unbind = SUPER SHIFT, F
-bindd = SUPER SHIFT, F, Full width, fullscreen, 1
-
-# Bind Super E to open files instead
-bindd = SUPER, E, File manager, exec, uwsm-app -- nautilus --new-window
-
-# Lock screen on Super + U
-bindd = SUPER, U, Lock screen, exec, loginctl lock-session
-
-# Moving through the windows with Super + h/j/k/l
-unbind = SUPER, K
-unbind = SUPER, J
-bindd = SUPER, H, Move window focus left, movefocus, l
-bindd = SUPER, L, Move window focus right, movefocus, r
-bindd = SUPER, K, Move window focus up, movefocus, u
-bindd = SUPER, J, Move window focus down, movefocus, d
-
-# Bind help (previously Super + K) to Super + I
-bindd = SUPER, I, Show key bindings, exec, omarchy-menu-keybindings
-
-# Bind toggle (previously Super + J) to Super + O
-bindd = SUPER, O, Toggle window split, togglesplit, # dwindle
-
-# Keybindings for fast moving through grouped windows
-bindd = SUPER, grave, Next window in group, changegroupactive, f
-bindd = SUPER SHIFT, grave, Previous window in group, changegroupactive, b
-bindd = ALT, grave, Next window in group, changegroupactive, f
-bindd = ALT SHIFT, grave, Previous window in group, changegroupactive, b
-
-# Shutdown button turns off the computer
-bindld = , XF86PowerOff, Shutdown, exec, sh -c "omarchy-state clear re*-required && systemctl poweroff --no-wall"
 ```
 
 ### Set start-up apps
