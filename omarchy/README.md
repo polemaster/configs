@@ -63,18 +63,10 @@ sudo rate-mirrors arch --save /etc/pacman.d/mirrorlist
 hyprctl reload
 ```
 
-### Set the default terminal
+### Customize the _foot_ terminal
 
-Modify `~/.config/xdg-terminals.list` file - add to the top of the file:
-
-- `kitty.desktop` for kitty
-- `Alacritty.desktop` for alacritty
-
-You can verify if the .desktop file exists by running `ls /usr/share/applications`.
-
-### Change font size in the terminal
-
-Go to `~/.config/kitty/kitty.conf` and change _font_size_ to 11.
+Go to `~/.config/foot/foot.ini` and change _Font:size_ to 11.
+Change `include=~/.local/state/omarchy/current/theme/foot.ini` to `include=/usr/share/foot/themes/tokyonight-night`.
 
 ### Change bash to zsh
 
@@ -134,87 +126,112 @@ Then, add fingerprint:
 fprintd-enroll
 ```
 
-### Install partition manager
+Now we need to enable it. First check where the file responsible for normal way of setting it up is:
 
 ```bash
-sudo pacman -S exfatprogs partitionmanager dosfstools ntfs-3g
+which omarchy-setup-security-fingerprint
 ```
 
-### Set start-up apps
-
-To `~/.config/hypr/autostart.conf` add:
+Looking at the code, Gemini suggested running only some of the functions from that file:
 
 ```bash
-exec-once = $browser
+bash -c '
+  source <(sed -n "/^setup_pam_config()/,/^}/p; /^setup_lock_fingerprint_pam()/,/^}/p" /usr/share/omarchy/bin/omarchy-setup-security-fingerprint)
+  setup_pam_config
+  setup_lock_fingerprint_pam
+'
 ```
 
-### Change Waybar
+And to prevent the future Omarchy updates from replacing my custom `libfprint` package:
 
-The directory to edit waybar is `~/.config/waybar/`.
-
-#### Show battery percentage
-
-Edit _battery_ in `config.jsonc`:
-
-```json
-"format": "{icon} {capacity}%",
-"format-discharging": "{icon} {capacity}%",
-"format-charging": "{icon} {capacity}%",
+```bash
+sudo nvim /etc/pacman.conf
 ```
 
-#### Show current keyboard
+and under the `[Options]`:
 
-Edit **config.jsonc** file. \
-Add `"hyprland/language",` to _modules-right_. \
-Add:
-
-```json
-"hyprland/language": {
-  "format": "{short}",
-  "tooltip": false,
-  "on-click": "hyprctl switchxkblayout 'ite-tech.-inc.-ite-device(8910)-keyboard' next"
-},
+```
+IgnorePkg = libfprint-git libfprint-tod libfprint-2-tod1-goodix
 ```
 
-before `"custom/omarchy"`.
+### Copy old config files
 
-Now edit **style.css** file. \
-Add `#language,` for _min-width_ and _margin_ where others are defined (_#cpu_, _#battery_, etc.).
-Add this:
+Go to the .config directory in the backup folder.
 
-```css
-#language {
-  margin-right: 15px;
+```bash
+cp -rv calibre mpv ~/.config
+```
+
+### Set default browser
+
+```bash
+omarchy default browser firefox
+```
+
+### Understanding installed apps
+
+```bash
+ls ~/.local/share/applications/
+pacman -Qe
+```
+
+### Modifying ESC behavior in Wayland app menu
+
+To change ESC to quit the app menu immediately instead of clearing text, modify this file:
+
+```bash
+sudo cp /usr/share/omarchy/shell/plugins/dock/AppGrid.qml /usr/share/omarchy/shell/plugins/dock/AppGrid.qml.bak
+sudo nvim /usr/share/omarchy/shell/plugins/dock/AppGrid.qml
+```
+
+Change this:
+
+```
+else if (event.key === Qt.Key_Escape) {
+    if (root.menuEntry) root.menuEntry = null
+    else if (root.filterText) root.setFilter("")
+    else root.close()
 }
 ```
 
-#### Remove cpu
+to:
 
-Remove all cpu-related code as it is unnecessary.
-
-#### Change margin for wifi:
-
-```css
-#network {
-  margin-right: 8px;
+```qml
+else if (event.key === Qt.Key_Escape) {
+    if (root.menuEntry && !root.filterText) root.menuEntry = null
+    else root.close()
 }
 ```
 
-### Move using ctrl + hjkl in menus
-
-Add these lines to `~/.config/walker/config.toml`:
+To apply the changes, run:
 
 ```bash
-next = ["Down", "ctrl j"]
-previous = ["Up", "ctrl k"]
+omarchy restart shell
 ```
 
 ### Install other apps
 
-- Install [Mullvad VPN](https://wiki.archlinux.org/title/Mullvad).
+```bash
+sudo pacman -S --needed - < apps
+yay -S --needed - < aur_apps
+```
+
+or if there are blank lines or comments:
 
 ```bash
-yay -S anki-bin calibre visual-studio-code-bin
+grep -vE '^\s*(#|$)' apps | sudo pacman -S --needed -
+grep -vE '^\s*(#|$)' aur_apps | yay -S --needed -
+```
+
+### Change default image viewer to eog (Eye of Gnome)
+
+```bash
+xdg-mime default org.gnome.eog.desktop image/png
+xdg-mime default org.gnome.eog.desktop image/jpeg
+xdg-mime default org.gnome.eog.desktop image/gif
+xdg-mime default org.gnome.eog.desktop image/webp
+xdg-mime default org.gnome.eog.desktop image/bmp
+xdg-mime default org.gnome.eog.desktop image/tiff
 ```
 
 ### Set up Virtual Machines software
@@ -231,278 +248,28 @@ sudo virsh net-start default
 
 Edit /etc/libvirt/network.conf file and change backend to iptables, if not using firewalld.
 
-### Change default image viewer to eog (Eye of Gnome)
+### Eduroam
+
+If you are not using Gnome and are using NetworkManager, install `network-manager-applet`:
 
 ```bash
-xdg-mime default org.gnome.eog.desktop image/png
-xdg-mime default org.gnome.eog.desktop image/jpeg
-xdg-mime default org.gnome.eog.desktop image/gif
-xdg-mime default org.gnome.eog.desktop image/webp
-xdg-mime default org.gnome.eog.desktop image/bmp
-xdg-mime default org.gnome.eog.desktop image/tiff
+sudo pacman -S network-manager-applet
 ```
 
-### Network (systemd-networkd vs NetworkManager)
-
-#### systemd-networkd + iwd vs NetworkManager
-
-By default, systemd-networkd and iwd are responsible for network connection in Omarchy (with iwd for wi-fi).
-
-That's where NetworkManager comes in - it is by far the most popular method of network management on Linux. It solves 2 main issues that systemd-networkd + iwd setup suffers from:
-
-- easy VPN connection
-- 802.1x support (a.k.a. WPA/WPA2 Enterprise or Eduroam).
-
-#### iwd vs wpa_supplicant (with NetworkManager)
-
-NetworkManager is built on top of iwd or wpa_supplicant (it supports both, though wpa_supplicant is the default). Overall, iwd is faster and newer than wpa_supplicant. However, you might encounter some problems with it.
-
-When it comes to **VPN**, I have been encountering some issues with iwd, while wpa_supplicant supplicant "just works".
-
-As for connection to **eduroam**, here is how it works for me:
-
-| eduroam                 | iwd | wpa_supplicant |
-| :---------------------- | :-: | :------------: |
-| TLS (certificates)      | ❌  |       ❌       |
-| PEAP (email + password) | ✅  |       ✅       |
-
-Truth be told, TLS might work on different OS/computer/setup. Just because it didn't work for me doesn't mean it won't work for you. There were some people on github that managed it without any problems (https://github.com/basecamp/omarchy/issues/1414).
-
-#### Switching to NetworkManager
-
-**All** (iwd/wpa_supplicant):
-
-```bash
-sudo pacman -S networkmanager
-sudo systemctl disable --now wpa_supplicant.service systemd-networkd.service systemd-networkd-wait-online.service systemd-networkd.socket systemd-networkd-varlink.socket iwd.service
-```
-
-**wpa_supplicant**:
-
-```bash
-sudo systemctl mask iwd.service
-sudo systemctl enable --now wpa_supplicant
-printf "[device]\nwifi.backend=wpa_supplicant\n" | sudo tee /etc/NetworkManager/conf.d/wifi_backend.conf
-```
-
-**iwd**:
-
-```bash
-sudo systemctl mask wpa_supplicant.service
-printf "[device]\nwifi.backend=iwd\n" | sudo tee /etc/NetworkManager/conf.d/wifi_backend.conf
-```
-
-**All** (iwd/wpa_supplicant):
-
-```bash
-sudo systemctl enable --now NetworkManager.service
-sudo systemctl restart NetworkManager.service
-
-rfkill unblock wifi
-nmcli networking on
-nmcli radio wifi on
-reboot
-```
-
-Make sure there are no errors during execution of each of the commands. You can verify that the NetworkManager with iwd/wpa_supplicant works with:
-
-```bash
-ps aux | grep -E "(wpa_supplicant|iwd)"
-```
-
-That's it! Now everything should be running smoothly 😎.
-
-For OpenVPN support, install:
-
-```bash
-sudo pacman -S networkmanager-openvpn
-```
-
-**Sources:**
-
-- https://github.com/basecamp/omarchy/issues/1414
-- https://wiki.archlinux.org/title/NetworkManager#Using_iwd_as_the_Wi-Fi_backend.
-
-#### eduroam connection (TLS, not working ❌)
-
-To connect to eduroam (WPA/WPA2 Enterprise) using TLS method with certificates, you first need to obtain all necessary certificates:
-
-- CA certificate (.pem/.crt)
-- Client certificate (.pem)
-- Private key (.pem)
-
-On PG we can download .crt (CA, which is already in .pem format) and user certificate in .p12 format.
-
-The .p12 certificate needs to be split into 2 files:
-
-```bash
-mkdir ~/.certificates
-openssl pkcs12 -in ~/.certificates/certyfikat_uzytkownika.p12 -clcerts -nokeys -out ~/.certificates/eduroam-client.pem
-openssl pkcs12 -in ~/.certificates/certyfikat_uzytkownika.p12 -nocerts -nodes -out ~/.certificates/eduroam-private.key
-chmod 600 ~/.certificates/eduroam-private.key
-```
-
-We need the files in /etc directory for some reason (in home directory didn't work for me). So copy them:
-
-```bash
-sudo mkdir -p /etc/certs/eduroam
-sudo cp ~/.certificates/PG_Root_CA.crt /etc/certs/eduroam/
-sudo cp ~/.certificates/eduroam-client.pem /etc/certs/eduroam/
-sudo cp ~/.certificates/eduroam-private.key /etc/certs/eduroam/
-```
-
-Now we are ready to add the eduroam connection.
-
-**NetworkManager with wpa_supplicant:**
-
-You have 3 options to create a connection:
-
-- `nmtui` - a TUI tool
-- `nmcli` - a CLI tool
-- `nm-connection-editor` - a GUI tool
-
-`nmcli` option:
-
-```bash
-sudo nmcli connection add \
-  type wifi \
-  con-name "eduroam" \
-  ifname "wlan0" \
-  ssid "eduroam" \
-  -- \
-  wifi-sec.key-mgmt wpa-eap \
-  802-1x.eap tls \
-  802-1x.identity "<your_student_login>@student.pg.edu.pl" \
-  802-1x.ca-cert "/etc/certs/eduroam/PG_Root_CA.crt" \
-  802-1x.client-cert "/etc/certs/eduroam/eduroam-client.pem" \
-  802-1x.private-key "/etc/certs/eduroam/eduroam-client.pem" \
-  802-1x.private-key-password-flags 1
-
-
-nmcli connection up "eduroam"
-```
-
-**NetworkManager with iwd:**
-
-Edit the following file:
-
-```bash
-sudo vim /var/lib/iwd/eduroam.8021x
-```
-
-and paste this contents there:
-
-```
-[Security]
-EAP-Method=TLS
-EAP-TLS-CACert=/etc/certs/eduroam/PG_Root_CA.crt
-EAP-Identity=<your_student_login>@student.pg.edu.pl
-EAP-TLS-ClientCert=/etc/certs/eduroam/eduroam-client.pem
-EAP-TLS-ClientKey=/etc/certs/eduroam/eduroam-private.key
-#EAP-TLS-ClientKeyPassphrase=key-passphrase
-
-[Settings]
-AutoConnect=true
-```
-
-Then, connect to the network with:
-
-```bash
-nmcli connection up "eduroam"
-```
-
-It might work or it might not. For me it didn't. You can try rebooting and connecting again too.
-
-#### eduroam connection (PEAP, working ✅)
-
-This method is much easier to set up, but also less secure as someone might pose as eduroam and steal your credentials. Here is how you set it up.
-
-**wpa_supplicant** method:
-
-- `nmtui` - a TUI tool
-- `nmcli` - a CLI tool
-- `nm-connection-editor` - a GUI tool
-
-For _anonymous-identity_ write `anonymous@student.pg.edu.pl`.
-For the second (first was PEAP) authentication method (if not chosen for you already) choose `MSCHAPv2`.
-
-I used `nmtui` for creating this connection. You can choose whichever you prefer. \
-And that's it! You should be able to connect to the eduroam without any problems.
-
-**iwd** method:
-
-Edit the following file:
-
-```bash
-sudo vim /var/lib/iwd/eduroam.8021x
-```
-
-and paste the contents there:
-
-```
-[Security]
-EAP-Method=PEAP
-EAP-Identity=anonymous@student.pg.edu.pl
-EAP-PEAP-Phase2-Method=MSCHAPV2
-EAP-PEAP-Phase2-Identity=<your_student_login>@student.pg.edu.pl
-EAP-PEAP-Phase2-Password=YOUR_PASSWORD
-
-[Settings]
-AutoConnect=true
-```
-
-You can now connect with e.g. `nmcli` tool:
-
-```bash
-nmcli connection up "eduroam"
-```
-
-#### Useful commands
-
-```bash
-sudo vim /etc/NetworkManager/conf.d/wifi_backend.conf
-sudo vim /var/lib/iwd/eduroam.8021x
-nmcli connection show
-nmcli connection up "network_name"
-systemctl status systemd-networkd.service
-```
+Use `nm-connection-editor` to connect to eduroam using the [guide](https://gdansktech.atlassian.net/wiki/spaces/HPPG/pages/636551348/Eduroam+Linux) from PG.
 
 ### Troubleshooting
 
-#### Reset Hyprland
+#### Screensaver turns on in Firefox while watching videos
 
-It is possible that a system update (in particular Omarchy update) breaks something in the configuration. To solve the problem, reset the configuration to the new default:
+By default, Firefox tries to notify the `gtk` fallback about inhibiting screensaver but `gtk` tries to talk to GNOME daemon that doesn't exist in Omarchy. Changing the setting to `none` causes the browser to resolve to plan B: using `zwp_idle_inhibit_manager_v1` (native Wayland protocol).
 
 ```bash
-omarchy-reset-hyprland
+mkdir -p ~/.config/xdg-desktop-portal
+cat << 'EOF' > ~/.config/xdg-desktop-portal/hyprland-portals.conf
+[preferred]
+default=hyprland;gtk
+org.freedesktop.impl.portal.Inhibit=none
+EOF
+systemctl --user restart xdg-desktop-portal
 ```
-
-#### App laucher (Walker) is slow
-
-**The issue:** after typing keybinding to open app laucher (where you can type apps names to open them), it takes >1 second to open the window. \
-**Solution:** use `netcat` instead of `walker` to start the app launcher.
-
-**Explanation of the solution**
-
-The default app launcher on Omarchy (in 2025) is the Walker. You can launch it in two ways - via `walker` or via a socket call as described [here](https://github.com/abenz1267/walker?tab=readme-ov-file#basic-usage). The default way of launching `walker` on Omarchy is via `omarchy-launch-walker` script (you can find the script location with `which omarchy-launch-walker`) which is pretty slow (at least for me).
-
-To make it much faster (more than 10x faster), you can use socket calls instead. Here is how to do this.
-
-**Solution**
-
-First, you need to install `netcat`. On Arch Linux, you can do it with:
-
-```sh
-sudo pacman -S openbsd-netcat
-```
-
-Then edit the file `~/.config/hypr/bindings.conf` and add the following line:
-
-```sh
-bindr = SUPER, SUPER_L , exec, nc -U $XDG_RUNTIME_DIR/walker/walker.sock || omarchy-launch-walker
-```
-
-NOTE_1: if you already had a keybiding set up, make sure to unbind it first, for example: `unbind = SUPER, SPACE` \
-NOTE_2: You can change the keybiding here to whatever you want. I set it to Windows (Super) key. For example, to change it to Super + Space use `SUPER, SPACE` instead of `SUPER, SUPER_L`.
-
-That's all! Enjoy the super fast app laucher 😎.

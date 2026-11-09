@@ -1,0 +1,17 @@
+# Disable grml's default prompt so Starship can take over
+prompt off
+
+# Load Starship prompt
+eval "$(starship init zsh)"
+
+source ~/.zsh_aliases
+
+export EDITOR='nvim'
+export VISUAL='nvim'
+
+bindkey '^H' backward-kill-word
+bindkey '^[[3;5~' kill-word
+
+# Load fish-like autosuggestions and syntax highlighting
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
