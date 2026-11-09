@@ -11,7 +11,10 @@ end_of_line = lf
 [*.{py}]
 indent_size = 4
 
-[*.{cpp,c,h,hpp,java}]
+[*.{cpp,c,h,hpp}]
+indent_size = 2
+
+[*.{java}]
 indent_size = 4
 
 [*.{html,css,scss}]
